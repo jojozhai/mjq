@@ -7,4 +7,13 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>mjq-core</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.ymt.pz365.framework</groupId>
+			<artifactId>pzx-framework-data-jpa</artifactId>
+			<version>${pzx.framework.version}</version>
+		</dependency>
+	</dependencies>
+
 </project>

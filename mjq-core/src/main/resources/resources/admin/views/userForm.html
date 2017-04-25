@@ -1,0 +1,40 @@
+<div class="smart-widget widget-dark-blue margin-md">
+	<div class="smart-widget-header">用户信息</div>
+	<div class="smart-widget-inner">
+	<div class="smart-widget-body" >
+		<form name="userForm" class="form-horizontal no-margin" id="type-constraint" data-validate="parsley" novalidate>
+            <div class="form-group"  ng-class="userForm.money.$invalid && userForm.money.$dirty ? 'has-error': ''">
+                <label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;实际金额:</label>
+                <div class="col-lg-3">
+                    <input name="money" ng-model="user.money" type="number" class="form-control input-sm" placeholder="实际金额" readonly="readonly">
+                    <label class="control-label" ng-show="userForm.money.$invalid && userForm.money.$dirty">实际金额不能为空</label>
+                </div>
+            </div>
+            <div class="form-group"  ng-class="userForm.moneyPlus.$invalid && userForm.moneyPlus.$dirty ? 'has-error': ''">
+                <label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;金额加成:</label>
+                <div class="col-lg-3">
+                    <input name="moneyPlus" ng-model="user.moneyPlus" type="number" class="form-control input-sm" placeholder="金额加成" required>
+                    <label class="control-label" ng-show="userForm.moneyPlus.$invalid && userForm.moneyPlus.$dirty">金额加成不能为空</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3">城市霸主:</label>
+                <div class="col-lg-2">
+                    <div class="custom-checkbox todo-checkbox">
+                        <input id="selection" ng-model="user.vip" ng-checked="user.vip" type="checkbox">
+                        <label for="selection" style="margin-top: 4px;"></label>
+                    </div>
+                </div>
+                <label class="control-label col-lg-3">霸主城市:</label>
+                <div class="col-lg-3">
+                    <input name="city" ng-model="user.city" type="text" class="form-control input-sm" placeholder="霸主城市">
+                    <label class="control-label" ng-show="userForm.city.$invalid && userForm.city.$dirty">霸主城市不能为空</label>
+                </div>
+            </div>
+			<div class="text-right m-top-md">
+				<button ng-click="save(user)" class="btn btn-success btn-sm" ng-disabled="userForm.$invalid"><i class="fa fa-save m-right-xs"></i>保存</button>
+			</div>
+		</form>
+	</div>
+	</div>
+</div>

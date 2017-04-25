@@ -7,4 +7,45 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>mjq-admin</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.ymt.pz365.framework</groupId>
+			<artifactId>pzx-framework-web</artifactId>
+			<version>${pzx.framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ymt.pz365.admin</groupId>
+			<artifactId>pzx-admin-core</artifactId>
+			<version>${pzx.admin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ymt.mjq</groupId>
+			<artifactId>mjq-core</artifactId>
+			<version>${bwk.mjq.version} </version>
+		</dependency>
+		<dependency>
+			<groupId>com.ymt.mirage</groupId>
+			<artifactId>mirage-umeditor</artifactId>
+			<version>${mirage.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.3.3.RELEASE</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<finalName>admin</finalName>
+	</build>
 </project>

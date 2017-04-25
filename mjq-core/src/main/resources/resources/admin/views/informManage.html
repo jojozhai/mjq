@@ -1,0 +1,91 @@
+<div class="smart-widget widget-dark-blue">
+	<div class="smart-widget-header">爆料管理</div>
+	<div class="smart-widget-inner">
+		<div class="smart-widget-body">
+			<!-- <button ng-click="create()" class="btn btn-success btn-sm">
+				<i class="ion-plus m-right-xs"></i>新建爆料
+			</button> -->
+			<button type="button" class="btn btn-success btn-sm" ng-click="isConditionCollapsed = !isConditionCollapsed">
+				<i class="fa fa-search m-right-xs"></i>查询
+			</button>
+		</div>
+		<div uib-collapse="isConditionCollapsed" style="padding-left: 20px;padding-right: 20px;">
+			<div class="panel">
+				<div class="panel-body">
+					<div style="float:right; margin-top: 7px;">
+						<a href="javascript:" ng-click="isConditionCollapsed = !isConditionCollapsed" class="widget-remove-option"><i class="fa fa-times"></i></a>
+					</div>
+					<div>
+					<form class="form-inline no-margin" novalidate>
+						<div class="form-group">
+							<label class="control-label">类型:</label>
+							<select ng-model="condition.type" ng-options="type.value as type.name for type in types" class="form-control input-sm">
+								<option></option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="control-label">状态:</label>
+							<select ng-model="condition.status" ng-options="status.value as status.name for status in statuses" class="form-control input-sm">
+								<option></option>
+							</select>
+						</div>
+								
+						<button ng-click="query(condition)" class="btn btn-sm btn-success"><i class="fa fa-search m-right-xs"></i>查询</button>
+						<button ng-click="cleanCondition()" class="btn btn-sm btn-warning"><i class="ion-close m-right-xs"></i>清空</button>
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div ng-show="pageInfo.totalElements > 0">
+			<div class="smart-widget-body">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th width="100">序号</th>
+							<th width="100">类型</th>
+							<th width="100">状态</th>
+							<th>内容</th>
+							<th width="100">红包</th>
+							<th width="200">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat = "inform in informs">
+							<td>{{$index+1}}</td>
+							<td>{{inform.type}}</td>
+							<td>{{inform.status | informStatus}}</td>
+							<td>{{inform.content}}</td>
+							<td>{{inform.bonus | informBonus}}</td>
+							<td>
+								<!-- <button class="btn btn-warning btn-xs" ng-click="update(inform)">
+									<i class="ion-edit m-right-xs"></i>修改
+								</button> -->
+								<button class="btn btn-info btn-xs" ng-click="update(inform)">
+									<i class="ion-edit m-right-xs"></i>查看
+								</button>
+								<button class="btn btn-danger btn-xs" ng-click="remove(inform)">
+									<i class="ion-edit m-right-xs"></i>删除
+								</button>
+								<button class="btn btn-warning btn-xs" ng-click="bonus(inform)">
+									<i class="ion-edit m-right-xs"></i>发红包
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div style="margin-top: -30px; margin-left: 20px; margin-bottom: 20px;">
+				<uib-pagination total-items="pageInfo.totalElements" num-pages="pageInfo.totalPages" ng-model="pageInfo.page" max-size="pageInfo.maxSize" 
+					class="pagination-sm" boundary-links="true" force-ellipses="true" ng-change="query()" ng-disabled="pageInfo.totalElements <= 0" 
+					first-text="首页" last-text="末页" next-text="后页" previous-text="前页"></uib-pagination>
+			</div>
+		</div>
+		<div class="smart-widget-body" ng-hide="pageInfo.totalElements > 0">
+			<div class="alert alert-warning alert-dismissible" role="alert">
+		     	<i class="fa fa-exclamation-circle m-right-xs"></i> <strong>没有查询到任何数据,请修改查询条件并重试</strong>
+		    </div>
+		</div>
+	</div>
+</div>

@@ -7,7 +7,10 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<pzx.framework.version>2.0.0-SNAPSHOT</pzx.framework.version>
+		<pzx.admin.version>1.0.1-SNAPSHOT</pzx.admin.version>
+		<pzx.framework.version>1.0.1-SNAPSHOT</pzx.framework.version>
+		<mirage.version>1.0.0-SNAPSHOT</mirage.version>
+		<bwk.mjq.version>1.0.0-SNAPSHOT</bwk.mjq.version>
 	</properties>
 
 	<repositories>
@@ -40,7 +43,7 @@
 			<dependency>
 				<groupId>io.spring.platform</groupId>
 				<artifactId>platform-bom</artifactId>
-				<version>Brussels-SR1</version>
+				<version>2.0.3.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -61,4 +64,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

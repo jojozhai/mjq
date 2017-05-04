@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<title>Majuqiao</title>
+	<link rel="stylesheet" href="../css/frozen.css">
+	<link rel="stylesheet" href="../css/beautiful.css">
+    <script src="../lib/zepto.min.js"></script>
+    <script src="../js/frozen.js"></script>
+</head>
+<body ontouchstart="">
+	<header class="ui-header ml_border">
+        <h1>全民城管</h1>
+        <div class="mj_top">
+            <a href="index.html">
+                <img src="../image/mj_header.png" alt="">
+            </a>
+            <h2>爆料详情</h2>
+        </div>
+    </header>
+    <footer class="ui-footer bt_title">
+        <a href="tocomment.html" class="bt_title_color">
+            <p>写评论</p>
+        </a>
+    </footer>
+    <section>
+       <div class="demo-item ml_lunbo ml_lunbo1" style="margin-top: 92px">
+                <div class="demo-block">
+                    <div class="ui-slider">
+                        <ul class="ui-slider-content" style="width: 300%">
+                            <li><img src="../image/by_test2.jpg" alt=""></li>
+                            <li><img src="../image/by_test3.jpg" alt=""></li>
+                            <li><img src="../image/test_lips.png" alt=""></li>
+                        </ul>
+                    </div>         
+                </div>
+                <script class="demo-script">
+                    (function (){
+                        var slider = new fz.Scroll('.ui-slider', {
+                            role: 'slider',
+                            indicator: true,
+                            autoplay: true,
+                            interval: 3000
+                        });
+
+                        slider.on('beforeScrollStart', function(fromIndex, toIndex) {
+                            console.log(fromIndex,toIndex)
+                        });
+
+                        slider.on('scrollEnd', function(cruPage) {
+                            console.log(cruPage)
+                        });
+                    })();
+                </script>
+        </div>
+        <div class="cm_feel">
+            <div class="cm_feel_type">
+                <p class="type_list1">当前环节:</p>
+                <p class="type_list2">问题类型</p>
+            </div>
+            <p class="cm_feel_pro">累计用时:</p>
+        </div>
+        <div class="cm_place">
+            <p class="place_title">匿名</p>
+            <p class="place_problem">反应的问题: xxxx停车场垃圾没有任何处理，请及时处理</p>
+            <div class="place_map">
+                <p>地点</p>
+                <div class="map_obtain">
+                    地图
+                </div>
+            </div>
+        </div>
+        <div class="cm_view">
+            <p class="view_p">评论:</p>
+            <div class="view_y">
+                <div class="round"></div>
+                <p>早该处理了！</p>
+            </div>
+            <div class="view_y">
+                <div class="round"></div>
+                <p>多亏了你反应,现在好多了！</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

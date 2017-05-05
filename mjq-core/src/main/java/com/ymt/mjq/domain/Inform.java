@@ -25,21 +25,57 @@ import com.ymt.pz365.data.jpa.domain.DomainImpl;
 @Entity
 public class Inform extends DomainImpl {
 	
+	/**
+	 * 爆料人
+	 */
 	@ManyToOne
 	private User user;
+	/**
+	 * 爆料类型
+	 */
 	private String type;
+	/**
+	 * 爆料内容
+	 */
 	@Column(length=1000)
 	private String content;
+	/**
+	 * 是否匿名
+	 */
 	private boolean anonymity;
+	/**
+	 * 图片链接
+	 */
 	@ElementCollection
 	private List<String> images;
+	/**
+	 * 经度
+	 */
 	private String longitude;
+	/**
+	 * 纬度
+	 */
 	private String latitude;
+	/**
+	 * 位置描述
+	 */
 	private String location;
+	/**
+	 * 联系电话
+	 */
 	private String phone;
+	/**
+	 * 奖励积分
+	 */
 	private int bonus;
+	/**
+	 * 奖励时间
+	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date bonusTime;
+	/**
+	 * 处理状态
+	 */
 	@Enumerated(EnumType.STRING)
 	private InformStatus status;
 	

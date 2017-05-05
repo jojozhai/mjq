@@ -13,21 +13,57 @@ import com.ymt.mjq.domain.InformStatus;
  *
  */
 public class InformInfo {
-
-	private Long id;
-	private Long userId;
-	private String type;
-	private String content;
-	private Boolean anonymity;
-	private List<String> images;
-	private String longitude;
-	private String latitude;
-	private String location;
-	private String phone;
-	private boolean bonus;
-	private Date bonusTime;
-	private InformStatus status;
 	
+	private Long id;
+	/**
+	 * 爆料人
+	 */
+	private Long userId;
+	/**
+	 * 爆料类型
+	 */
+	private String type;
+	/**
+	 * 爆料内容
+	 */
+	private String content;
+	/**
+	 * 是否匿名
+	 */
+	private Boolean anonymity;
+	/**
+	 * 图片链接
+	 */
+	private List<String> images;
+	/**
+	 * 经度
+	 */
+	private String longitude;
+	/**
+	 * 纬度
+	 */
+	private String latitude;
+	/**
+	 * 位置描述
+	 */
+	private String location;
+	/**
+	 * 联系电话
+	 */
+	private String phone;
+	/**
+	 * 奖励积分
+	 */
+	private boolean bonus;
+	/**
+	 * 奖励时间
+	 */
+	private Date bonusTime;
+	/**
+	 * 处理状态
+	 */
+	private InformStatus status;
+
 	/**
 	 * @return the id
 	 */

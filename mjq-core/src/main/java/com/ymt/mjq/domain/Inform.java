@@ -49,6 +49,11 @@ public class Inform extends DomainImpl {
 	@ElementCollection
 	private List<String> images;
 	/**
+	 * 整改图片
+	 */
+	@ElementCollection
+	private List<String> images2;
+	/**
 	 * 经度
 	 */
 	private String longitude;
@@ -222,6 +227,18 @@ public class Inform extends DomainImpl {
 	 */
 	public void setStatus(InformStatus status) {
 		this.status = status;
+	}
+	/**
+	 * @return the images2
+	 */
+	public List<String> getImages2() {
+		return images2;
+	}
+	/**
+	 * @param images2 the images2 to set
+	 */
+	public void setImages2(List<String> images2) {
+		this.images2 = images2;
 	}
 	
 }

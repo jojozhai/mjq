@@ -30,6 +30,8 @@ public interface InformService {
 
     InformInfo getInfo(Long id);
     
+    void accept(Long id);
+    
     InformInfo update(InformInfo informInfo);
 
     void delete(Long id);

@@ -5,6 +5,7 @@
 		<groupId>com.ymt.mjq</groupId>
 		<artifactId>mjq</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../mjq</relativePath>
 	</parent>
 	<artifactId>mjq-admin</artifactId>
 

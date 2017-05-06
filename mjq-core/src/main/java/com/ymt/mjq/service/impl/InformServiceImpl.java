@@ -5,8 +5,10 @@ package com.ymt.mjq.service.impl;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import com.ymt.mjq.service.InformService;
 import com.ymt.pz365.data.jpa.support.QueryResultConverter;
 import com.ymt.pz365.framework.param.service.ParamService;
 import com.ymt.pz365.framework.weixin.service.WeixinService;
+import com.ymt.pz365.framework.weixin.support.message.TemplateMessage;
 
 /**
  * @author zhailiang
@@ -38,6 +41,9 @@ public class InformServiceImpl implements InformService {
 	
 	@Autowired
 	private ParamService paramService;
+	
+	@Value("${mjq.message.template.response:_6bvHV_RPuTy_O3Yfht2CLrq9Pl4KU0sq0hbzC9Sj60}")
+	private String responseTemplateId;
 	
     @Override
     public Page<InformInfo> query(InformInfo informInfo, Pageable pageable) {
@@ -87,10 +93,33 @@ public class InformServiceImpl implements InformService {
 	}
 
 	@Override
-	public void accept(Long id) {
+	public void accept(Long id) throws Exception {
 		Inform inform = informRepository.findOne(id);
 		inform.setStatus(InformStatus.WORKING);
 		//推送模板消息
-//		weixinService.pushTemplateMessage(null);
+		String defaultResponseUser = paramService.getParam("default_response", "oua4YwKiGeNNC4-VjcDjIzbs4TWk").getValue();
+		String value = paramService.getParam("response_"+inform.getType(), defaultResponseUser).getValue();
+		sendToUser(inform);
+		sendToResponse(inform, value);
+	}
+	
+	private void sendToResponse(Inform inform, String toUser) throws Exception {
+		TemplateMessage message = new TemplateMessage(toUser, responseTemplateId, "http://www.baidu.com");
+		message.addValue("first", paramService.getParam("template_response_first", "有新的爆料，请点击查看详情").getValue());
+		message.addValue("keyword1", inform.getId().toString());
+		message.addValue("keyword2", new DateTime().toString("yyyy-MM-dd"));
+		message.addValue("keyword3", paramService.getParam("template_response_keyword3", "马驹桥镇政府").getValue());
+		message.addValue("remark", paramService.getParam("template_response_remark", "请尽快处理").getValue());
+		weixinService.pushTemplateMessage(message);
+	}
+
+	private void sendToUser(Inform inform) throws Exception {
+		TemplateMessage message = new TemplateMessage(inform.getUser().getWeixinOpenId(), responseTemplateId);
+		message.addValue("first", paramService.getParam("template_accept_first", "您好！您举报的问题已被受理，我们会针对您举报问题展开调查，办理进展会及时反馈").getValue());
+		message.addValue("keyword1", inform.getId().toString());
+		message.addValue("keyword2", new DateTime().toString("yyyy-MM-dd"));
+		message.addValue("keyword3", paramService.getParam("template_accept_keyword3", "马驹桥镇政府").getValue());
+		message.addValue("remark", paramService.getParam("template_accept_remark", "感谢您对政府工作的支持").getValue());
+		weixinService.pushTemplateMessage(message);
 	}
 }

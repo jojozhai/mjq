@@ -27,6 +27,24 @@ angular.module('articleAdminModule',[]).config(function($stateProvider) {
 		});
 	}
 	
+	$scope.editContent = function(article) {
+		$uibModal.open({
+			size: "lg",
+			templateUrl : 'admin/views/umeditor.html',
+			controller: 'umeditorCtrl',
+			resolve: {
+		        domain : function() {return article;},
+		        params : function() {
+		        	return {
+		        		target: 'article',
+		        		targetId: article.id,
+		        		targetProp: 'content'
+		        	}
+		        }
+			}
+		})
+	}
+	
 	$scope.create = function() {
 		$scope.save({type: ''});
 	}

@@ -23,11 +23,10 @@
 					<label class="control-label" ng-show="articleForm.title.$invalid && articleForm.title.$dirty">标题不能为空</label>
 				</div>
 			</div>
-			<div class="form-group"  ng-class="articleForm.content.$invalid && articleForm.content.$dirty ? 'has-error': ''">
-				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;内容链接:</label>
+			<div class="form-group">
+				<label class="control-label col-lg-3">&nbsp;内容链接:</label>
 				<div class="col-lg-6">
-					<input name="content" ng-model="article.content" type="text" class="form-control input-sm" placeholder="内容链接" required>
-					<label class="control-label" ng-show="articleForm.content.$invalid && articleForm.content.$dirty">内容链接不能为空</label>
+					<input name="content" ng-model="article.content" type="text" class="form-control input-sm" placeholder="内容链接">
 				</div>
 			</div>
 			

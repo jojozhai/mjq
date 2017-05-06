@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ymt.mjq.domain.Inform;
+import com.ymt.mjq.domain.InformStatus;
 import com.ymt.mjq.dto.InformInfo;
 import com.ymt.mjq.repository.InformRepository;
 import com.ymt.mjq.repository.spec.InformSpec;
@@ -37,7 +38,7 @@ public class InformServiceImpl implements InformService {
 	
 	@Autowired
 	private ParamService paramService;
-    
+	
     @Override
     public Page<InformInfo> query(InformInfo informInfo, Pageable pageable) {
         Page<Inform> pageData = informRepository.findAll(new InformSpec(informInfo), pageable);
@@ -48,6 +49,7 @@ public class InformServiceImpl implements InformService {
     public InformInfo create(InformInfo informInfo) {
         Inform inform = new Inform();
         BeanUtils.copyProperties(informInfo, inform);
+        inform.setStatus(InformStatus.WAITING);
         informInfo.setId(informRepository.save(inform).getId());
         return informInfo;
     }
@@ -63,7 +65,9 @@ public class InformServiceImpl implements InformService {
     @Override
     public InformInfo update(InformInfo informInfo) {
         Inform inform = informRepository.findOne(informInfo.getId());
-        BeanUtils.copyProperties(informInfo, inform);
+//        BeanUtils.copyProperties(informInfo, inform);
+        inform.setImages2(informInfo.getImages2());
+        inform.setStatus(InformStatus.FINISH);
         informRepository.save(inform);
         return informInfo;
     }
@@ -80,5 +84,13 @@ public class InformServiceImpl implements InformService {
 		weixinService.sendRedpack(inform.getId(), "127.0.0.1", inform.getUser().getWeixinOpenId(), amount);
 		inform.setBonus(amount);
 		inform.setBonusTime(new Date());
+	}
+
+	@Override
+	public void accept(Long id) {
+		Inform inform = informRepository.findOne(id);
+		inform.setStatus(InformStatus.WORKING);
+		//推送模板消息
+//		weixinService.pushTemplateMessage(null);
 	}
 }

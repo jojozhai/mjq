@@ -1,1 +1,60 @@
-xx
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <title>美丽马驹桥</title>
+        <link rel="stylesheet" href="css/frozen.css">
+        <link rel="stylesheet" href="css/public.css">
+        <script src="lib/zepto.min.js"></script>
+        <script src="js/frozen.js"></script>
+        <style type="text/css">
+        body{background-color: #f3fbfe;}
+        .ui-header{background-color: #000;}
+        .ui-banner img{width: 100%;}
+        .ui-menu{margin: 0 10px;}
+        .ui-menu img{width: 100%;}
+        .ui-menu .ui-row{position: absolute;width: 100%;z-index: 9;}
+        .ui-menu .ui-row .ui-col{background-color: transparent;border: none;}
+        .ui-menu .ui-row .ui-col a{width: 100%;height: 100%;display: block;cursor: pointer;}
+        .ui-menu .ui-row .ui-col-100{position: absolute;z-index: 10;bottom: 0;}
+        </style>
+    </head>
+
+    <body ontouchstart>
+        <header class="ui-header ui-header-positive ui-border-b">
+            <!-- <i class="ui-icon-return" onclick="history.back()"></i> -->
+            <h1>我来助力</h1>
+            <!-- <a class="ui-btn" href="index.html">回首页</a> -->
+        </header>
+        <section class="ui-container">
+            <div class="ui-banner">
+                <img src="img/banner.jpg" />
+            </div>
+            <div class="ui-menu demo-block"> 
+                <ul class="ui-row">
+                    <li class="ui-col ui-col-50"><a href=""></a></li>
+                    <li class="ui-col ui-col-50"><a href=""></a></li>
+                    <li class="ui-col ui-col-50"><a href=""></a></li>
+                    <li class="ui-col ui-col-50"><a href=""></a></li>
+                    <li class="ui-col ui-col-100"><a href="html/report.html"></a></li>
+                </ul>
+
+                <img src="img/menu.jpg" data-height="573" data-width="600" />
+            </div>
+        </section><!-- /.ui-container-->
+
+        <script>
+        Zepto(function($) {
+            var img = new Image();
+            img.onload = function(){
+                $('.ui-menu .ui-row').height($('.ui-menu img').height());
+                $('.ui-menu .ui-row li.ui-col-50').height(($('.ui-menu img').height())*0.41);
+                $('.ui-menu .ui-row li.ui-col-100').height(($('.ui-menu img').height())*0.26);
+            }
+            img.src = 'img/menu.jpg';
+        })
+        </script>
+    </body>
+</html>

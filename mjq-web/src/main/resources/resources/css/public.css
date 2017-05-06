@@ -1,0 +1,150 @@
+body{
+  -webkit-user-select:initial;
+  background-color: #f6f6f6;
+}
+html,body{height:100%;}
+body>a{display: none;}
+.demo-desc{
+    padding: 10px;
+    font-size: 14px;
+    color: #949494;
+}
+.demo-block,.demo-item{
+    position: relative;
+    background-color:#fff; 
+}
+.demo-block .ui-header,
+.demo-block .ui-footer{
+    position: absolute;
+}
+.ui-tab-nav{
+    top: 45px;
+}
+.ui-tab-content{
+    margin-top: 45px;
+}
+.demo-block > .ui-list,.demo-block >.ui-form,.demo-block >.ui-tooltips{margin-bottom: 20px;}
+.content h3{
+    padding: 0 15px;
+    line-height: 44px;
+    font-size: 15px;  
+}
+.border-list{
+    background-color: #fff;
+}
+.border-list li{
+    width: 100px;
+    margin: 10px auto;
+    -webkit-box-pack: center;
+    text-align: center;
+}
+.ui-btn-group-bottom{bottom: 56px;}
+.ui-table{
+    line-height: 40px;
+    text-align: center;
+    background-color: #fff;
+}
+.ui-scroller {width:auto;height:300px;margin:20px;padding:10px;overflow:hidden;}
+.ui-scroller li {margin-bottom:10px;}
+.ui-notice{
+    top: 0;
+    z-index: -1;
+    height: 400px;
+}
+.icon-lists li{
+  float:left;
+  height: 100px;
+  width: 103px;
+  text-align: center;
+  
+}
+.icon-lists li i{
+    font-size: 32px;
+    line-height: 44px;
+}
+.icon-lists .ui-icon,.icon-lists [class^="ui-icon-"]{
+  margin: 10px 0;
+  color: #000;
+}
+.code,.fontclass{
+    font-size: 12px;
+}
+.ui-col{
+    padding: 5px;
+    background: #777;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+.ui-flex{
+    border: 1px solid #ddd;
+    min-height: 80px;
+    margin-bottom: 10px;
+}
+.ui-flex-ver{
+    border: 1px solid #ddd;
+    min-height: 80px;
+    margin-bottom: 10px;
+}
+.ui-row-flex-ver{
+    border: 1px solid #ddd;
+    min-height: 100px;
+}
+.test-img {
+    width: 50px;
+    height: 50px;
+    background: #777;
+}
+/* 课程类型 */
+.lessonType{
+    display: block;
+    height: 60px;
+    width: 60px;
+    background: url(../img/typeImage.png) 0 0 no-repeat;
+    background-size:500%; 
+    margin: 0 auto;
+}
+.lessonType1{
+    background-position: 0 -75px;
+}
+.lessonType2{
+    background-position: -60px -75px;
+}
+.lessonType3{
+    background-position: -120px -75px;
+}
+.lessonType4{
+    background-position: -180px -75px;
+}
+.lessonType5{
+    background-position: -240px -75px;
+}
+.active .lessonType1{
+    background-position: -3px -3px;
+}
+.active .lessonType2{
+    background-position: -63px -3px;
+}
+.active .lessonType3{
+    background-position: -123px -3px;
+}
+.active .lessonType4{
+    background-position: -183px -3px;
+}
+.active .lessonType5{
+    background-position: -243px -3px;
+}
+/* 公共底部 */
+.ui-footer{background: none;background-color: #fff;border-top: thin solid #c2c2c2;}
+.ui-footer .ui-tiled{}
+.ui-footer .ui-tiled li{position: relative;overflow:hidden; }
+.ui-footer .ui-tiled .ui-menu-index{top:-11px;}
+.ui-footer .ui-tiled li .ui-title-img{margin-bottom: 10px;}
+.ui-footer .ui-tiled li .ui-title-img img{width: 20px;}
+.ui-footer .ui-tiled li .ui-img-money img{width: 15px;}
+.ui-footer .ui-tiled .ui-menu-index .ui-title-img img{width: 55px;}
+.ui-footer .ui-tiled li .ui-title-name{color: #bfbfbf;font-size: 12px;position: absolute;bottom: 5px;width: 100%;text-align: center;}
+.ui-footer .ui-tiled li .ui-menu-current{color:#4cbdff;}
+.ui-header a.ui-btn{color:#00a5e0;}
+.ui-video{display: block;width: 100%;height: 210px;}
+

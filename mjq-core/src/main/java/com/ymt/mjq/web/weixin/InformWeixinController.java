@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ymt.mirage.user.web.controller.weixin.CurrentUserHolder;
 import com.ymt.mjq.dto.InformInfo;
 import com.ymt.mjq.service.InformService;
 
@@ -29,6 +30,7 @@ public class InformWeixinController {
 
 	@RequestMapping(value = "/inform", method = RequestMethod.POST)
 	public InformInfo create(@RequestBody InformInfo informInfo) {
+		informInfo.setUserId(CurrentUserHolder.getCurrentUserId());
 		return informService.create(informInfo);
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ymt.mirage.user.repository.UserRepository;
 import com.ymt.mjq.domain.Inform;
 import com.ymt.mjq.domain.InformStatus;
 import com.ymt.mjq.dto.InformInfo;
@@ -37,6 +38,9 @@ public class InformServiceImpl implements InformService {
     private InformRepository informRepository;
 	
 	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
 	private WeixinService weixinService;
 	
 	@Autowired
@@ -56,6 +60,7 @@ public class InformServiceImpl implements InformService {
         Inform inform = new Inform();
         BeanUtils.copyProperties(informInfo, inform);
         inform.setStatus(InformStatus.WAITING);
+        inform.setUser(userRepository.getOne(informInfo.getUserId()));
         informInfo.setId(informRepository.save(inform).getId());
         return informInfo;
     }

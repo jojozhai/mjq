@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>全民城管</title>
+    <link rel="stylesheet" href="../css/frozen.css">
+    <link rel="stylesheet" href="../css/public.css">
+    <style type="text/css">
+    .demo-block{background-color: #f6f6f6;}
+    .ui-form{margin: 0 10px;background-color: #f6f6f6;}
+    .ui-form-item{background-color: #fff;margin: 5px 0;}
+    .ui-desc{padding: 0 20px;}
+    .ui-desc p{line-height: 25px;color: #999;font-size: 12px;}
+    .ui-form-upload{background-color: #fff;}
+    .ui-form-upload>span{height: 80px;width: 80px;display: inline-block;line-height:80px;font-size:40px;text-align:center;margin:5px;}
+    .ui-form-upload .img-del{float:left;}
+    .ui-form-item input{padding-left: 50px;}
+    .ui-form-item-textarea{height: 250px;}
+    .ui-form-item-textarea textarea{padding-left: 0;border: 1px solid #ccc;padding: 5px;height: 170px;}
+    .ui-select:after{right: 10px;}
+    .ui-dialog-cnt{height: 100%;width: 100%;}
+    .maparea{width: 100%;height: 350px;}
+    </style>
+</head>
+<body ontouchstart>
+    <header class="ui-header ui-header-positive ui-border-b">
+        <i class="ui-icon-return" onclick="history.back()"></i>
+        <h1>我要爆料</h1>
+        <a class="ui-btn ui-save" id="btn-submit" href="javascript:;">发布</a>
+    </header>
+    <section class="ui-container">
+        <div class="demo-block ui-sign-lesson">
+            
+            <div class="demo-block">
+                <div class="ui-form">
+                    <form action="#">
+                        <div class="ui-form-item">
+                            <label class="">问题类型</label>
+                            <div class="ui-select">
+                                <select style="color: #a0a0a0;border: 1px solid #ccc;border-radius:20px;padding:5px 10px;background: none;" id="type">
+                                    <option value="0" selected="selected">请选择</option>
+                                    <option value="市容环境">市容环境</option>
+                                    <option value="宣传广告">宣传广告</option>
+                                    <option value="园林绿化">园林绿化</option>
+                                    <option value="环卫设施不洁">环卫设施不洁</option>
+                                    <option value="交通设施破坏">交通设施破坏</option>
+                                    <option value="市政设施破损">市政设施破损</option>
+                                    <option value="其他">其他</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ui-form-item ui-form-item-textarea">
+                            <textarea id="content" placeholder="请输入问题描述(10-100字)如:问xxx小学对面公交站,存在xxx问题"></textarea>
+                            <p style="float:right;">匿名</p>
+                            <label class="ui-checkbox" style="float:right;"><input type="checkbox"  name="anonymity" value="1" /></label>
+                        </div>
+                        <div class="ui-form-upload">
+                            <span class="img-upload" style="background-image:url(http://placeholder.qiniudn.com/190x284)">+</span>
+                        </div>
+                        <div class="ui-desc">
+                            <p>点击"+"添加照片,点击"x"可删除照片</p>
+                        </div>
+                        <div class="ui-form-item" id="openLocation">
+                            <label><i class="ui-icon-pin"></i></label>
+                            <p style="text-indent: 30px;">请点击选择位置</p>
+                            <p id="location"></p>
+                        </div>
+                        <div class="ui-desc">
+                            <p>提供详细的地址方便我们尽快的核实和处理问题</p>
+                        </div>
+                        <div class="ui-form-item ">
+                            <label class="">手机：</label>
+                            <input type="text" id="phone" class="ui-thWd" placeholder="输入您的手机号(选填)" />
+                        </div>
+                        <div class="ui-desc">
+                           <p>*联系方式将会严格保密，仅用于满意度回访</p>
+                           <p>温馨提示:</p>
+                           <p>1、爆料案件时详细的问题描述和位置信息可以使我们更快的帮您处理问题。问xxx小学对面的公交站，存在xxx问题</p>
+                           <p>2、拍摄照片时，要能清晰的反应案件详情，最好能拍摄两张以上照片</p>
+                           <p>感谢您的监督和支持，祝您生活愉快！美丽城市，全民共建</p>
+                       </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+        <div class="ui-dialog">
+		    <div class="ui-dialog-cnt">
+		    	<header class="ui-dialog-hd ui-border-b">
+                    <h3>位置选择</h3>
+                    <i class="ui-dialog-close" data-role="button"></i>
+                </header>
+		        <div class="ui-dialog-bd">
+		            <div>
+		            	<div class="maparea" id="allmap"></div>
+                        <input type="text" id="suggestId" size="20" value="百度" style="width:100%;" />
+                        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+		            </div>
+		        </div>
+		    </div>        
+		</div>
+    </section>
+    <!-- /.ui-container-->
+    <script src="../js/city.js"></script>
+    <script src="../lib/zepto.min.js"></script>
+    <script src="../js/frozen.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6SG69EZfR9rUD4QN4Kyb5UBXfplqOquI"></script>
+    <script>
+    
+    Zepto(function($) {
+    	
+    	//BWK.Utils.createProvince($('#province'));
+    	
+        BWK.Weixin(null,function(){
+             $('.img-upload').on('click',function(){
+                 wx.chooseImage({
+                     count: 1, // 默认9
+                     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                     success: function (res) {
+                         var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                         if (localIds) {
+                              wx.uploadImage({
+                                 localId: localIds[0],
+                                 success: function (res) {
+                                     //alert(localIds);
+                                     dealImg = res.serverId;
+                                     _uploadServer(dealImg); 
+                                     $('.ui-form-upload').append('<span class="img-del" data-url="'+localIds[0]+'" style="background-image:url('+localIds[0]+')"></span>');
+                                 },
+                                 fail: function (res) {
+                                   alert(JSON.stringify(res));
+                                 }
+                              });   
+                         }  
+                     }
+                 });
+                 return false;
+            });
+            $('#openLocation').on('click',function(){
+                //wx.getLocation({
+                    //type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                    //success: function (res) {
+                        // var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                        // var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                        // var speed = res.speed; // 速度，以米/每秒计
+                        // var accuracy = res.accuracy; // 位置精度
+                    
+                        
+                        var longitude = 116.32715863448607;
+                        var latitude = 39.990912172420714;
+                        $(".ui-dialog").dialog("show");
+                        //var ggPoint = new BMap.Point(longitude,latitude);  
+                        var ggPoint = new BMap.Point(longitude,latitude);  
+                        var bm = new BMap.Map("allmap");
+                        bm.centerAndZoom(ggPoint, 15);
+                        bm.enableInertialDragging();
+                        var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+                            {"input" : "suggestId"
+                            ,"location" : bm
+                        });
+                        ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+                            var str = "";
+                            var _value = e.fromitem.value;
+                            var value = "";
+                            if (e.fromitem.index > -1) {
+                                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                            }    
+                            str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+                            
+                            value = "";
+                            if (e.toitem.index > -1) {
+                                _value = e.toitem.value;
+                                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                            }    
+                            str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+                            $("#searchResultPanel").html(str);
+                        });
+                        var myValue;
+                        ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+                            var _value = e.item.value;
+                            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                            $("#searchResultPanel").html("onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue);
+                            setPlace();
+                        });
+
+                        function setPlace(){
+                            bm.clearOverlays();    //清除地图上所有覆盖物
+                            function myFun(){
+                                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                                bm.centerAndZoom(pp, 18);
+                                bm.addOverlay(new BMap.Marker(pp));    //添加标注
+                            }
+                            var local = new BMap.LocalSearch(bm, { //智能搜索
+                              onSearchComplete: myFun
+                            });
+                            local.search(myValue);
+                        }
+
+                         //坐标转换完之后的回调函数
+                        translateCallback = function (data){
+                          if(data.status === 0) {
+                            var marker = new BMap.Marker(data.points[0]);
+                            bm.addOverlay(marker);
+                            //var label = new BMap.Label("转换后的百度坐标（正确）",{offset:new BMap.Size(20,-10)});
+                            //marker.setLabel(label); //添加百度label
+                            bm.setCenter(data.points[0]);
+                            marker.addEventListener("click",function(){
+                                var p = marker.getPosition();       //获取marker的位置
+                                alert("marker的位置是" + p.lng + "," + p.lat); 
+                            });
+                          }
+                        }
+
+                        setTimeout(function(){
+                            var convertor = new BMap.Convertor();
+                            var pointArr = [];
+                            pointArr.push(ggPoint);
+                            convertor.translate(pointArr, 1, 5, translateCallback)
+                        }, 1000);
+                    //}
+                //});
+                return false;
+            });
+            // wx.getLocation({
+            //     type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            //     success: function (res) {
+            //         var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            //         var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            //         var speed = res.speed; // 速度，以米/每秒计
+            //         var accuracy = res.accuracy; // 位置精度
+            //     }
+            // });
+
+        });
+
+        $('.ui-form-upload').on('click','.img-del',function(){
+            $(this).remove();
+            return false;
+        });
+        $('#btn-submit').click(function(){
+            //报名
+            var params  = {};
+
+            params.type = $('#type').val();
+            params.content = $('#content').val();
+            params.anonymity = $('input[name="anonymity"]:checked').val()==1?true:false;
+            params.images = [];
+            $('.ui-form-upload .img-del').each(function(i,dom){
+                params.images.push($(dom).data('url'));
+            });
+            params.longitude = $('#location').data('longitude');
+            params.latitude = $('#location').data('latitude');
+            params.location = $('#location').data('location');
+            params.phone = $('#phone').val();
+			
+            BWK.api.inform.addInform(params,function(data){
+                BWK.Utils.Tips('爆料提交成功！');                
+            });
+
+        })
+        //查询个人信息
+        // BWK.api.user.getUser(null,function(data){
+        //     _dealInfo(data);
+        // });
+
+    });
+    
+    function _uploadServer(dealImg){
+        BWK.api.weixin.uploadImage({serverId:dealImg},function(){
+            //DONOTHING
+        })
+    }
+    function _dealInfo(obj) {
+        //TODO
+  //       $('.ui-userImg').css({'background-image':'url('+obj.headimgurl+')'});  
+  //       $("#realname").val(obj.realname);
+  //       $("input[name='sex'][value='"+obj.sex+"']").prop('checked',true);
+  //       $("#participationCount").val(obj.participationCount);
+  //       $("#birthday").val(obj.birthday);
+  //       $("#mobile").val(obj.mobile);
+  //       $("#weixin").val(obj.weixin);
+  //       $("#nickname").val(obj.nickname);
+		// $("#job").val(obj.job);
+ 	// 	$('#province').val(obj.province||"0");   
+  //       if(obj.province&&obj.city){
+  //       	BWK.Utils.createCity(cityDict[obj['province']].sub,obj['city']);
+  //       }
+    }
+    
+    
+    
+    </script>
+</body>
+
+</html>

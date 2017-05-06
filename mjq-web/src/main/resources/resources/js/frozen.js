@@ -3,6 +3,13 @@
 if (!window.BWK) {
 	window.BWK = {};
 }
+BWK.globalConfig = {
+	//appId:'wx1e7083d81297c15f',
+	//redirect_uri:'http://wx.chenhao-life.com/weixin/weixin/oauth',
+	appId:'wxe103fdfaee54e51e',
+	redirect_uri:'http://wx.51bwk.com/weixin/weixin/oauth',
+	DEBUG:true
+}
 BWK.api = function() {	
 	var api = {};
 	var request = function(method, url, params, callback) {	
@@ -19,9 +26,18 @@ BWK.api = function() {
 					callback(data);	
 				}
 			}, error : function(jqXHR, textStatus, errorThrown) {
-				 var res = jqXHR&&eval('('+jqXHR.response+')');
-                 var msg = res.message?res.message.replace(/([^\u4e00-\u9fa5]+)/g,''):'未知错误';
-                 alert(msg);
+				if(jqXHR&&(jqXHR.status=='403'||jqXHR.status=="401")){
+					//var uri = encodeURIComponent(BWK.globalConfig.redirect_uri);
+					//var state = encodeURIComponent(location.href.substring(location.href.indexOf('/weixin')));
+					//var redirect_uri = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+BWK.globalConfig.appId+'&redirect_uri='+uri+'&response_type=code&scope=snsapi_userinfo&state='+state+'#wechat_redirect'
+					//location.href = redirect_uri;
+				}else{
+					var res = jqXHR&&eval('('+jqXHR.response+')');
+	                var msg = res.errorMsg?res.errorMsg:'未知错误';
+	                BWK.Utils.loading.hide();
+	                alert(msg);
+
+				}
 			}
 		});
 	};
@@ -45,52 +61,21 @@ BWK.api = function() {
 	};
 	/* 登录 */
 
-	/* 查询课程 */
-	api.lesson = {};
-	api.lesson.swiper = function(params,callback){
-		return api.Get('../swiper?enable=true',params,callback);
+	/* 爆料 */
+	api.inform = {};
+	api.inform.getInforms = function(params,callback){
+		return api.Get('../inform',params,callback);
 	}
-	api.lesson.lessonType = function(params,callback){
-		return api.Get('../tag?rootId=1',params,callback);
+	api.inform.addInform = function(params,callback){
+		return api.Post('../inform',params,callback);
 	}
-	api.lesson.lesson = function(params,callback){
-		return api.Get('../lesson',params,callback);
+	api.inform.getInform = function(id,params,callback){
+		return api.Get('../inform/'+id,params,callback);
 	}
-	api.lesson.tag = function(params,callback){
-		return api.Get('../tag?rootId=2',params,callback);
+	api.inform.getInforms = function(id,params,callback){
+		return api.Put('../inform/'+id,params,callback);
 	}
-	//课程详情
-	api.lesson.lessonDetail = function(id,callback){
-		return api.Get('../lesson/'+id,null,callback);
-	}
-	//分享文字
-	api.lesson.shareText = function(id,callback){
-		return api.Get('../param/shareTip',null,callback);
-	}
-	//报名
-	api.lesson.lessonSign = function(params,callback){
-		return api.Post('../lesson/signUp',params,callback);
-	}
-	//评论
-	api.lesson.lessonCommentQuery = function(params,callback){
-		return api.Get('../comment',params,callback);
-	}
-	//发表评论
-	api.lesson.lessonCommentSub = function(params,callback){
-		return api.Post('../comment',params,callback);
-	}
-	//商品列表
-	api.lesson.lessonProdectList = function(params,callback){
-		return api.Get('../product',params,callback);
-	} 
-	//商品详情
-	api.lesson.lessonProdectDetail = function(params,callback){
-		return api.Get('../product/'+params,null,callback);
-	}
-	//商品购买
-	api.lesson.lessonProdectBuy = function(params,callback){
-		return api.Post('../order',params,callback);
-	}
+
 
 	api.user = {};
 	api.user.getUser = function(params,callback){
@@ -107,13 +92,28 @@ BWK.api = function() {
 	api.user.userOrderList = function(params,callback){
 		return api.Get('../order',params,callback);
 	}
-	///weixin/upload  上传头像  POST
-	
 	// 预约确定完成  PUT
 	api.user.orderEnd = function(params,callback){
-		return api.Put('../order/'+params,null,callback);
+		return api.Put('../order/'+params.id,null,callback);
 	}
-
+	//提现
+	api.user.getMoney = function(params,callback){
+		return api.Post('../withdrawals',params,callback);
+	}
+	api.weixin = {};
+	api.weixin.getJsApiTicket = function(params,callback){
+		return api.Get('../weixin/jsapiTicket',params,callback);
+	}
+	api.weixin.uploadImage = function(params,callback){
+		return api.Post('../weixin/upload',params,callback);
+	}
+	api.weixin.dealShare = function(params,callback){
+		if(params&&params.goodsId){
+			return api.Post('../clearing/user?goodsId='+params.goodsId+(params.sharerId?'&sharerId='+params.sharerId:''),null,callback);	
+		}else{
+			console.log('没有goodsid');
+		}		
+	}
 	return api;
 
 }();
@@ -126,8 +126,284 @@ BWK.UrlParams = {};
       BWK.UrlParams[aParam[0]] = decodeURIComponent(aParam[1]);
     } 
   }
+  if(window.localStorage){
+	//if(location.href.indexOf('lessonProduct.html')>-1){
+		if(BWK.UrlParams.sharerId){  
+	  		window.localStorage.setItem('sharerId',BWK.UrlParams.sharerId);
+	  	}
+	//}else{
+		//window.localStorage.removeItem('sharerId');
+	//} 
+  	
+  }
+  //百度统计
+  var _hmt = _hmt || [];
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?109cf1870b07ff734bbd4c94e4845f1e";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+	
 })();
 BWK.Utils = {};
 BWK.Utils.dateformate = function(date){
 	return  date.toLocaleDateString().replace(/\//g, "-");   
+}
+//"yyyy-MM-dd hh:mm:ss.S" ==> 2006-07-02 08:09:04.423   
+//"yyyy-M-d h:m:s.S"      ==> 2006-7-2 8:9:4.18   
+BWK.Utils.dateformateLocal = function(date,fmt){
+	  var o = { 
+	    "M+" : date.getMonth()+1,                 //月份 
+	    "d+" : date.getDate(),                    //日 
+	    "h+" : date.getHours(),                   //小时 
+	    "m+" : date.getMinutes(),                 //分 
+	    "s+" : date.getSeconds(),                 //秒 
+	    "q+" : Math.floor((date.getMonth()+3)/3), //季度 
+	    "S"  : date.getMilliseconds()             //毫秒 
+	  }; 
+	  if(/(y+)/.test(fmt)) 
+	    fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+	  for(var k in o) 
+	    if(new RegExp("("+ k +")").test(fmt)) 
+	  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length))); 
+	  return fmt; 
+}
+
+
+BWK.Utils.Tips = function(content){
+	var str = '<div class="ui-poptips ui-poptips-success">\
+	    <div class="ui-poptips-cnt" style="height:auto;"><i></i><span class="ui-poptips-text">'+content+'</span></div>\
+	    </div>';  
+	$('body').append(str);
+	setTimeout(function(){$(".ui-poptips .ui-poptips-cnt").height(0);$(".ui-poptips").remove();},3000);
+}
+BWK.Utils.dialogAlert = function(content,callback){
+	var str = '<div class="ui-dialog ui-msgAlertDialog"><div class="ui-dialog-cnt">\
+        		<header class="ui-dialog-hd ui-border-b"><h3>消息提示</h3>\
+            	<i class="ui-dialog-close" data-role="button"></i></header>\
+        		<div class="ui-dialog-bd"><div id="msg" style="text-align:center;">'+content+'</div></div>\
+				<div class="ui-dialog-ft ui-btn-group"><button type="button" data-role="button" class="select">关闭</button></div></div></div>';
+        		
+     $('body').append(str);
+     var dialog = $(".ui-msgAlertDialog").dialog("show");
+     dialog.on("dialog:action",function(e){
+        callback && callback();
+        $(".ui-msgAlertDialog").remove();
+        return false;
+     });
+}
+BWK.Utils.dialogConfirm = function(){
+
+}
+
+BWK.Utils.loading = {
+	el:null,
+	show:function(){
+		this.el = $.loading({content:'加载中...'});
+	},
+	hide:function(){
+		if(this.el){
+			this.el.loading("hide");	
+		}
+	}
+};
+
+BWK.Utils.createProvince = function(dom){
+	var str ='';
+    for(var i = 0;i<cityDict.length;i++){
+        var obj = cityDict[i];
+        str += '<option value="'+i+'">'+obj.name+'</option>';
+    }
+    $(dom).append(str);
+    $(dom).change(function(){
+        var arrIndex = $(dom).val();
+        BWK.Utils.createCity(cityDict[arrIndex].sub);
+    });
+}
+BWK.Utils.createCity = function(arrCity,selVal){
+	var str ='';
+    for(var i = 0;i<arrCity.length;i++){
+        var obj = arrCity[i];
+        str += '<option value="'+obj.name+'">'+obj.name+'</option>';
+    }
+    $('#city').html(str);
+    if(selVal){
+    	$('#city').val(selVal);
+    }
+}
+
+BWK.Page = function(){
+
+	
+
+}
+//图片上传、微信支付
+BWK.Weixin = function(params,callback){
+
+	var defaultParams = {url:location.href};
+	$.extend(defaultParams,params);
+	BWK.api.weixin.getJsApiTicket(defaultParams,function(data){
+		var defaultConfig = {
+			debug: BWK.globalConfig.DEBUG,
+			appId: BWK.globalConfig.appId,
+			jsApiList: [
+	            'chooseImage',
+	            'previewImage',
+	            'uploadImage',
+	            'downloadImage',
+	            'chooseWXPay' //微信支付
+			]
+		};	
+		$.extend(defaultConfig,data);
+		delete defaultConfig.jsapi_ticket;
+		delete defaultConfig.url;
+		defaultConfig.debug=BWK.globalConfig.DEBUG;
+		wx.config(defaultConfig);
+		wx.ready(function(){
+			callback && callback();	
+		});
+		wx.error(function(res){
+			alert('错误信息：'+JSON.stringify(res));
+		});
+	});
+
+}
+//微信分享
+BWK.WeixinShare = function(params,callback){
+
+	var defaultParams = {url:location.href};
+	$.extend(defaultParams,params);
+	BWK.api.weixin.getJsApiTicket(defaultParams,function(data){
+		var defaultConfig = {
+			debug: BWK.globalConfig.DEBUG,
+			appId: BWK.globalConfig.appId,
+			jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone']
+		};	
+		$.extend(defaultConfig,data);
+		delete defaultConfig.jsapi_ticket;
+		delete defaultConfig.url;
+		defaultConfig.debug=BWK.globalConfig.DEBUG;
+		wx.config(defaultConfig);
+
+		setTimeout((function(params){
+			BWK.Utils.loading.hide();
+			wx.ready(function(){
+				var defaultShareParams = {
+					'lessonName':'见效',
+					'desc':'天下尽是免费的好课',
+					'shareUrl':location.href,
+					'imgUrl':'http://www.51bwk.com/bwk/images/logo.jpg'
+				}
+				$.extend(defaultShareParams,params);
+				//分享给朋友
+				wx.onMenuShareAppMessage({
+			      title: defaultShareParams.lessonName,
+			      desc: defaultShareParams.desc,
+			      link: defaultShareParams.shareUrl,
+			      imgUrl: defaultShareParams.imgUrl,
+			      trigger: function (res) {
+			        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+			        //alert('用户点击发送给朋友');
+			      },
+			      success: function (res) {
+			        //alert('已分享');
+			        callback && callback();
+			      },
+			      cancel: function (res) {
+			        //alert('已取消');
+			      },
+			      fail: function (res) {
+			        //alert(JSON.stringify(res));
+			      }
+			    });
+				//分享到朋友圈
+				wx.onMenuShareTimeline({
+			      title: defaultShareParams.lessonName,
+			      desc: defaultShareParams.desc,
+			      link: defaultShareParams.shareUrl ,
+			      imgUrl: defaultShareParams.imgUrl,
+			      trigger: function (res) {
+			        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+			        //alert('用户点击发送给朋友');
+			      },
+			      success: function (res) {
+			        //alert('已分享');
+			        callback && callback();
+			      },
+			      cancel: function (res) {
+			        //alert('已取消');
+			      },
+			      fail: function (res) {
+			        //alert(JSON.stringify(res));
+			      }
+			    }); 
+				//分享到QQ
+				wx.onMenuShareQQ({
+			      title: defaultShareParams.lessonName ,
+			      desc: defaultShareParams.desc,
+			      link: defaultShareParams.shareUrl ,
+			      imgUrl: defaultShareParams.imgUrl,
+			      trigger: function (res) {
+			        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+			        //alert('用户点击发送给朋友');
+			      },
+			      success: function (res) {
+			        //alert('已分享');
+			        callback && callback();
+			      },
+			      cancel: function (res) {
+			        //alert('已取消');
+			      },
+			      fail: function (res) {
+			        //alert(JSON.stringify(res));
+			      }
+			    });
+				//分享到微博
+				wx.onMenuShareWeibo({
+			      title: defaultShareParams.lessonName ,
+			      desc: defaultShareParams.desc,
+			      link: defaultShareParams.shareUrl ,
+			      imgUrl: defaultShareParams.imgUrl,
+			      trigger: function (res) {
+			        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+			        //alert('用户点击发送给朋友');
+			      },
+			      success: function (res) {
+			        //alert('已分享');
+			        callback && callback();
+			      },
+			      cancel: function (res) {
+			        //alert('已取消');
+			      },
+			      fail: function (res) {
+			        //alert(JSON.stringify(res));
+			      }
+			    });
+				//分享到QZone
+				wx.onMenuShareQZone({
+			      title: defaultShareParams.lessonName ,
+			      desc: defaultShareParams.desc,
+			      link: defaultShareParams.shareUrl ,
+			      imgUrl: defaultShareParams.imgUrl,
+			      trigger: function (res) {
+			        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+			        //alert('用户点击发送给朋友');
+			      },
+			      success: function (res) {
+			        //alert('已分享');
+			        callback && callback();
+			      },
+			      cancel: function (res) {
+			        //alert('已取消');
+			      },
+			      fail: function (res) {
+			        //alert(JSON.stringify(res));
+			      }
+			    });
+			});
+			wx.error(function(res){
+				alert('初始化错误信息：'+JSON.stringify(res));
+			});
+
+		})(params),'2000');
+	});
 }

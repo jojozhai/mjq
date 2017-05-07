@@ -115,9 +115,11 @@
            }
           
            if(stat==="WAITING"){
-        	   if(BWK.UrlParams.type!="oper"){
-        	      strR+='<section class="ui-notice"><i></i><p>暂无数据</p><div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div></section>'
+        	   strR+='<section class="ui-notice"><i></i><p>暂无数据</p>';
+        	   if(BWK.UrlParams.type==="oper"){
+        	      strR+='<div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div>'
         	   }
+        	   strR+='</section>';
         	   
            }else if(stat==="WORKING"){
         	   if(rlen>0){

@@ -36,7 +36,7 @@
                 <ul class="ui-row">
                     <li class="ui-col ui-col-50"><a href="html/reportList.html"></a></li>
                     <li class="ui-col ui-col-50"><a href=""></a></li>
-                    <li class="ui-col ui-col-50"><a href=""></a></li>
+                    <li class="ui-col ui-col-50"><a id="gift" href="javascript:;"></a></li>
                     <li class="ui-col ui-col-50"><a href=""></a></li>
                     <li class="ui-col ui-col-100"><a href="html/report.html"></a></li>
                 </ul>
@@ -54,6 +54,13 @@
                 $('.ui-menu .ui-row li.ui-col-100').height(($('.ui-menu img').height())*0.26);
             }
             img.src = 'img/menu.jpg';
+            
+            $('#gift').click(function(){
+            	 BWK.api.inform.getGift(null,function(data){
+                     location.href = data.content;
+                 });
+                 return false;
+            });
         })
         </script>
     </body>

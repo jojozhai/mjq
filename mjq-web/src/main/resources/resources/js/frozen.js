@@ -75,6 +75,13 @@ BWK.api = function() {
 	api.inform.updateInform = function(id,params,callback){
 		return api.Put('../inform/'+id,params,callback);
 	}
+	api.inform.getGift = function(params,callback){
+		return api.Get('duiba/autologin',params,callback);
+	}
+
+	api.inform.getLocation = function(params,callback){
+		return api.Get('../location',params,callback);
+	}
 
 
 	api.user = {};

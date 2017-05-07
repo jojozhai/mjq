@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>全民城管</title>
+    <link rel="stylesheet" href="../css/frozen.css">
+    <link rel="stylesheet" href="../css/public.css">
+    
+    
+    <style type="text/css">
+    .maparea{width: 100%;height: 400px;}
+    .BMap_bubble_content{font-size:14px;}
+    </style>
+</head>
+<body ontouchstart>
+    <header class="ui-header ui-header-positive ui-border-b">
+       <!--  <i class="ui-icon-return" onclick="history.back()"></i> -->
+        <h1>便民查询</h1>
+    </header>
+    <section class="ui-container">
+        <div class="maparea" id="allmap"></div>
+        <div class="resultAdds"></div>
+    </section>
+    <!-- /.ui-container-->
+    <script src="../js/city.js"></script>
+    <script src="../lib/zepto.min.js"></script>
+    <script src="../js/frozen.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6SG69EZfR9rUD4QN4Kyb5UBXfplqOquI"></script>
+    <script>
+    var bm;
+    Zepto(function($) {
+    	bm = new BMap.Map("allmap");
+        var point = new BMap.Point(116.404, 39.915);
+        bm.centerAndZoom(point, 15);
+        bm.enableInertialDragging();
+        bm.enableScrollWheelZoom(); 
+        var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+        bm.addControl(top_right_navigation);
+        
+        BWK.api.inform.getLocation({type:BWK.UrlParams.type},function(data){
+            data.push({longitude:116.417854,latitude:39.921988,desc:"北京市东城区王府井大街88号乐天银泰百货八层"});
+           if(data&&data.length>0){
+                for (var i = 0; i < data.length; i++) {
+                    var addObj = data[i];
+                    addObj.latitude = null;
+                    if(addObj.latitude&&addObj.longitude){
+                        var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
+                        addMarker(tmpPoint);
+                    }else{
+                        var myGeo = new BMap.Geocoder();
+                        myGeo.getPoint(addObj.desc, function(point){
+                            if (point) {
+                                bm.centerAndZoom(point, 16);
+                                addMarker(point,addObj.desc);
+                            }else{
+                                alert("您选择地址没有解析到结果!");
+                            }
+                        }, "北京市");
+                    }
+                } 
+           } 
+        });
+    });
+
+    var opts = {
+        width : 250,     // 信息窗口宽度
+        height: 0,     // 信息窗口高度
+        title : "" , // 信息窗口标题
+        enableMessage:true//设置允许信息窗发送短息
+    };
+    // 编写自定义函数,创建标注
+    function addMarker(point,desc){
+      var marker = new BMap.Marker(point);
+      bm.addOverlay(marker);
+      marker.desc = desc;
+      marker.addEventListener("click",function(e){
+            var p = marker.getPosition();       //获取marker的位置
+            addInfoMsg(marker.desc,e);                              
+      });
+    }
+    function addInfoMsg(desc,e){
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        var infoWindow = new BMap.InfoWindow(desc,opts);  // 创建信息窗口对象 
+        bm.openInfoWindow(infoWindow,point); //开启信息窗口
+    }
+
+
+    function _mapInfo(longitude,latitude,needConvert){
+        
+        var ggPoint = new BMap.Point(longitude,latitude);  
+        //=========autocomplete search=======
+        // var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+        //     {"input" : "suggestId"
+        //     ,"location" : bm,
+        //     "onSearchComplete":function(result){
+        //        // $('.tangram-suggestion-main').appendTo($('.mapWrapper'));
+        //     }
+        // });
+        // ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+        //     var str = "";
+        //     var _value = e.fromitem.value;
+        //     var value = "";
+        //     if (e.fromitem.index > -1) {
+        //         value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        //     }    
+        //     str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+            
+        //     value = "";
+        //     if (e.toitem.index > -1) {
+        //         _value = e.toitem.value;
+        //         value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        //     }    
+        //     str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+        //     $("#searchResultPanel").html(str);
+        // });
+        // var myValue;
+        // ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+        //     var _value = e.item.value;
+        //     myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        //     $("#searchResultPanel").html("onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue);
+        //     setPlace();
+        // });
+        // function setPlace(){
+        //     bm.clearOverlays();    //清除地图上所有覆盖物
+        //     function myFun(){
+        //         var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+        //         var desc =local.getResults().getPoi(0).title+local.getResults().getPoi(0).address;
+        //         bm.centerAndZoom(pp, 18);
+        //         bm.addOverlay(new BMap.Marker(pp));    //添加标注
+        //         $('#selectAddInfo').text(desc);
+        //         $('#selectAddInfo').data('longitude',pp.lng);
+        //         $('#selectAddInfo').data('latitude',pp.lat);
+        //         $('#selectAddInfo').data('location',desc);
+        //     }
+        //     var local = new BMap.LocalSearch(bm, { //智能搜索
+        //       onSearchComplete: myFun,
+        //       renderOptions:{map: bm}
+        //     });
+        //     local.search(myValue);
+        // }
+        // function getCoordInfo(p){
+        // 	geoc.getLocation(p, function(rs){
+        //         var addComp = rs.addressComponents;
+        //         var str = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+        //         $('#selectAddInfo').text(str);
+        //         $('#selectAddInfo').data('longitude',p.lng);
+        //         $('#selectAddInfo').data('latitude',p.lat);
+        //         $('#selectAddInfo').data('location',str);
+        //     }); 
+        // }
+        // geoc = new BMap.Geocoder();  
+
+         //坐标转换完之后的回调函数
+        translateCallback = function (data){
+          if(data.status === 0) {
+            marker = new BMap.Marker(data.points[0],{raiseOnDrag:true});
+            bm.addOverlay(marker);
+            bm.setCenter(data.points[0]);
+            //marker.disableDragging();
+            marker.enableDragging(); 
+            marker.addEventListener("click",function(){
+                // var p = marker.getPosition();       //获取marker的位置
+                // getLocationByCoord(p,ggPoint);                                
+            });
+            marker.addEventListener("dragend",function(){
+                var p = marker.getPosition();       //获取marker的位置
+                getCoordInfo(p);
+            });
+            getCoordInfo(data.points[0]);
+          }
+        }
+        if(needConvert){
+            setTimeout(function(){
+                var convertor = new BMap.Convertor();
+                var pointArr = [];
+                pointArr.push(ggPoint);
+                convertor.translate(pointArr, 1, 5, translateCallback)
+            }, 1000);    
+        }else{
+            translateCallback({points:[ggPoint],status:0})
+        }
+    }
+    
+    
+    </script>
+</body>
+
+</html>

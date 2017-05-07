@@ -52,7 +52,10 @@
         		},
         		"3":{
         			name:'好人好事'
-        		}	
+        		},
+        		"4":{
+        			
+        		}
         }
         Zepto(function($) {
 			$('header h1').text(objConfig[BWK.UrlParams.type]['name']);
@@ -67,10 +70,14 @@
 		  var str = "";
            if(data.length>0){
         		for(var i=0;i<data.length;i++){
-        			str += '<li class="ui-border-t"><div class="ui-list-info"><h4>'+data[i].title+'</h4></div></li>';	
+        			str += '<li id="'+data[i].id+'" class="ui-border-t"><div class="ui-list-info"><h4>'+data[i].title+'</h4></div></li>';	
         		}   
            } 
            $('.ui-list-article').empty().append(str);
+           $('.ui-list-article').on('click','li',function(){
+        	   location.href = 'guideDetail.html?id='+$(this).attr('id');
+        	   return false;
+           });
         }
         </script>
     </body>

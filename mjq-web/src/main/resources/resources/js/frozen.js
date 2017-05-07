@@ -86,6 +86,9 @@ BWK.api = function() {
 	api.inform.getArticle = function(params,callback){
 		return api.Get('../article',params,callback);
 	}
+	api.inform.getArticleInfo = function(id,params,callback){
+		return api.Get('../article/'+id,params,callback);
+	}
 
 	api.user = {};
 	api.user.getUser = function(params,callback){

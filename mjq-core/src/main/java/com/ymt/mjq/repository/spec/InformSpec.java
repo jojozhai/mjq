@@ -29,9 +29,6 @@ public class InformSpec extends PzSimpleSpecification<Inform, InformInfo> {
 		addLikeCondition(queryWraper, "location");
 		addLikeCondition(queryWraper, "phone");
 		
-		if(getCondition().isBonus()){
-			addGreaterThanConditionToColumn(queryWraper, "bonus", 0);
-		}
 	}
 	
 

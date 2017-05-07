@@ -21,6 +21,7 @@ import com.ymt.mjq.dto.InformInfo;
 import com.ymt.mjq.repository.InformRepository;
 import com.ymt.mjq.repository.spec.InformSpec;
 import com.ymt.mjq.service.InformService;
+import com.ymt.pz365.data.jpa.support.AbstractDomain2InfoConverter;
 import com.ymt.pz365.data.jpa.support.QueryResultConverter;
 import com.ymt.pz365.framework.core.exception.PzException;
 import com.ymt.pz365.framework.param.service.ParamService;
@@ -57,7 +58,14 @@ public class InformServiceImpl implements InformService {
     @Override
     public Page<InformInfo> query(InformInfo informInfo, Pageable pageable) {
         Page<Inform> pageData = informRepository.findAll(new InformSpec(informInfo), pageable);
-        return QueryResultConverter.convert(pageData, InformInfo.class, pageable);
+        return QueryResultConverter.convert(pageData, pageable, new AbstractDomain2InfoConverter<Inform, InformInfo>() {
+			@Override
+			protected void doConvert(Inform domain, InformInfo info) throws Exception {
+				info.setUserId(domain.getUser().getId());
+				info.setUsername(domain.getUser().getNickname());
+				info.setUserhead(domain.getUser().getHeadimgurl());
+			}
+		});
     }
 
     @Override
@@ -75,6 +83,9 @@ public class InformServiceImpl implements InformService {
         Inform inform = informRepository.findOne(id);
         InformInfo info = new InformInfo();
         BeanUtils.copyProperties(inform, info);
+        info.setUserId(inform.getUser().getId());
+		info.setUsername(inform.getUser().getNickname());
+		info.setUserhead(inform.getUser().getHeadimgurl());
         return info;
     }
 

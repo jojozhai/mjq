@@ -20,6 +20,11 @@ public class InformInfo {
 	 */
 	private Long userId;
 	/**
+	 * 用户昵称
+	 */
+	private String username;
+	private String userhead;
+	/**
 	 * 爆料类型
 	 */
 	private String type;
@@ -58,7 +63,7 @@ public class InformInfo {
 	/**
 	 * 奖励积分
 	 */
-	private boolean bonus;
+	private Integer bonus;
 	/**
 	 * 奖励时间
 	 */
@@ -191,13 +196,13 @@ public class InformInfo {
 	/**
 	 * @return the bonus
 	 */
-	public boolean isBonus() {
+	public Integer getBonus() {
 		return bonus;
 	}
 	/**
 	 * @param bonus the bonus to set
 	 */
-	public void setBonus(boolean bonus) {
+	public void setBonus(Integer bonus) {
 		this.bonus = bonus;
 	}
 	/**
@@ -235,6 +240,30 @@ public class InformInfo {
 	 */
 	public void setImages2(List<String> images2) {
 		this.images2 = images2;
+	}
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	/**
+	 * @return the userhead
+	 */
+	public String getUserhead() {
+		return userhead;
+	}
+	/**
+	 * @param userhead the userhead to set
+	 */
+	public void setUserhead(String userhead) {
+		this.userhead = userhead;
 	}
 	
 }

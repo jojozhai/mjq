@@ -114,7 +114,7 @@ angular.module('accidentAdminModule',[]).config(function($stateProvider) {
 		$uibModalInstance.close(accident);
 	};
 	
-	$scope.doUpload = function(files){
+	$scope.doUpload1 = function(files){
 		commonService.uploadImage(files, $scope, function(imageUrl){
 			$scope.accident.image = imageUrl;
 		})		

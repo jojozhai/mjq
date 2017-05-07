@@ -3,8 +3,6 @@
  */
 package com.ymt.mjq.dto;
 
-import java.util.Date;
-
 /**
  * @author zhailiang
  *
@@ -23,7 +21,7 @@ public class AccidentInfo {
 	/**
 	 * 发生时间
 	 */
-	private Date dateTime;
+	private String dateTime;
 	/**
 	 * 图片
 	 */
@@ -55,13 +53,13 @@ public class AccidentInfo {
 	/**
 	 * @return the dateTime
 	 */
-	public Date getDateTime() {
+	public String getDateTime() {
 		return dateTime;
 	}
 	/**
 	 * @param dateTime the dateTime to set
 	 */
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
 	/**

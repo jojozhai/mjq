@@ -3,8 +3,6 @@
  */
 package com.ymt.mjq.domain;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 
 import com.ymt.pz365.data.jpa.domain.DomainImpl;
@@ -27,7 +25,7 @@ public class Accident extends DomainImpl {
 	/**
 	 * 发生时间
 	 */
-	private Date dateTime;
+	private String dateTime;
 	/**
 	 * 图片
 	 */
@@ -56,16 +54,17 @@ public class Accident extends DomainImpl {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
 	/**
 	 * @return the dateTime
 	 */
-	public Date getDateTime() {
+	public String getDateTime() {
 		return dateTime;
 	}
 	/**
 	 * @param dateTime the dateTime to set
 	 */
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
 	/**

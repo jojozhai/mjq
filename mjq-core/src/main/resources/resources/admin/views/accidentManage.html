@@ -42,7 +42,7 @@
 					<tbody>
 						<tr ng-repeat = "accident in accidents">
 							<td>{{$index+1}}</td>
-							<td>{{accident.dateTime | date:'yyyy-MM-dd HH:mm'}}</td>
+							<td>{{accident.dateTime}}</td>
 							<td>{{accident.title}}</td>
 							<td>
 								<button class="btn btn-warning btn-xs" ng-click="update(accident)">

@@ -11,18 +11,21 @@
 				</div>
 			</div>
 			<div class="form-group"  ng-class="accidentForm.dateTime.$invalid && accidentForm.dateTime.$dirty ? 'has-error': ''">
-				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;标题:</label>
+				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;时间:</label>
 				<div class="col-lg-6">
 					<input name="dateTime" ng-model="accident.dateTime" type="text" class="form-control input-sm" placeholder="时间" required>
 					<label class="control-label" ng-show="accidentForm.dateTime.$invalid && accidentForm.dateTime.$dirty">时间不能为空</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-3">&nbsp;内容链接:</label>
-				<div class="col-lg-6">
-					<input name="content" ng-model="accident.content" type="text" class="form-control input-sm" placeholder="内容链接">
-				</div>
-			</div>
+                <label class="control-label col-lg-3">图片:</label>
+                <div class="col-lg-4">
+                    <div class="fileinput-button" style="border: 1px solid #abcdef; height: 90px; width: 160px;" >
+                        <img ng-src="{{accident.image}}" width="160px;", height="90px;">
+                        <input type="file" id="file1" name="file1" pz-uploader action="doUpload1(files)">
+                    </div>
+                </div>
+            </div>
 			
 			<div class="text-right m-top-md">
 				<button ng-click="save(accident)" class="btn btn-success btn-sm" ng-disabled="accidentForm.$invalid"><i class="fa fa-save m-right-xs"></i>保存</button>

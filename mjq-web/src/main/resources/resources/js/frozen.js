@@ -83,6 +83,9 @@ BWK.api = function() {
 		return api.Get('../location',params,callback);
 	}
 
+	api.inform.getArticle = function(params,callback){
+		return api.Get('../article',params,callback);
+	}
 
 	api.user = {};
 	api.user.getUser = function(params,callback){

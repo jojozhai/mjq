@@ -72,7 +72,7 @@ BWK.api = function() {
 	api.inform.getInform = function(id,params,callback){
 		return api.Get('../inform/'+id,params,callback);
 	}
-	api.inform.getInforms = function(id,params,callback){
+	api.inform.updateInform = function(id,params,callback){
 		return api.Put('../inform/'+id,params,callback);
 	}
 

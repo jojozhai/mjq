@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <title>美丽马驹桥</title>
+        <link rel="stylesheet" href="../css/frozen.css">
+        <link rel="stylesheet" href="../css/public.css">
+        <script src="../lib/zepto.min.js"></script>
+        <script src="../js/frozen.js"></script>
+        <style type="text/css">
+        body{background-color: #f5f5f5;}
+        .ui-header{background-color: #4aacff;}
+        .ui-banner img{width: 100%;}
+        .ui-slider{padding-top: 44%;}
+        .ui-slider-indicators{width:auto;right:inherit;left: 50%;margin-left: -20px;}
+        .ui-col{background: none;border:none;text-align: left;}
+        .ui-questwrap{margin:10px;}
+        .ui-quest li:nth-of-type(odd){text-align: right;}
+        .ui-grid-halve-img{padding-top:100%;}
+        .ui-grid-halve{padding-right: 0;padding-left:10px;background: #f5f5f5; }
+        .ui-grid-halve li{padding-right: 10px;}
+        .ch-title{margin-bottom: 12px;padding-bottom: 10px;}
+        .ch-title img{width: 10px;}
+        .ch-title h2{text-indent: 20px;font-size: 18px;margin-top: -6px;}
+        .txtblue{color:#4aacff;}
+        </style>
+    </head>
+
+    <body ontouchstart>
+        <header class="ui-header ui-header-positive ui-border-b">
+            <i class="ui-icon-return" onclick="history.back()"></i>
+            <h1>爆料详情</h1>
+            <!-- <a class="ui-btn" href="index.html">回首页</a> -->
+        </header>
+        <section class="ui-container">
+            <div class="demo-block">
+                <div class="ui-slider">
+                    <ul class="ui-slider-content" style="width: 300%">
+                        <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
+                        <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
+                        <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
+                    </ul>
+                </div>  
+            </div>
+            <div class="demo-block ui-questwrap">
+              <ul class="ui-row ui-quest">
+                  <li class="ui-col ui-col-25">问题类型：</li>
+                  <li class="ui-col ui-col-75 txtblue">环境问题</li>
+                  <li class="ui-col ui-col-25">问题类型：</li>
+                  <li class="ui-col ui-col-75">小区垃圾乱堆放，遍地都是严重的影响民众的生活起居，望整治。</li>
+                  <li class="ui-col ui-col-25">爆料时间：</li>
+                  <li class="ui-col ui-col-75">2017-4-29 13:00</li>
+              </ul>
+          </div>
+           <div class="demo-block ch-title">
+              <img src="../img/react_s.png">
+              <h2>整改结果</h2>
+          </div>
+          <div class="demo-block">
+            <ul class="ui-grid-halve">
+                <li>
+                    <div class="ui-grid-halve-img">
+                        <span style="background-image:url(http://placeholder.qiniudn.com/290x160)"></span>
+                    </div>
+                </li>
+                <li>
+                    <div class="ui-grid-halve-img">
+                        <span style="background-image:url(http://placeholder.qiniudn.com/290x160)"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="demo-block ui-questwrap">
+              <ul class="ui-row ui-quest">
+                  <li class="ui-col ui-col-25">整改时间：</li>
+                  <li class="ui-col ui-col-75 txtblue">2017-05-9 12:30</li>
+                  <li class="ui-col ui-col-25">相关说明：</li>
+                  <li class="ui-col ui-col-75">乱扔垃圾的行为已经处理乱扔垃圾的行为已经处理扔垃圾的行为已经处理。</li>
+              </ul>
+          </div>
+        </section>
+        <script>
+        Zepto(function($) {
+           slidPic(data)
+        })
+
+
+        function slidPic(data){
+           var str="";
+           var len=data.length;
+           var slider;
+           for(var i=0;i<len;i++){
+              str+='<li><span style="background-image:url(../img/'+data[i].img+')"></span></li>';
+           }
+           $(".ui-slider-content").append(str);
+           slider = new fz.Scroll('.ui-slider', {
+                role: 'slider',
+                indicator: true,
+                autoplay: true,
+                interval: 3000
+            });
+        }
+        </script>
+    </body>
+</html>

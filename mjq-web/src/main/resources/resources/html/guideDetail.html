@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <title>美丽马驹桥</title>
+        <link rel="stylesheet" href="../css/frozen.css">
+        <link rel="stylesheet" href="../css/public.css">
+        <script src="../lib/zepto.min.js"></script>
+        <script src="../js/frozen.js"></script>
+        <style type="text/css">
+        .articl-content{    
+        	padding: 10px;
+    		background-color: #fff;
+    	}
+        </style>
+    </head>
+
+    <body ontouchstart>
+        <header class="ui-header ui-header-positive ui-border-b">
+            <i class="ui-icon-return" onclick="history.back()"></i>
+            <h1></h1>
+            <!-- <a class="ui-btn" href="index.html">回首页</a> -->
+        </header>
+        <section class="ui-container">
+            <div class="articl-content"></div>
+        </section><!-- /.ui-container-->
+
+        <script>
+        Zepto(function($) {
+        	 BWK.api.inform.getArticleInfo(BWK.UrlParams.id,null,function(data){
+                 $('header h1').text(data.title);
+                 $('.articl-content').html(data.content);
+             });
+        })
+        </script>
+    </body>
+</html>

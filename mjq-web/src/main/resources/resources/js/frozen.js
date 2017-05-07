@@ -103,6 +103,10 @@ BWK.api = function() {
 	api.user.orderEnd = function(params,callback){
 		return api.Put('../order/'+params.id,null,callback);
 	}
+	//意见反馈
+	api.user.suggestion = function(params,callback){
+		return api.Post('../feedback',params,callback);
+	}
 	//提现
 	api.user.getMoney = function(params,callback){
 		return api.Post('../withdrawals',params,callback);

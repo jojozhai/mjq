@@ -52,7 +52,7 @@
                     var addObj = data[i];
                     if(addObj.latitude&&addObj.longitude){
                         var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
-                        addMarker(tmpPoint);
+                        addMarker(tmpPoint,addObj.desc);
                     }else{
                         (function(){
                         	var tmpIndex = i;

@@ -15,8 +15,8 @@
     .ui-form-item{background-color: #fff;margin: 5px 0;}
     .ui-desc{padding: 0 20px;}
     .ui-desc p{line-height: 25px;color: #999;font-size: 12px;}
-    .ui-form-upload{background-color: #fff;}
-    .ui-form-upload>span{height: 80px;width: 80px;display: inline-block;line-height:80px;font-size:40px;text-align:center;margin:5px;}
+    .ui-form-upload{background-color: #fff;overflow:hidden;}
+    .ui-form-upload>span{height: 80px;width: 80px;display: inline-block;line-height:80px;font-size:40px;text-align:center;margin:5px;float:left;}
     .ui-form-upload .img-del{float:left;}
     .ui-form-item input{padding-left: 50px;}
     .ui-form-item-textarea{height: 250px;}
@@ -171,7 +171,7 @@
                                      //alert(localIds);
                                      dealImg = res.serverId;
                                      _uploadServer(dealImg); 
-                                     $('.ui-form-upload').append('<span class="img-del" data-url="'+localIds[0]+'" style="background-image:url('+localIds[0]+')"></span>');
+                                     $('.ui-form-upload .img-upload').after('<span class="img-del" data-url="'+localIds[0]+'" style="background-image:url('+localIds[0]+')"></span>');
                                  },
                                  fail: function (res) {
                                    alert(JSON.stringify(res));

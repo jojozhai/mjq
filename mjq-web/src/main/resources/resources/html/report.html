@@ -225,6 +225,7 @@
             params.latitude = $('#location').data('latitude');
             params.location = $('#location').data('location');
             params.phone = $('#phone').val();
+            params.bonus=0;
 			
             BWK.api.inform.addInform(params,function(data){
                 BWK.Utils.Tips('爆料提交成功！');                

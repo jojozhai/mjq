@@ -22,6 +22,7 @@ import com.ymt.mjq.repository.InformRepository;
 import com.ymt.mjq.repository.spec.InformSpec;
 import com.ymt.mjq.service.InformService;
 import com.ymt.pz365.data.jpa.support.QueryResultConverter;
+import com.ymt.pz365.framework.core.exception.PzException;
 import com.ymt.pz365.framework.param.service.ParamService;
 import com.ymt.pz365.framework.weixin.service.WeixinService;
 import com.ymt.pz365.framework.weixin.support.message.TemplateMessage;
@@ -48,6 +49,10 @@ public class InformServiceImpl implements InformService {
 	
 	@Value("${mjq.message.template.response:_6bvHV_RPuTy_O3Yfht2CLrq9Pl4KU0sq0hbzC9Sj60}")
 	private String responseTemplateId;
+	
+	@Value("${mjq.message.template.finish:LH5l1Ty58TCNUOkyoU2x4pG3lbWPQSC4ysYoBys7ziE}")
+	private String finishTemplateId;
+	
 	
     @Override
     public Page<InformInfo> query(InformInfo informInfo, Pageable pageable) {
@@ -77,10 +82,15 @@ public class InformServiceImpl implements InformService {
     public InformInfo update(InformInfo informInfo) {
         Inform inform = informRepository.findOne(informInfo.getId());
 //        BeanUtils.copyProperties(informInfo, inform);
-        inform.setImages2(informInfo.getImages2());
-        inform.setStatus(InformStatus.FINISH);
-        informRepository.save(inform);
-        return informInfo;
+        if(inform.getStatus().equals(InformStatus.WORKING)) {
+        	inform.setImages2(informInfo.getImages2());
+            inform.setStatus(InformStatus.WORKED);
+            informRepository.save(inform);
+            return informInfo;
+        }else{
+        	throw new PzException("办理失败，状态异常");
+        }
+        
     }
 
     @Override
@@ -91,21 +101,41 @@ public class InformServiceImpl implements InformService {
 	@Override
 	public void bonus(Long id) throws Exception {
 		Inform inform = informRepository.findOne(id);
-		int amount = new Integer(paramService.getParam("mjq.inform.bonus", "3").getValue());
-		weixinService.sendRedpack(inform.getId(), "127.0.0.1", inform.getUser().getWeixinOpenId(), amount);
-		inform.setBonus(amount);
-		inform.setBonusTime(new Date());
+		if(inform.getStatus().equals(InformStatus.WORKED)) {
+			int amount = new Integer(paramService.getParam("mjq.inform.bonus", "3").getValue());
+//			weixinService.sendRedpack(inform.getId(), "127.0.0.1", inform.getUser().getWeixinOpenId(), amount);
+			inform.getUser().setPoint(inform.getUser().getPoint() + amount);
+			inform.setBonus(amount);
+			inform.setBonusTime(new Date());
+			inform.setStatus(InformStatus.FINISH);
+			
+			TemplateMessage message = new TemplateMessage(inform.getUser().getWeixinOpenId(), finishTemplateId);
+			message.addValue("first", paramService.getParam("template_finish_first", "您好！您举报的问题已处理完毕。请点击此消息查看办理结果").getValue());
+			message.addValue("keyword1", inform.getId().toString());
+			message.addValue("keyword2", new DateTime(inform.getBonusTime()).toString("yyyy-MM-dd"));
+			message.addValue("keyword3", paramService.getParam("template_finish_keyword3", "已办结").getValue());
+			message.addValue("remark", paramService.getParam("template_finish_remark", "感谢您对政府工作的支持").getValue());
+			weixinService.pushTemplateMessage(message);
+			
+		}else{
+			throw new PzException("办结失败，状态异常");
+		}
 	}
 
 	@Override
 	public void accept(Long id) throws Exception {
 		Inform inform = informRepository.findOne(id);
-		inform.setStatus(InformStatus.WORKING);
-		//推送模板消息
-		String defaultResponseUser = paramService.getParam("default_response", "oua4YwKiGeNNC4-VjcDjIzbs4TWk").getValue();
-		String value = paramService.getParam("response_"+inform.getType(), defaultResponseUser).getValue();
-		sendToUser(inform);
-		sendToResponse(inform, value);
+		if(inform.getStatus().equals(InformStatus.WAITING)) {
+			inform.setStatus(InformStatus.WORKING);
+			//推送模板消息
+			String defaultResponseUser = paramService.getParam("default_response", "oua4YwKiGeNNC4-VjcDjIzbs4TWk").getValue();
+			String value = paramService.getParam("response_"+inform.getType(), defaultResponseUser).getValue();
+			sendToUser(inform);
+			sendToResponse(inform, value);
+		}else{
+			throw new PzException("受理失败,状态异常");
+		}
+		
 	}
 	
 	private void sendToResponse(Inform inform, String toUser) throws Exception {

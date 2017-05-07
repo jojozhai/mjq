@@ -20,5 +20,9 @@ public enum InformStatus {
 	/**
 	 * 已处理
 	 */
+	WORKED,
+	/**
+	 * 已确认处理
+	 */
 	FINISH
 }

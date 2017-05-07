@@ -46,6 +46,11 @@ public class InformAdminController {
 	public void bonus(@PathVariable Long id) throws Exception {
 		informService.bonus(id);
 	}
+	
+	@RequestMapping(value = "/inform/{id}/accept", method = RequestMethod.PUT)
+	public void accept(@PathVariable Long id) throws Exception {
+		informService.accept(id);
+	}
 
 	@RequestMapping(value = "/inform/{id}", method = RequestMethod.PUT)
 	public InformInfo update(@RequestBody InformInfo informInfo) {

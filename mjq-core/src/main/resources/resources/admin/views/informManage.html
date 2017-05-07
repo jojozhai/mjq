@@ -45,9 +45,9 @@
 						<tr>
 							<th width="100">序号</th>
 							<th width="100">类型</th>
-							<th width="100">状态</th>
 							<th>内容</th>
-							<th width="100">红包</th>
+							<th width="100">状态</th>
+							<!-- <th width="100">积分</th> -->
 							<th width="200">操作</th>
 						</tr>
 					</thead>
@@ -55,9 +55,9 @@
 						<tr ng-repeat = "inform in informs">
 							<td>{{$index+1}}</td>
 							<td>{{inform.type}}</td>
-							<td>{{inform.status | informStatus}}</td>
 							<td>{{inform.content}}</td>
-							<td>{{inform.bonus | informBonus}}</td>
+							<td>{{inform.status | informStatus}}</td>
+							<!-- <td>{{inform.bonus | informBonus}}</td> -->
 							<td>
 								<!-- <button class="btn btn-warning btn-xs" ng-click="update(inform)">
 									<i class="ion-edit m-right-xs"></i>修改
@@ -65,11 +65,14 @@
 								<button class="btn btn-info btn-xs" ng-click="update(inform)">
 									<i class="ion-edit m-right-xs"></i>查看
 								</button>
-								<button class="btn btn-danger btn-xs" ng-click="remove(inform)">
+								<!-- <button class="btn btn-danger btn-xs" ng-click="remove(inform)">
 									<i class="ion-edit m-right-xs"></i>删除
+								</button> -->
+								<button class="btn btn-warning btn-xs" ng-click="accept(inform)">
+									<i class="ion-edit m-right-xs"></i>受理
 								</button>
 								<button class="btn btn-warning btn-xs" ng-click="bonus(inform)">
-									<i class="ion-edit m-right-xs"></i>发红包
+									<i class="ion-edit m-right-xs"></i>办结
 								</button>
 							</td>
 						</tr>

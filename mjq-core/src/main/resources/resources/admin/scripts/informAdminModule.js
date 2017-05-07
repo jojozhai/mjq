@@ -11,6 +11,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 }).service("informRestService", function($resource, commonService){
 	var config = commonService.getDefaultRestSetting();
 	config.bonus = {url:"inform/:id/bonus", method:"POST"};
+	config.accept = {url:"inform/:id/accept", method:"PUT"};
 	return $resource("inform/:id", {id:"@id"}, config);
 //控制器
 }).controller('informManageCtrl', function($scope, $uibModal, informRestService, commonService) {
@@ -25,7 +26,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 	                {name:'其他',value:'其他'}
 	                ];
 	
-	$scope.statuses = [{name:'未受理',value:'WAITING'},{name:'已受理',value:'WORKING'},{name:'已处理',value:'FINISH'}];
+	$scope.statuses = [{name:'未受理',value:'WAITING'},{name:'已受理',value:'WORKING'},{name:'已处理',value:'WORKED'},{name:'已办结',value:'FINISH'}];
 
 	$scope.pageInfo = commonService.getDefaultPageSetting();
 	
@@ -102,9 +103,17 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 		}
 	}
 	
+	$scope.accept = function(inform) {
+		informRestService.accept({id:inform.id}).$promise.then(function(data){
+			commonService.showMessage("爆料已受理");
+		});
+	}
+	
 	$scope.query();
 	
 }).controller('informFormCtrl',function ($scope, $uibModalInstance, inform, commonService) {
+	
+	console.log(inform.images);
 	
 	$scope.inform = inform;
 	
@@ -120,16 +129,19 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 			return "未受理";
 		}else if(text == 'WORKING'){
 			return "已受理";
+		}else if(text == 'WORKED'){
+			return "已受理";
 		}else if(text == 'FINISH'){
-			return "已处理";
+			return "已办结";
 		}
     }
 }).filter("informBonus", function(){
 	return function (text) {
+		console.log(text);
 		if(text == '0'){
 			return "未发放";
 		}else{
-			return text+"元";
+			return text+"分";
 		}
     }
 });

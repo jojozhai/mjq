@@ -75,6 +75,13 @@ BWK.api = function() {
 	api.inform.updateInform = function(id,params,callback){
 		return api.Put('../inform/'+id,params,callback);
 	}
+	api.inform.getGift = function(params,callback){
+		return api.Get('duiba/autologin',params,callback);
+	}
+
+	api.inform.getLocation = function(params,callback){
+		return api.Get('../location',params,callback);
+	}
 
 
 	api.user = {};
@@ -95,6 +102,10 @@ BWK.api = function() {
 	// 预约确定完成  PUT
 	api.user.orderEnd = function(params,callback){
 		return api.Put('../order/'+params.id,null,callback);
+	}
+	//意见反馈
+	api.user.suggestion = function(params,callback){
+		return api.Post('../feedback',params,callback);
 	}
 	//提现
 	api.user.getMoney = function(params,callback){

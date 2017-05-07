@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>全民城管</title>
+    <link rel="stylesheet" href="../css/frozen.css">
+    <link rel="stylesheet" href="../css/public.css">
+    
+    
+    <style type="text/css">
+    .maparea{width: 100%;height: 400px;}
+    .BMap_bubble_content{font-size:14px;}
+    .ui-icon-pin{display:inline-block;}
+    </style>
+</head>
+<body ontouchstart>
+    <header class="ui-header ui-header-positive ui-border-b">
+       <!--  <i class="ui-icon-return" onclick="history.back()"></i> -->
+        <h1>便民查询</h1>
+    </header>
+    <section class="ui-container">
+        <div class="maparea" id="allmap"></div>
+        <div class="resultAdds">
+        	<ul class="ui-list ui-list-pure ui-border-tb">
+        		
+        	</ul>
+        </div>
+    </section>
+    <!-- /.ui-container-->
+    <script src="../js/city.js"></script>
+    <script src="../lib/zepto.min.js"></script>
+    <script src="../js/frozen.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6SG69EZfR9rUD4QN4Kyb5UBXfplqOquI"></script>
+    <script>
+    var bm,myGeo;
+    Zepto(function($) {
+    	bm = new BMap.Map("allmap");
+        var point = new BMap.Point(116.404, 39.915);
+        bm.centerAndZoom(point, 15);
+        bm.enableInertialDragging();
+        bm.enableScrollWheelZoom(); 
+        var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+        bm.addControl(top_right_navigation);
+        myGeo = new BMap.Geocoder();
+
+        BWK.api.inform.getLocation({type:BWK.UrlParams.type},function(data){
+           if(data&&data.length>0){
+                for (var i = 0; i < data.length; i++) {
+                    var addObj = data[i];
+                    if(addObj.latitude&&addObj.longitude){
+                        var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
+                        addMarker(tmpPoint,addObj.desc);
+                    }else{
+                        (function(){
+                        	var tmpIndex = i;
+                        	myGeo.getPoint(addObj.desc, function(point){
+	                            if (point) {
+	                                bm.centerAndZoom(point, 15);
+	                                addMarker(point,data[tmpIndex].desc,tmpIndex);
+	                            }else{
+	                                alert("您选择地址没有解析到结果!");
+	                            }
+                        }, "北京市");})();
+                    }
+                } 
+           } 
+        });
+    });
+
+    var opts = {
+        width : 250,     // 信息窗口宽度
+        height: 0,     // 信息窗口高度
+        title : "" , // 信息窗口标题
+        enableMessage:true//设置允许信息窗发送短息
+    };
+    // 编写自定义函数,创建标注
+    function addMarker(point,desc,index){
+      var marker = new BMap.Marker(point);
+      bm.addOverlay(marker);
+      marker.desc = desc;
+      marker.index =index;
+      marker.addEventListener("click",function(e){
+            var p = marker.getPosition();       //获取marker的位置
+            addInfoMsg(marker.desc,e);                              
+      });
+      var str = '<li class="ui-border-b"><p><i class="ui-icon-pin"></i><span class="add">'+desc+'</span></li>';
+ 	  $('.resultAdds ul').append(str);
+ 	  if(index==0){
+ 		 var infoWindow = new BMap.InfoWindow(desc,point);  // 创建信息窗口对象 
+         bm.openInfoWindow(infoWindow,point); //开启信息窗口
+ 	  }
+    }
+    function addInfoMsg(desc,e){
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        var infoWindow = new BMap.InfoWindow(desc,opts);  // 创建信息窗口对象 
+        bm.openInfoWindow(infoWindow,point); //开启信息窗口
+    }
+
+    
+    
+    </script>
+</body>
+
+</html>

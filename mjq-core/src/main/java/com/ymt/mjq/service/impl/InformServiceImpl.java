@@ -120,7 +120,9 @@ public class InformServiceImpl implements InformService {
 			inform.setBonusTime(new Date());
 			inform.setStatus(InformStatus.FINISH);
 			
-			TemplateMessage message = new TemplateMessage(inform.getUser().getWeixinOpenId(), finishTemplateId);
+			String url = "http://wx.norej.cn/mjq-weixin/html/details.html?id="+id;
+			
+			TemplateMessage message = new TemplateMessage(inform.getUser().getWeixinOpenId(), finishTemplateId, url);
 			message.addValue("first", paramService.getParam("template_finish_first", "您好！您举报的问题已处理完毕。请点击此消息查看办理结果").getValue());
 			message.addValue("keyword1", inform.getId().toString());
 			message.addValue("keyword2", new DateTime(inform.getBonusTime()).toString("yyyy-MM-dd"));
@@ -150,7 +152,8 @@ public class InformServiceImpl implements InformService {
 	}
 	
 	private void sendToResponse(Inform inform, String toUser) throws Exception {
-		TemplateMessage message = new TemplateMessage(toUser, responseTemplateId, "http://www.baidu.com");
+		String url = "http://wx.norej.cn/mjq-weixin/html/details.html?id="+inform.getId()+"&type=oper";
+		TemplateMessage message = new TemplateMessage(toUser, responseTemplateId, url);
 		message.addValue("first", paramService.getParam("template_response_first", "有新的爆料，请点击查看详情").getValue());
 		message.addValue("keyword1", inform.getId().toString());
 		message.addValue("keyword2", new DateTime().toString("yyyy-MM-dd"));

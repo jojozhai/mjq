@@ -16,6 +16,10 @@ public class InformInfo {
 	
 	private Long id;
 	/**
+	 * 
+	 */
+	private Date createdTime;
+	/**
 	 * 爆料人
 	 */
 	private Long userId;
@@ -264,6 +268,18 @@ public class InformInfo {
 	 */
 	public void setUserhead(String userhead) {
 		this.userhead = userhead;
+	}
+	/**
+	 * @return the createdTime
+	 */
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	/**
+	 * @param createdTime the createdTime to set
+	 */
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 	
 }

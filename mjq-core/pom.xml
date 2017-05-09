@@ -35,6 +35,11 @@
 			<artifactId>mirage-social</artifactId>
 			<version>${mirage.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.ymt.mirage</groupId>
+			<artifactId>mirage-poster</artifactId>
+			<version>${mirage.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>

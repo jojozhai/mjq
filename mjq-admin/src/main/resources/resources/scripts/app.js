@@ -9,6 +9,6 @@
  */
 // 应用主模块
 angular.module('adminApp', [ 'admin', 'userAdminModule', 'paramAdminModule', 'buttonAdminModule',
-		'informAdminModule', 'umeditorModule', 'locationAdminModule',
+		'informAdminModule', 'umeditorModule', 'locationAdminModule', 'posterAdminModule',
 		'articleAdminModule', 'feedbackAdminModule', 'commentAdminModule',
 		'accidentAdminModule' ]);

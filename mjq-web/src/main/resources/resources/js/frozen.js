@@ -8,7 +8,7 @@ BWK.globalConfig = {
 	//redirect_uri:'http://wx.chenhao-life.com/weixin/weixin/oauth',
 	appId:'wxe103fdfaee54e51e',
 	redirect_uri:'http://wx.51bwk.com/weixin/weixin/oauth',
-	DEBUG:true
+	DEBUG:false
 }
 BWK.api = function() {	
 	var api = {};

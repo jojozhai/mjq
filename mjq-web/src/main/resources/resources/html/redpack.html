@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../css/public.css">
 
     <style type="text/css">
-    .demo-block{background-color: #f6f6f6;}
+    /* .demo-block{background-color: #f6f6f6;}
     .ui-form{margin: 0 10px;background-color: #f6f6f6;}
     .ui-form-item{background-color: #fff;margin: 5px 0;}
     .ui-desc{padding: 0 20px;}
@@ -32,22 +32,36 @@
     .selectAdd > .ui-list li{margin-left: 0;}
     .selectAdd > .ui-list .ui-avatar-s{background: none;margin:10px 0;}
     .ui-col{background: none;border:none;text-align: left;}
+     */
+     .demo-desc{    
+     	font-size: 16px;
+   		color: #7CAE23;
+     }
+     .ui-list .ui-btn:before,.ui-list .ui-btn-lg:before,.ui-list .ui-btn-s:before{
+     	border-radius:100px;
+     }
+     .ui-list li h4 span{
+     	display:inline-block;
+     	width:50%;
+     	text-align:center;
+     }
     </style>
 </head>
 <body ontouchstart>
     <header class="ui-header ui-header-positive ui-border-b">
-        <img src="../img/back_lg.png" class="ui-returnlg" onclick="history.back()">
-        <h1>红包发放</h1>
+        <h1>奖励积分</h1>
         <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a>
     </header>
     <section class="ui-container">
-        <div class="demo-block">
-            <div class="ui-row-flex ui-whitespace">
-                <div class="ui-col">姓名</div>
-                <div class="ui-col">发放时间</div>
-                <div class="ui-col">发放积分</div>
-            </div>
-        </div>
+        <div class="demo-item">
+        	<p class="demo-desc">奖励积分列表</p>
+	        <div class="demo-block">
+	            <ul class="ui-list ui-list-function  ui-border-tb">
+	                
+	                
+	            </ul>
+	        </div>
+	    </div>
     </section>
     <!-- /.ui-container-->
     <script src="../lib/zepto.min.js"></script>
@@ -60,22 +74,18 @@
              _redList(datas)
          });
     });
-
     function _redList(data){
       var str="";
       var len=data.content.length;
       for(var i=0;i<len;i++){
-    	  var time=new Date(data.content[i].bonusTime);
-    	  var timeQ=BWK.Utils.dateformateLocal(time,"yyyy-MM-dd hh:mm");
-    	  str+='<div class="ui-row-flex ui-whitespace"><div class="ui-col">'+data.content[i].type+'</div>';
-    	  str+='<div class="ui-col">'+timeQ+'</div>';
-    	  str+='<div class="ui-col">'+data.content[i].type+'</div></div>';
+    	  var dealObj = data.content[i];
+    	  var time = BWK.Utils.dateformateLocal(new Date(dealObj.bonusTime),"yyyy-M-d");
+    	  str +='<li class="ui-border-t"><div class="ui-avatar-s"><span style="background-image:url('+(dealObj.userhead?dealObj.userhead:"http://placeholder.qiniudn.com/80x80")+')"></span>';
+    	  str += '</div><div class="ui-list-info"><h4 class="ui-nowrap"><span class="username">'+dealObj.username+'</span><span class="time">'+time+'</span></h4></div>';
+	      str += '<div class="ui-btn">'+dealObj.bonus+'</div></li>';    
       }
-      $(".ui-container .demo-block").append(str);
+      $(".ui-list").append(str);
     }    
-   
- 
-    
     </script>
 </body>
 

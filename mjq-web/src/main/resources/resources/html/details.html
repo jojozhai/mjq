@@ -106,7 +106,7 @@
            var slider;
            if(len>0){
         	   for(var i=0;i<len;i++){
-                  str+='<li><span style="background-image:url(../img/'+data.images[i].img+')"></span></li>';
+                  str+='<li><span style="background-image:url(../img/'+data.images[i]+')"></span></li>';
                }
            }else{
         		  str+='<li><span style="background:#eee"></span></li>';
@@ -124,11 +124,11 @@
            }else if(stat==="WORKING"){
         	   if(rlen>0){
             	   for(var i=0;i<rlen;i++){
-            		   strrs+='<li><div class="ui-grid-halve-img"><span style="background-image:url(../img/"'+data.images2[i].img+'></span></div></li>';
+            		   strrs+='<li><div class="ui-grid-halve-img"><span style="background-image:url(../img/"'+data.images2[i]+'></span></div></li>';
                    }
                }else{
             	   strrs+='<li><div class="ui-grid-halve-img"><span style="background:#ccc"></span></div></li>';
-            	   strrs+='<li><div class="ui-grid-halve-img"><span style="background:#ddd"></span></div></li>';
+            	   //strrs+='<li><div class="ui-grid-halve-img"><span style="background:#ddd"></span></div></li>';
                }
         	   $("#resListP").append(strrs);
            }else{
@@ -137,7 +137,7 @@
            if(!data.bonusTime){
         	   $("#quesTime").html("时间未知");
            }else{
-             $("#quesTime").html(data.bonusTime);
+             $("#quesTime").html(BWK.Utils.dateformateLocal(new Date(data.bonusTime),"yyyy-M-d h:m:s"));
            }
            $("#questType").html(data.type);
            $("#questCont").html(data.content);

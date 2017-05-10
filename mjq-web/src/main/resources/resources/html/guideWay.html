@@ -38,8 +38,8 @@
               <div class="demo-item">
 		        <p class="demo-desc"></p>
 		        <div class="demo-block">
-		            <ul class="ui-list ui-list-text ui-border-tb ui-list-article">
-					    
+		            <ul class="ui-list ui-list-text ui-border-tb ui-list-link ui-list-article">
+					   
 					</ul>
 		           
 		        </div>
@@ -70,13 +70,11 @@
 	           		 var datas=data.content||[];
 	           		 slidPic(datas) 
 	           	 });
+        		BWK.api.inform.getArticle({top:true,tagId:objConfig[BWK.UrlParams.type]['tagId']},function(data){
+              		var datas=data.content||[];
+              		slidTop(datas);
+              	 });
         	}
-        	BWK.api.inform.getArticle({top:true},function(data){
-          		 var datas=data.content||[];
-          		 
-          		slidTop(datas);
-          	 });
-        	 
         })
 
 		function slidTop(obj){
@@ -100,12 +98,16 @@
         }
         function slidPic(data){
 		  var str = "";
+		
            if(data.length>0){
         		for(var i=0;i<data.length;i++){
-        			str += '<li id="'+data[i].id+'" class="ui-border-t"><div class="ui-list-info"><h4>'+data[i].title+'</h4></div></li>';	
+        			var dealObj = data[i];
+        			str += '<li id="'+data[i].id+'" class="ui-border-t"><div class="ui-list-img"><span style="background-image:url('+(dealObj.image?dealObj.image:'http://placeholder.qiniudn.com/200x136')+')"></span>'
+        			str += '</div><div class="ui-list-info"><h4 class="ui-nowrap">'+dealObj.title+'</h4>';
+        			str += '<p class="ui-nowrap">'+(dealObj.content?dealObj.content.substring(0,50):'')+'</p></div></li>';
         		}   
            } 
-           $('.ui-list-article').empty().append(str);
+           $('.ui-list-article').append(str);
            $('.ui-list-article').on('click','li',function(){
         	   location.href = 'guideDetail.html?id='+$(this).attr('id');
         	   return false;

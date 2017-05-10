@@ -47,9 +47,11 @@
         	 $("#subBack").click(function(){
         		 var params={}
         		 var cont=$("#contArea").val();
+        		 if(!cont)return false;
         		 var hidName=$("input:checked").length;
         		 params.content=cont;
         		 params.id=BWK.UrlParams.id;
+        		 
         		 BWK.api.user.suggestion(params,function(data){
             		 var datas=data||[];
             		BWK.Utils.Tips("意见已反馈成功！");

@@ -70,7 +70,7 @@
 
         <script>
            Zepto(function($){
-                BWK.api.inform.getInforms(null,function(data){
+                BWK.api.inform.getInforms({status:"FINISH"},function(data){
                     var dealObj = data.content||[];
                     _creatList(dealObj,$('#reportList'));
                 }); 
@@ -92,7 +92,7 @@
                  str += '<span style="background-image:url('+(report['images'][0]||'http://placehold.it/200x150')+')"></span>';
                  str += '</div><div class="ui-reptxt"><h5 class="ui-nowrap-multi">';
                  str += '问题类别:<span class="c_blue">'+report.type+'</span></h5><h5 class="ui-nowrap">';         
-                 str += '爆料时间:<span class="c_bg">'+report.createdTime+'</span></h5></div></li>';         
+                 str += '爆料时间:<span class="c_bg">'+BWK.Utils.dateformateLocal(new Date(report.createdTime),"yyyy-M-d h:m:s")+'</span></h5></div></li>';         
              }
              dom.empty().append(str);
              dom.on('click','li',function(){

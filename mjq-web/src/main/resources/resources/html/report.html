@@ -17,7 +17,8 @@
     .ui-desc p{line-height: 25px;color: #999;font-size: 12px;}
     .ui-form-upload{background-color: #fff;overflow:hidden;}
     .ui-form-upload>span{height: 80px;width: 80px;display: inline-block;line-height:80px;font-size:40px;text-align:center;margin:5px;float:left;}
-    .ui-form-upload .img-del{float:left;background-size: cover;}
+    .ui-form-upload .img-del{float:left;background-size: cover;position:relative;}
+    .ui-form-upload .img-del:after{content:"x";position: absolute;text-align: center;line-height: 15px;font-size: 12px;color: #fff;background-color: #f00;width: 15px;height: 15px;left: 0;top: 0;z-index: 9;display: block;}
     .ui-form-item input{padding-left: 50px;}
     .ui-form-item-textarea{height: 250px;}
     .ui-form-item-textarea textarea{padding-left: 0;border: 1px solid #ccc;padding: 5px;height: 170px;}
@@ -251,7 +252,7 @@
     });
     
     function _uploadServer(dealImg){
-        BWK.api.weixin.uploadImage({serverId:dealImg},function(data){
+        BWK.api.weixin.uploadImage(dealImg,function(data){
            JSON.stringify(data); 
         });
     }    

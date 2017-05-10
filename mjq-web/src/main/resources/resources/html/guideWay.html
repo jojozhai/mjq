@@ -11,6 +11,10 @@
         <script src="../js/frozen.js"></script>
         <style type="text/css">
        		.ui-questwrap{margin-top:10px;}
+       		.demo-desc{color:#7CAE23;font-size:16px;}
+       		.ui-list-info h4{color:#18b4ed;}
+       		.ui-slider{height: 200px;padding-top: 0;}
+            .ui-slider img{height:200px;}
         </style>
     </head>
 
@@ -31,41 +35,69 @@
                 </div>  
             </div>
             <div class="demo-block ui-questwrap">
-              <div class="demo-block">
+              <div class="demo-item">
+		        <p class="demo-desc"></p>
+		        <div class="demo-block">
 		            <ul class="ui-list ui-list-text ui-border-tb ui-list-article">
 					    
 					</ul>
-		            <!-- <div class="ui-loading-wrap">
-		                <p>加载中</p>
-		                <i class="ui-loading"></i>
-		            </div> -->
+		           
 		        </div>
+		    	</div>
+              
+              
             </div>
         </section>
         <script>
         var objConfig = {
         		"1":{
-        			name:'办事指南'
+        			name:'办事指南',
+        			tagId:1
         		},
         		"2":{
-        			name:'工作动态'
+        			name:'工作动态',
+        			tagId:2
         		},
         		"3":{
-        			name:'好人好事'
-        		},
-        		"4":{
-        			
+        			name:'好人好事',
+        			tagId:3
         		}
         }
         Zepto(function($) {
-			$('header h1').text(objConfig[BWK.UrlParams.type]['name']);
-        	 BWK.api.inform.getArticle({type:objConfig[BWK.UrlParams.type]['name']},function(data){
-        		 var datas=data.content||[];
-        		 slidPic(datas) 
-        	 });
+        	if(BWK.UrlParams.type){
+        		$('header h1,.demo-desc').text(objConfig[BWK.UrlParams.type]['name']);	
+        		BWK.api.inform.getArticle({tagId:objConfig[BWK.UrlParams.type]['tagId']},function(data){
+	           		 var datas=data.content||[];
+	           		 slidPic(datas) 
+	           	 });
+        	}
+        	BWK.api.inform.getArticle({top:true},function(data){
+          		 var datas=data.content||[];
+          		 
+          		slidTop(datas);
+          	 });
+        	 
         })
 
+		function slidTop(obj){
+        	$('.ui-slider-content').css({width:obj.length*100+'%'});
+            $('.ui-slider-content').empty();
+            var str = "";
+            if(obj&&obj.length>0){
+                for(var i=0;i<obj.length;i++){
+                    /* str += '<li><a href="'+obj[i].link+'" ><img src="'+obj[i].image+'" /></a></li>'; */
+                	str += '<li><a href="guideDetail.html?id='+obj[i].id+'" ><img src="'+(obj[i].image?obj[i].image:'http://placeholder.qiniudn.com/640x200')+'" /></a></li>';
+                }
+                $('.ui-slider-content').append(str);
 
+                var slider = new fz.Scroll('.ui-slider', {
+                    role: 'slider',
+                    indicator: true,
+                    autoplay: true,
+                    interval: 3000
+                });
+            }
+        }
         function slidPic(data){
 		  var str = "";
            if(data.length>0){

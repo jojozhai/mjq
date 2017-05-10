@@ -7,12 +7,19 @@
     <title>全民城管</title>
     <link rel="stylesheet" href="../css/frozen.css">
     <link rel="stylesheet" href="../css/public.css">
-    
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
     
     <style type="text/css">
-    .maparea{width: 100%;height: 400px;}
+    .maparea{width: 100%;}
     .BMap_bubble_content{font-size:14px;}
-    .ui-icon-pin{display:inline-block;}
+    .ui-icon-pin{display:inline-block;line-height:30px;}
+    ul.ui-list{overflow-y:scroll;height:150px;}
+    ul li span.add{
+    	vertical-align: top;
+    	line-height: 30px;
+    	height: 30px;
+    }
+    .BMapLib_SearchInfoWindow .BMapLib_bubble_content{padding:10px;}
     </style>
 </head>
 <body ontouchstart>
@@ -35,25 +42,38 @@
     <script src="../js/frozen.js"></script>
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6SG69EZfR9rUD4QN4Kyb5UBXfplqOquI"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+	
     <script>
-    var bm,myGeo;
+    var configObj = {
+    		'car':'停车查询',
+    		'wc':'公厕查询'
+    };
+    var bm,myGeo,pointList;
     Zepto(function($) {
+    	$('#allmap').height($(window).height()-195);
+    	if(BWK.UrlParams.type){
+    		$('header h1').text(configObj[BWK.UrlParams.type]);	
+    	}
     	bm = new BMap.Map("allmap");
         var point = new BMap.Point(116.404, 39.915);
         bm.centerAndZoom(point, 15);
         bm.enableInertialDragging();
         bm.enableScrollWheelZoom(); 
-        var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+        var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL});
         bm.addControl(top_right_navigation);
         myGeo = new BMap.Geocoder();
 
         BWK.api.inform.getLocation({type:BWK.UrlParams.type},function(data){
            if(data&&data.length>0){
+        	   pointList = data;
+        	   data.push({longitude:116.324852,latitude:40.057031,desc:'上地十街10号'});
+        	   data.push({longitude:116.676204,latitude:39.889848,desc:'test'});
                 for (var i = 0; i < data.length; i++) {
                     var addObj = data[i];
                     if(addObj.latitude&&addObj.longitude){
                         var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
-                        addMarker(tmpPoint,addObj.desc);
+                        addMarker(tmpPoint,addObj.desc,i);
                     }else{
                         (function(){
                         	var tmpIndex = i;
@@ -71,12 +91,24 @@
         });
     });
 
-    var opts = {
-        width : 250,     // 信息窗口宽度
-        height: 0,     // 信息窗口高度
-        title : "" , // 信息窗口标题
-        enableMessage:true//设置允许信息窗发送短息
-    };
+  
+    var searchInfoWindow = null;
+    function showSearchInfoWindow(desc,point){
+   		searchInfoWindow = new BMapLib.SearchInfoWindow(bm, desc, {
+   			title  : "地址信息",      //标题
+   			width  : 250,             //宽度
+   			height : 0,              //高度
+   			panel  : "panel",         //检索结果面板
+   			enableAutoPan : true,     //自动平移
+   			searchTypes   :[
+   				BMAPLIB_TAB_TO_HERE,  //到这里去
+   				BMAPLIB_TAB_FROM_HERE, //从这里出发
+   				BMAPLIB_TAB_SEARCH,   //周边检索
+   			]
+   		});
+   		searchInfoWindow.open(point);
+   		bm.centerAndZoom(point, 15);
+    }
     // 编写自定义函数,创建标注
     function addMarker(point,desc,index){
       var marker = new BMap.Marker(point);
@@ -84,22 +116,32 @@
       marker.desc = desc;
       marker.index =index;
       marker.addEventListener("click",function(e){
-            var p = marker.getPosition();       //获取marker的位置
-            addInfoMsg(marker.desc,e);                              
+            //var p = marker.getPosition();       //获取marker的位置
+            var p = e.target;
+            var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+            showSearchInfoWindow(marker.desc,point);
+            //addInfoMsg(marker.desc,e);                              
       });
-      var str = '<li class="ui-border-b"><p><i class="ui-icon-pin"></i><span class="add">'+desc+'</span></li>';
+      var str = '<li data-index="'+index+'" class="ui-border-b"><p><i class="ui-icon-pin"></i><span class="add">'+desc+'</span></li>';
  	  $('.resultAdds ul').append(str);
+ 	  $('.resultAdds ul').on('click','li',function(e){
+ 		  var desc = $(this).find('.add').text();
+ 		  var addObj = pointList[$(this).data('index')];
+ 		 var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
+ 		 showSearchInfoWindow(desc,tmpPoint);
+ 		 return false;
+ 	  });
+ 	  
  	  if(index==0){
- 		 var infoWindow = new BMap.InfoWindow(desc,point);  // 创建信息窗口对象 
-         bm.openInfoWindow(infoWindow,point); //开启信息窗口
+ 		 showSearchInfoWindow(desc,point);
  	  }
     }
-    function addInfoMsg(desc,e){
+   /*  function addInfoMsg(desc,e){
         var p = e.target;
         var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
         var infoWindow = new BMap.InfoWindow(desc,opts);  // 创建信息窗口对象 
         bm.openInfoWindow(infoWindow,point); //开启信息窗口
-    }
+    } */
 
     
     

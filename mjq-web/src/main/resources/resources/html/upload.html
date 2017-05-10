@@ -16,7 +16,8 @@
     .ui-desc p{line-height: 25px;color: #999;font-size: 12px;}
     .ui-form-upload{background-color: #fff;overflow:hidden;}
     .ui-form-upload>span{height: 80px;width: 80px;display: inline-block;line-height:80px;font-size:40px;text-align:center;margin:5px;float:left;}
-    .ui-form-upload .img-del{float:left;}
+    .ui-form-upload .img-del{float:left;background-size: cover;position:relative;}
+    .ui-form-upload .img-del:after{content:"x";position: absolute;text-align: center;line-height: 15px;font-size: 12px;color: #fff;background-color: #f00;width: 15px;height: 15px;left: 0;top: 0;z-index: 9;display: block;}
     .ui-form-item input{padding-left: 50px;}
     .ui-form-item-textarea{height: 250px;}
     .ui-form-item-textarea textarea{padding-left: 0;border: 1px solid #ccc;padding: 5px;height: 170px;}
@@ -51,6 +52,13 @@
                  <p>点击"+"添加照片,点击"x"可删除照片</p>
              </div>
         </div>
+        <div class="demo-block"> 
+            <div class="ui-btn-wrap">
+                <button class="ui-btn-lg ui-btn-primary">
+                    确定
+                </button>
+            </div>
+        </div>
     </section>
     <!-- /.ui-container-->
     <script src="../lib/zepto.min.js"></script>
@@ -63,7 +71,7 @@
         BWK.Weixin(null,function(){
              $('.img-upload').on('click',function(){
                  wx.chooseImage({
-                     count: 1, // 默认9
+                     count: 5, // 默认9
                      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                      success: function (res) {
@@ -75,7 +83,7 @@
                                      //alert(localIds);
                                      dealImg = res.serverId;
                                      _uploadServer(dealImg); 
-                                     $('.ui-form-upload .img-upload').after('<span class="img-del" data-url="'+localIds[0]+'" style="background-image:url('+localIds[0]+')"></span>');
+                                    
                                  },
                                  fail: function (res) {
                                    alert(JSON.stringify(res));
@@ -94,19 +102,17 @@
             $(this).remove();
             return false;
         });
-        $('#btn-submit').click(function(){
+        $('.ui-btn-lg').click(function(){
             
             var params  = {};
-             params.id=BWK.UrlParams.id;
-           
-            params.images = [];
+            //params.id=BWK.UrlParams.id;
+            params.images2 = [];
             $('.ui-form-upload .img-del').each(function(i,dom){
-                params.images.push($(dom).data('url'));
+                params.images2.push($(dom).data('url'));
             });
-            
-			
-            BWK.api.inform.addInform(params,function(data){
-                BWK.Utils.Tips('爆料提交成功！');                
+
+            BWK.api.inform.updateInform(BWK.UrlParams.id,params,function(data){
+                BWK.Utils.Tips('爆料处理成功！');                
             });
 
         })
@@ -115,8 +121,8 @@
     });
     
     function _uploadServer(dealImg){
-        BWK.api.weixin.uploadImage({serverId:dealImg},function(){
-            //DONOTHING
+        BWK.api.weixin.uploadImage(dealImg,function(data){
+        	 $('.ui-form-upload .img-upload').after('<span class="img-del" data-url="'+data.content+'" style="background-image:url('+data.content+')"></span>');
         })
     }    
    

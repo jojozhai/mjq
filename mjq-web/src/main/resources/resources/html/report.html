@@ -252,8 +252,8 @@
     
     function _uploadServer(dealImg){
         BWK.api.weixin.uploadImage({serverId:dealImg},function(data){
-            
-        })
+           JSON.stringify(data); 
+        });
     }    
     function _dealInfo(obj) {
         //TODO

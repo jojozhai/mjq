@@ -74,6 +74,7 @@ public class InformServiceImpl implements InformService {
         BeanUtils.copyProperties(informInfo, inform);
         inform.setStatus(InformStatus.WAITING);
         inform.setUser(userRepository.getOne(informInfo.getUserId()));
+        inform.setCreatedTime(new Date());
         informInfo.setId(informRepository.save(inform).getId());
         return informInfo;
     }

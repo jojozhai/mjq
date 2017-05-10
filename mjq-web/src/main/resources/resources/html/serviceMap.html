@@ -67,8 +67,8 @@
         BWK.api.inform.getLocation({type:BWK.UrlParams.type},function(data){
            if(data&&data.length>0){
         	   pointList = data;
-        	   data.push({longitude:116.324852,latitude:40.057031,desc:'上地十街10号'});
-        	   data.push({longitude:116.676204,latitude:39.889848,desc:'test'});
+        	   //data.push({longitude:116.324852,latitude:40.057031,desc:'上地十街10号'});
+        	   //data.push({longitude:116.676204,latitude:39.889848,desc:'test'});
                 for (var i = 0; i < data.length; i++) {
                     var addObj = data[i];
                     if(addObj.latitude&&addObj.longitude){

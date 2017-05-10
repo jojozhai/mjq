@@ -40,6 +40,16 @@
 			<artifactId>mirage-poster</artifactId>
 			<version>${mirage.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.ymt.mirage</groupId>
+			<artifactId>mirage-article</artifactId>
+			<version>${mirage.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ymt.mirage</groupId>
+			<artifactId>mirage-swiper</artifactId>
+			<version>${mirage.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>

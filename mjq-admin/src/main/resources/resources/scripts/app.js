@@ -8,7 +8,8 @@
  * Main module of the application.
  */
 // 应用主模块
-angular.module('adminApp', [ 'admin', 'userAdminModule', 'paramAdminModule', 'buttonAdminModule',
-		'informAdminModule', 'umeditorModule', 'locationAdminModule', 'posterAdminModule',
+angular.module('adminApp', [ 'admin', 'userAdminModule', 'paramAdminModule',
+		'buttonAdminModule', 'informAdminModule', 'umeditorModule',
+		'tagAdminModule', 'locationAdminModule', 'posterAdminModule',
 		'articleAdminModule', 'feedbackAdminModule', 'commentAdminModule',
 		'accidentAdminModule' ]);

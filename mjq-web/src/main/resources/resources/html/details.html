@@ -76,8 +76,8 @@
         </div>
         <div class="demo-block ui-questwrap"  id="deailResult">
              <ul class="ui-row ui-quest" style="display:none;">
-                  <li class="ui-col ui-col-33">整改时间：</li>
-                  <li class="ui-col ui-col-67 bonusTime"></li>
+                  <!-- <li class="ui-col ui-col-33">整改时间：</li>
+                  <li class="ui-col ui-col-67 bonusTime"></li> -->
                   <!-- <li class="ui-col ui-col-25">相关说明：</li>
                   <li class="ui-col ui-col-75 " >乱扔垃圾的行为已经处理乱扔垃圾的行为已经处理扔垃圾的行为已经处理。</li> -->
               </ul> 
@@ -120,7 +120,7 @@
         	   strR+='</section>';
         	   $("#deailResult").css({'height':'250px'}).empty().append(strR);
            }else{
-        	   $("#deailResult ul").show();
+        	   
         	   if(rlen>0){
             	   for(var i=0;i<rlen;i++){
             		   strrs+='<li><div class="ui-grid-halve-img"><span style="background-image:url('+data.images2[i]+')" ></span></div></li>';
@@ -130,7 +130,8 @@
             	   //strrs+='<li><div class="ui-grid-halve-img"><span style="background:#ddd"></span></div></li>';
                }
         	   $("#resListP").append(strrs);
-        	   $('.bonusTime').text(BWK.Utils.dateformateLocal(new Date(data.bonusTime),"yyyy-M-d h:m:s"));
+        	   //$('.bonusTime').text(BWK.Utils.dateformateLocal(new Date(data.bonusTime),"yyyy-M-d h:m:s"));
+        	   //$("#deailResult ul").show();
            }
            $("#quesTime").html(BWK.Utils.dateformateLocal(new Date(data.createdTime),"yyyy-M-d h:m:s"));
            $("#questType").html(data.type);

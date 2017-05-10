@@ -164,18 +164,18 @@
                      success: function (res) {
                          var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                          if (localIds) {
-                              wx.uploadImage({
-                                 localId: localIds[0],
-                                 success: function (res) {
-                                     //alert(localIds);
-                                     dealImg = res.serverId;
-                                     _uploadServer(dealImg); 
-                                     
-                                 },
-                                 fail: function (res) {
-                                   alert(JSON.stringify(res));
-                                 }
-                              });   
+                        	 for(var i=0;i<localIds.length;i++){
+                        		 wx.uploadImage({
+                                     localId: localIds[i],
+                                     success: function (res) {
+                                         //alert(localIds);
+                                         _uploadServer(res.serverId); 
+                                     },
+                                     fail: function (res) {
+                                       alert(JSON.stringify(res));
+                                     }
+                                  }); 
+                        	 }  
                          }  
                      }
                  });
@@ -224,7 +224,7 @@
             params.latitude = $('#location').data('latitude');
             params.location = $('#location').data('location');
             params.phone = $('#phone').val();
-            if(!(/^1[3|4|5|7|8][0-9]\d{10}$/.test(params.phone))){
+            if(!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(params.phone))){
             	alert('手机号码不符合规范！');
             	return false;
             }

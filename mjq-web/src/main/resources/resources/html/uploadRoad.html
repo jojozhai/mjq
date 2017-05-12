@@ -19,7 +19,7 @@
     .ui-form-upload .img-del{float:left;background-size: cover;position:relative;}
     .ui-form-upload .img-del:after{content:"x";position: absolute;text-align: center;line-height: 15px;font-size: 12px;color: #fff;background-color: #f00;width: 15px;height: 15px;left: 0;top: 0;z-index: 9;display: block;}
     .ui-form-item input{padding-left: 50px;}
-    .ui-form-item-textarea{height: 250px;}
+    .ui-form-item-textarea{height: 200px;}
     .ui-form-item-textarea textarea{padding-left: 0;border: 1px solid #ccc;padding: 5px;height: 170px;}
     #location{max-width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
     .ui-select:after{right: 10px;}
@@ -40,11 +40,18 @@
 <body ontouchstart>
     <header class="ui-header ui-header-positive ui-border-b">
         <i class="ui-icon-return" onclick="history.back()"></i>
-        <h1>处理上传</h1>
+        <h1>交通事故</h1>
         <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a>
     </header>
     <section class="ui-container">
         <div class="demo-block ui-sign-lesson">
+            <div class="ui-form-item ">
+                <label class="">标题</label>
+                <input type="text" id="title" class="ui-thWd" placeholder="输入事故标题" />
+            </div>
+            <div class="ui-form-item ui-form-item-textarea">
+                <textarea id="content" placeholder="请输入事故描述(10-100字)"></textarea>
+            </div>
              <div class="ui-form-upload">
                  <span class="img-upload" style="background-image:url(http://placeholder.qiniudn.com/190x284)">+</span>
              </div>
@@ -67,7 +74,7 @@
     <script>
     
     Zepto(function($) {
-    	
+        
         BWK.Weixin(null,function(){
              $('.img-upload').on('click',function(){
                  wx.chooseImage({
@@ -77,8 +84,8 @@
                      success: function (res) {
                          var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                          if (localIds) {
-                        	 for(var i=0;i<localIds.length;i++){
-                        		 wx.uploadImage({
+                             for(var i=0;i<localIds.length;i++){
+                                 wx.uploadImage({
                                      localId: localIds[i],
                                      success: function (res) {
                                          //alert(localIds);
@@ -88,7 +95,7 @@
                                        alert(JSON.stringify(res));
                                      }
                                   }); 
-                        	 }  
+                             }  
                          }  
                      }
                  });
@@ -106,15 +113,26 @@
             
             var params  = {};
             //params.id=BWK.UrlParams.id;
+            params.content = $('#content').val();
+            params.title = $('#title').val();
             params.images2 = [];
             $('.ui-form-upload .img-del').each(function(i,dom){
                 params.images2.push($(dom).data('url'));
             });
 
-            BWK.api.inform.updateInform(BWK.UrlParams.id,params,function(data){
-                BWK.Utils.Tips('爆料处理成功！');                
-            });
+            if(!params.title){
+                alert('请输入事故标题！');
+                return false;
+            }
+            if(!params.content){
+                alert('请输入事故描述！');
+                return false;
+            }
 
+            BWK.api.inform.postTrafficInfo(params,function(data){
+                BWK.Utils.Tips('事故已发布！');                
+            });
+            return false;
         })
       
 
@@ -122,7 +140,7 @@
     
     function _uploadServer(dealImg){
         BWK.api.weixin.uploadImage(dealImg,function(data){
-        	 $('.ui-form-upload .img-upload').after('<span class="img-del" data-url="'+data.content+'" style="background-image:url('+data.content+')"></span>');
+             $('.ui-form-upload .img-upload').after('<span class="img-del" data-url="'+data.content+'" style="background-image:url('+data.content+')"></span>');
         })
     }    
    

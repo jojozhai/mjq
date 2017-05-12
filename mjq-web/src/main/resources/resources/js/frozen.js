@@ -90,6 +90,13 @@ BWK.api = function() {
 		return api.Get('../article/'+id,params,callback);
 	}
 
+	api.inform.getTrafficInfos = function(params,callback){
+		return api.Get('../accident',params,callback);
+	}
+	api.inform.postTrafficInfo = function(params,callback){
+		return api.Post('../accident',params,callback);
+	}
+
 	api.user = {};
 	api.user.getUser = function(params,callback){
 		return api.Get('../user/current',params,callback);
@@ -267,7 +274,8 @@ BWK.Weixin = function(params,callback){
 	            'previewImage',
 	            'uploadImage',
 	            'downloadImage',
-	            'chooseWXPay' //微信支付
+	            'chooseWXPay', //微信支付
+	            'getLocation'
 			]
 		};	
 		$.extend(defaultConfig,data);

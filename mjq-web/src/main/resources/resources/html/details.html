@@ -112,9 +112,9 @@
            }
            $(".ui-slider-content").css({width:len*100+'%'}).append(str);
           
-           if(stat==="WAITING"){
+           if(stat!="FINISH"){
         	   strR+='<section class="ui-notice"><i></i><p>暂无数据</p>';
-        	   if(BWK.UrlParams.type==="oper"){
+        	   if(BWK.UrlParams.type==="oper" && stat=="WORKING"){
         	      strR+='<div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div>'
         	   }
         	   strR+='</section>';

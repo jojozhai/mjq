@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-    <title>全民城管</title>
+    <title>美丽马驹桥</title>
     <link rel="stylesheet" href="../css/frozen.css">
     <link rel="stylesheet" href="../css/public.css">
     
@@ -183,7 +183,6 @@
             });
             
             $('#openLocation').on('click',function(){
-            	
             	var lon = $('#location').data('longitude') ;
             	var lat = $('#location').data('latitude') ;
             	if(lon&&lat){
@@ -224,12 +223,16 @@
             params.latitude = $('#location').data('latitude');
             params.location = $('#location').data('location');
             params.phone = $('#phone').val();
-            if(!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(params.phone))){
-            	alert('手机号码不符合规范！');
-            	return false;
-            }
             params.bonus=0;
 			
+            if(params.phone && !(/^1[3|4|5|7|8][0-9]\d{8}$/.test(params.phone))){
+                alert('手机号码不符合规范！');
+                return false;
+            }
+            if(!params.content){
+                alert('你好，爆料内容不能为空！');
+                return false;
+            }
             BWK.api.inform.addInform(params,function(data){
                 BWK.Utils.Tips('爆料提交成功！');                
             });

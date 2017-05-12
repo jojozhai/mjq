@@ -7,7 +7,7 @@
     <title>美丽马驹桥</title>
     <link rel="stylesheet" href="../css/frozen.css">
     <link rel="stylesheet" href="../css/public.css">
-    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+    <!-- <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" /> -->
     
     <style type="text/css">
     .maparea{width: 100%;}
@@ -42,13 +42,14 @@
     <script src="../js/frozen.js"></script>
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6SG69EZfR9rUD4QN4Kyb5UBXfplqOquI"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+    <!--  <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script> -->
 	
     <script>
     var configObj = {
     		'car':'停车查询',
     		'wc':'公厕查询'
     };
+    var currentPosition;
     var bm,myGeo,pointList;
     Zepto(function($) {
     	$('#allmap').height($(window).height()-195);
@@ -56,70 +57,94 @@
     		$('header h1').text(configObj[BWK.UrlParams.type]);	
     	}
     	bm = new BMap.Map("allmap");
-        var point = new BMap.Point(116.404, 39.915);
-        bm.centerAndZoom(point, 15);
-        bm.enableInertialDragging();
-        bm.enableScrollWheelZoom(); 
-        var top_right_navigation = new BMap.NavigationControl({
+      var point = new BMap.Point(116.404, 39.915);
+      
+      bm.centerAndZoom(point, 15);
+      bm.enableInertialDragging();
+      bm.enableScrollWheelZoom(); 
+        
+      var top_right_navigation = new BMap.NavigationControl({
           // 靠左上角位置
           anchor: BMAP_ANCHOR_TOP_LEFT,
           // LARGE类型
           type: BMAP_NAVIGATION_CONTROL_LARGE,
           // 启用显示定位
           enableGeolocation: true
-        });
-        bm.addControl(top_right_navigation);
-        myGeo = new BMap.Geocoder();
+      });
+      bm.addControl(top_right_navigation);
+        
+      myGeo = new BMap.Geocoder();
 
-        BWK.api.inform.getLocation({type:BWK.UrlParams.type},function(data){
+      BWK.api.inform.getLocation({type:BWK.UrlParams.type},function(data){
            if(data&&data.length>0){
-        	   pointList = data;
-        	   //data.push({longitude:116.324852,latitude:40.057031,desc:'上地十街10号'});
-        	   //data.push({longitude:116.676204,latitude:39.889848,desc:'test'});
-                for (var i = 0; i < data.length; i++) {
-                    var addObj = data[i];
-                    if(addObj.latitude&&addObj.longitude){
-                        var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
-                        addMarker(tmpPoint,addObj.desc,i);
-                    }else{
-                        (function(){
-                        	var tmpIndex = i;
-                        	myGeo.getPoint(addObj.desc, function(point){
-	                            if (point) {
-	                                bm.centerAndZoom(point, 15);
-	                                addMarker(point,data[tmpIndex].desc,tmpIndex);
-	                            }else{
-	                                alert("您选择地址没有解析到结果!");
-	                            }
-                        }, "北京市");})();
-                    }
-                } 
+              pointList = data;
+              for (var i = 0; i < data.length; i++) {
+                  var addObj = data[i];
+                  if(addObj.latitude&&addObj.longitude){
+                      var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
+                      addMarker(tmpPoint,addObj.desc,i);
+                  }else{
+                      (function(){
+                      	var tmpIndex = i;
+                      	myGeo.getPoint(addObj.desc, function(point){
+                            if (point) {
+                                bm.centerAndZoom(point, 15);
+                                addMarker(point,data[tmpIndex].desc,tmpIndex);
+                            }else{
+                                alert("您选择地址没有解析到结果!");
+                            }
+                      }, "北京市");})();
+                  }
+              } 
            } 
         });
 
         // 添加定位控件
-        var geolocationControl = new BMap.GeolocationControl();
-        geolocationControl.addEventListener("locationSuccess", function(e){
-          
-        });
-        geolocationControl.addEventListener("locationError",function(e){
-          // 定位失败事件
-          alert(e.message);
-        });
-        bm.addControl(geolocationControl);
-
+        var geolocationControl = new BMap.GeolocationControl({
+              showAddressBar:false,
+              enableAutoLocation:true
+          });
+          geolocationControl.addEventListener("locationSuccess", function(e){
+             currentPosition = {lng:e.point.lng,lat:e.point.lat};
+          });
+          geolocationControl.addEventListener("locationError",function(e){
+            // 定位失败事件
+            alert(e.message);
+          });
+          bm.addControl(geolocationControl); 
+          geolocationControl.location();
         
         $('.resultAdds ul').on('click','li',function(e){
-          var desc = $(this).find('.add').text();
-          var addObj = pointList[$(this).data('index')];
-          var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
-          showSearchInfoWindow(desc,tmpPoint);
-          return false;
+            var desc = $(this).find('.add').text();
+            var addObj = pointList[$(this).data('index')];
+            var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
+            //showSearchInfoWindow(desc,tmpPoint);
+            showInfoWindow(desc,tmpPoint);
+            return false;
         });
-  
-    });
 
-  
+        $('.resultAdds ul').on('click','button',function(e){
+            var index = $(this).closest('li').data('index');
+            console.log(pointList[index]);
+            var endPoint = pointList[index];
+            location.href = 'line.html?startLng='+currentPosition.lng+'&startLat='+currentPosition.lat+'&endLng='+endPoint.longitude+'&endLat='+endPoint.latitude;
+            return false;
+        }); 
+
+    });
+    
+    var opts = {
+      width : 150,     // 信息窗口宽度
+      height: 0,     // 信息窗口高度
+      //title : "地址信息" , // 信息窗口标题
+      enableMessage:false
+    }
+    
+    function showInfoWindow(desc,point){
+      var infoWindow = new BMap.InfoWindow(desc,opts);  // 创建信息窗口对象 
+      bm.openInfoWindow(infoWindow,point); //开启信息窗口
+      bm.centerAndZoom(point, 15);
+    }
     var searchInfoWindow = null;
     function showSearchInfoWindow(desc,point){
    		searchInfoWindow = new BMapLib.SearchInfoWindow(bm, desc, {
@@ -144,28 +169,19 @@
       marker.desc = desc;
       marker.index =index;
       marker.addEventListener("click",function(e){
-            //var p = marker.getPosition();       //获取marker的位置
             var p = e.target;
             var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-            showSearchInfoWindow(marker.desc,point);
-            //addInfoMsg(marker.desc,e);                              
+            showInfoWindow(marker.desc,point)
+            //showSearchInfoWindow(marker.desc,point);
       });
-      var str = '<li data-index="'+index+'" class="ui-border-b"><p><i class="ui-icon-pin"></i><span class="add">'+desc+'</span></li>';
+      var str = '<li data-index="'+index+'" class="ui-border-b"><p><i class="ui-icon-pin"></i><span class="add">'+desc+'</span><button class="ui-btn" style="float: right;">到这去</button></li>';
    	  $('.resultAdds ul').append(str);
    	  
-   	  
    	  if(index==0){
-   		 showSearchInfoWindow(desc,point);
+   		   showInfoWindow(desc,point)
+       //showSearchInfoWindow(desc,point);
    	  }
     }
-   /*  function addInfoMsg(desc,e){
-        var p = e.target;
-        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-        var infoWindow = new BMap.InfoWindow(desc,opts);  // 创建信息窗口对象 
-        bm.openInfoWindow(infoWindow,point); //开启信息窗口
-    } */
-
-    
     
     </script>
 </body>

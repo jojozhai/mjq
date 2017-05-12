@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ import com.ymt.mjq.service.AccidentService;
  */
 @RestController
 @Profile("!admin")
-public class AccidentAdminController {
+public class AccidentWeixinController {
 	
 	@Autowired
 	private AccidentService accidentService;
@@ -28,6 +29,11 @@ public class AccidentAdminController {
 	@RequestMapping(value = "/accident", method = RequestMethod.GET)
 	public Page<AccidentInfo> query(AccidentInfo accidentInfo, Pageable pageable) {
 		return accidentService.query(accidentInfo, pageable);
+	}
+	
+	@RequestMapping(value = "/accident", method = RequestMethod.POST)
+	public AccidentInfo create(@RequestBody AccidentInfo accidentInfo) {
+		return accidentService.create(accidentInfo);
 	}
 	
 }

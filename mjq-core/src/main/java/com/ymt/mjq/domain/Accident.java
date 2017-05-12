@@ -3,6 +3,9 @@
  */
 package com.ymt.mjq.domain;
 
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 import com.ymt.pz365.data.jpa.domain.DomainImpl;
@@ -29,7 +32,8 @@ public class Accident extends DomainImpl {
 	/**
 	 * 图片
 	 */
-	private String image;
+	@ElementCollection
+	private List<String> images;
 	/**
 	 * @return the title
 	 */
@@ -68,16 +72,16 @@ public class Accident extends DomainImpl {
 		this.dateTime = dateTime;
 	}
 	/**
-	 * @return the image
+	 * @return the images
 	 */
-	public String getImage() {
-		return image;
+	public List<String> getImages() {
+		return images;
 	}
 	/**
-	 * @param image the image to set
+	 * @param images the images to set
 	 */
-	public void setImage(String image) {
-		this.image = image;
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 
 }

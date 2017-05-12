@@ -3,6 +3,8 @@
  */
 package com.ymt.mjq.dto;
 
+import java.util.List;
+
 /**
  * @author zhailiang
  *
@@ -25,7 +27,7 @@ public class AccidentInfo {
 	/**
 	 * 图片
 	 */
-	private String image;
+	private List<String> images;
 	/**
 	 * @return the title
 	 */
@@ -63,16 +65,16 @@ public class AccidentInfo {
 		this.dateTime = dateTime;
 	}
 	/**
-	 * @return the image
+	 * @return the images
 	 */
-	public String getImage() {
-		return image;
+	public List<String> getImages() {
+		return images;
 	}
 	/**
-	 * @param image the image to set
+	 * @param images the images to set
 	 */
-	public void setImage(String image) {
-		this.image = image;
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 	/**
 	 * @return the id

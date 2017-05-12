@@ -115,9 +115,9 @@
             //params.id=BWK.UrlParams.id;
             params.content = $('#content').val();
             params.title = $('#title').val();
-            params.images2 = [];
+            params.images = [];
             $('.ui-form-upload .img-del').each(function(i,dom){
-                params.images2.push($(dom).data('url'));
+                params.images.push($(dom).data('url'));
             });
 
             if(!params.title){

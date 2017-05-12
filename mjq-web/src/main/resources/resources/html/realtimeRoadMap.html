@@ -45,6 +45,11 @@
            ctrl.setAnchor(BMAP_ANCHOR_TOP_RIGHT);
            ctrl.show();
 
+          var top_right_navigation = new BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_LEFT, 
+            type: BMAP_NAVIGATION_CONTROL_SMALL});
+          map.addControl(top_right_navigation);
+
           var geolocationControl = new BMap.GeolocationControl({
               showAddressBar:false,
               enableAutoLocation:true

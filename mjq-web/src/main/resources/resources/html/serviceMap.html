@@ -60,7 +60,14 @@
         bm.centerAndZoom(point, 15);
         bm.enableInertialDragging();
         bm.enableScrollWheelZoom(); 
-        var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+        var top_right_navigation = new BMap.NavigationControl({
+          // 靠左上角位置
+          anchor: BMAP_ANCHOR_TOP_LEFT,
+          // LARGE类型
+          type: BMAP_NAVIGATION_CONTROL_LARGE,
+          // 启用显示定位
+          enableGeolocation: true
+        });
         bm.addControl(top_right_navigation);
         myGeo = new BMap.Geocoder();
 
@@ -89,6 +96,27 @@
                 } 
            } 
         });
+
+        // 添加定位控件
+        var geolocationControl = new BMap.GeolocationControl();
+        geolocationControl.addEventListener("locationSuccess", function(e){
+          
+        });
+        geolocationControl.addEventListener("locationError",function(e){
+          // 定位失败事件
+          alert(e.message);
+        });
+        bm.addControl(geolocationControl);
+
+        
+        $('.resultAdds ul').on('click','li',function(e){
+          var desc = $(this).find('.add').text();
+          var addObj = pointList[$(this).data('index')];
+          var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
+          showSearchInfoWindow(desc,tmpPoint);
+          return false;
+        });
+  
     });
 
   
@@ -123,18 +151,12 @@
             //addInfoMsg(marker.desc,e);                              
       });
       var str = '<li data-index="'+index+'" class="ui-border-b"><p><i class="ui-icon-pin"></i><span class="add">'+desc+'</span></li>';
- 	  $('.resultAdds ul').append(str);
- 	  $('.resultAdds ul').on('click','li',function(e){
- 		  var desc = $(this).find('.add').text();
- 		  var addObj = pointList[$(this).data('index')];
- 		 var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
- 		 showSearchInfoWindow(desc,tmpPoint);
- 		 return false;
- 	  });
- 	  
- 	  if(index==0){
- 		 showSearchInfoWindow(desc,point);
- 	  }
+   	  $('.resultAdds ul').append(str);
+   	  
+   	  
+   	  if(index==0){
+   		 showSearchInfoWindow(desc,point);
+   	  }
     }
    /*  function addInfoMsg(desc,e){
         var p = e.target;

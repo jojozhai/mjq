@@ -14,7 +14,7 @@
   ul.ui-list{
     height: 200px;
     overflow-y: scroll;
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
   }
 </style>
  </head>
@@ -45,12 +45,11 @@
            ctrl.setAnchor(BMAP_ANCHOR_TOP_RIGHT);
            ctrl.show();
 
-           var geolocationControl = new BMap.GeolocationControl({
+          var geolocationControl = new BMap.GeolocationControl({
               showAddressBar:false,
               enableAutoLocation:true
-           });
+          });
           geolocationControl.addEventListener("locationSuccess", function(e){
-
              map.centerAndZoom(new BMap.Point(e.point.lng,e.point.lat), 16); 
           });
           geolocationControl.addEventListener("locationError",function(e){

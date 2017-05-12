@@ -7,8 +7,6 @@
     <title>美丽马驹桥</title>
     <link rel="stylesheet" href="../css/frozen.css">
     <link rel="stylesheet" href="../css/public.css">
-    
-    
     <style type="text/css">
     .demo-block{background-color: #f6f6f6;}
     .ui-form{margin: 0 10px;background-color: #f6f6f6;}
@@ -195,7 +193,7 @@
 	                        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 	                        var speed = res.speed; // 速度，以米/每秒计
 	                        var accuracy = res.accuracy; // 位置精度	                        
-	                        _mapInfo(longitude,latitude);
+	                        _mapInfo(longitude,latitude,true);
 	                    }
 	                });
             	}
@@ -234,7 +232,8 @@
                 return false;
             }
             BWK.api.inform.addInform(params,function(data){
-                BWK.Utils.Tips('爆料提交成功！');                
+                BWK.Utils.Tips('爆料提交成功！');   
+                location.href="reportList.html";             
             });
 
         })
@@ -260,20 +259,7 @@
         });
     }    
     function _dealInfo(obj) {
-        //TODO
-  //       $('.ui-userImg').css({'background-image':'url('+obj.headimgurl+')'});  
-  //       $("#realname").val(obj.realname);
-  //       $("input[name='sex'][value='"+obj.sex+"']").prop('checked',true);
-  //       $("#participationCount").val(obj.participationCount);
-  //       $("#birthday").val(obj.birthday);
-  //       $("#mobile").val(obj.mobile);
-  //       $("#weixin").val(obj.weixin);
-  //       $("#nickname").val(obj.nickname);
-		// $("#job").val(obj.job);
- 	// 	$('#province').val(obj.province||"0");   
-  //       if(obj.province&&obj.city){
-  //       	BWK.Utils.createCity(cityDict[obj['province']].sub,obj['city']);
-  //       }
+       
     }
     var bm,marker,geoc;
     function _mapInfo(longitude,latitude,needConvert){
@@ -345,6 +331,7 @@
                 $('#selectAddInfo').data('location',str);
             }); 
         }
+
         geoc = new BMap.Geocoder();  
          //坐标转换完之后的回调函数
         translateCallback = function (data){
@@ -375,8 +362,28 @@
         }else{
             translateCallback({points:[ggPoint],status:0})
         }
+
+          var geolocationControl = new BMap.GeolocationControl({
+              showAddressBar:false,
+              enableAutoLocation:false
+          });
+          geolocationControl.addEventListener("locationSuccess", function(e){
+             map.centerAndZoom(new BMap.Point(e.point.lng,e.point.lat), 16); 
+             var addComp = e.addressComponents;
+             var str = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+            $('#selectAddInfo').text(str);
+            $('#selectAddInfo').data('longitude',p.lng);
+            $('#selectAddInfo').data('latitude',p.lat);
+            $('#selectAddInfo').data('location',str);
+          });
+          geolocationControl.addEventListener("locationError",function(e){
+            // 定位失败事件
+            alert(e.message);
+          });
+          map.addControl(geolocationControl);   
+
+
     }
-    
     
     </script>
 </body>

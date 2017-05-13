@@ -45,7 +45,8 @@ public class InformWeixinController {
 	}
 
 	@RequestMapping(value = "/inform/{id}", method = RequestMethod.PUT)
-	public InformInfo update(@RequestBody InformInfo informInfo) {
+	public InformInfo update(@PathVariable Long id, @RequestBody InformInfo informInfo) {
+		informInfo.setId(id);
 		return informService.update(informInfo);
 	}
 	

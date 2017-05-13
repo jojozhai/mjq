@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,11 @@ public class AccidentWeixinController {
 	@RequestMapping(value = "/accident", method = RequestMethod.GET)
 	public Page<AccidentInfo> query(AccidentInfo accidentInfo, Pageable pageable) {
 		return accidentService.query(accidentInfo, pageable);
+	}
+	
+	@RequestMapping(value = "/accident/{id}", method = RequestMethod.GET)
+	public AccidentInfo getInfo(@PathVariable Long id) {
+		return accidentService.getInfo(id);
 	}
 	
 	@RequestMapping(value = "/accident", method = RequestMethod.POST)

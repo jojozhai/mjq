@@ -94,18 +94,20 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 	}
 	
 	$scope.bonus = function(inform) {
-		if(inform.bonus > 0){
-			commonService.showMessage("不可重复发放红包");
-		}else{
+		commonService.showConfirm("您确认要办结此爆料?").result.then(function() {
 			informRestService.bonus({id:inform.id}).$promise.then(function(data){
-				commonService.showMessage("红包发放成功");
+				commonService.showMessage("办结成功");
 			});
-		}
+		});
+		
+		
 	}
 	
 	$scope.accept = function(inform) {
-		informRestService.accept({id:inform.id}).$promise.then(function(data){
-			commonService.showMessage("爆料已受理");
+		commonService.showConfirm("您确认要受理此爆料?").result.then(function() {
+			informRestService.accept({id:inform.id}).$promise.then(function(data){
+				commonService.showMessage("爆料已受理");
+			});
 		});
 	}
 	
@@ -130,7 +132,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 		}else if(text == 'WORKING'){
 			return "已受理";
 		}else if(text == 'WORKED'){
-			return "已受理";
+			return "已处理";
 		}else if(text == 'FINISH'){
 			return "已办结";
 		}

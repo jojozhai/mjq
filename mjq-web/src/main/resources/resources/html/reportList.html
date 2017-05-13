@@ -72,20 +72,23 @@
            Zepto(function($){
                 BWK.api.inform.getInforms({status:"FINISH",'sort':'createdTime,desc'},function(data){
                     var dealObj = data.content||[];
-                    _creatList(dealObj,$('#reportList'));
+                    _creatList(dealObj,$('#reportList'),"all");
                 }); 
                 //查询个人信息
                 BWK.api.user.getUser(null,function(data){
                     BWK.api.inform.getInforms({userId:data.id,'sort':'createdTime,desc'},function(data){
                         var dealObj = data.content||[];
-                        _creatList(dealObj,$('#my_reports'));
+                        _creatList(dealObj,$('#my_reports'),"part");
                     });
                 });
           
            });
-           function _creatList(datas,dom){
+           function _creatList(datas,dom,length){
              var str="";
              var len=datas.length;
+            if(length=="part"){
+                len=2;
+            }
              for(var i=0;i<len;i++){
                  var report = datas[i];
                  str += '<li id="'+report.id+'"><div class="ui-grid-halve-img">';

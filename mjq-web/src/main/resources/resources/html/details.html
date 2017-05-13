@@ -30,6 +30,7 @@
         #deailResult{overflow:hidden;background:#f5f5f5;}
         .ui-notice{z-index:100;}
         .ui-quest{background:#fff;}
+        .ui-btn-s{padding: 0 2px;}
         </style>
     </head>
 
@@ -57,6 +58,8 @@
                   <li class="ui-col ui-col-67" id="questCont">小区垃圾乱堆放，遍地都是严重的影响民众的生活起居，望整治。</li>
                   <li class="ui-col ui-col-33">爆料时间：</li>
                   <li class="ui-col ui-col-67" id="quesTime">2017-4-29 13:00</li>
+                  <li class="ui-col ui-col-33">爆料地址：</li>
+                  <li class="ui-col ui-col-67" ><span id="location"></span><a class="ui-btn-s" id="toLine" style="display:none;">到这里去</a></li>
               </ul>
           </div>
            <div class="demo-block ch-title">
@@ -102,6 +105,7 @@
            var stat=data.status;
            var slider;
            
+          $('#location').text(data.location);
            if(len>0){
         	   for(var i=0;i<len;i++){
                   str+='<li><span style="background-image:url('+data.images[i]+')"></span></li>';
@@ -115,9 +119,10 @@
            if(stat!="FINISH"){
         	   strR+='<section class="ui-notice"><i></i><p>暂无数据</p>';
         	   if(BWK.UrlParams.type==="oper" && stat=="WORKING"){
-        	      strR+='<div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div>'
+        	      strR+='<div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div>';
         	   }
         	   strR+='</section>';
+             $('#toLine').show().attr('href','line.html?endLng='+data.longitude+'&endLat='+data.latitude);
         	   $("#deailResult").css({'height':'250px'}).empty().append(strR);
            }else{
         	   

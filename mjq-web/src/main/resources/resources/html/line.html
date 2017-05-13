@@ -71,16 +71,35 @@
 			}
 
 	    });
-	    // 百度地图API功能
-		// map = new BMap.Map("l-map");
-		// map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
 
-	    start = new BMap.Point(BWK.UrlParams.startLng,BWK.UrlParams.startLat);
+	    // 百度地图API功能
+		map = new BMap.Map("l-map");
+		map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
+	    var geolocationControl = new BMap.GeolocationControl({
+	        showAddressBar:false,
+	        enableAutoLocation:true
+	    });
+	    geolocationControl.addEventListener("locationSuccess", function(e){
+	       	if(!start){
+	       		start = new BMap.Point(e.point.lng,e.point.lat); 
+	        	busLine();
+	       	}
+	    });
+	    geolocationControl.addEventListener("locationError",function(e){
+	        // 定位失败事件
+	        alert(e.message);
+	    });
+	    map.addControl(geolocationControl); 
+	    
+		if(BWK.UrlParams.startLng&&BWK.UrlParams.startLat){
+			start = new BMap.Point(BWK.UrlParams.startLng,BWK.UrlParams.startLat);	
+		}
 		end = new BMap.Point(BWK.UrlParams.endLng,BWK.UrlParams.endLat);
 		busLine();
     });
 
     function busLine(){
+    	if(!start||!end)return;
     	map = new BMap.Map("l-map");
 		map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
     	var transit = new BMap.TransitRoute(map, {
@@ -89,12 +108,14 @@
 		transit.search(start, end);
     }
     function carLine(){
+    	if(!start||!end)return;
     	map = new BMap.Map("l-map");
 		map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
     	var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map,autoViewport: true,panel: "result-car"}});
 		driving.search(start, end);
     }
     function walkLine(){
+    	if(!start||!end)return;
     	map = new BMap.Map("l-map");
 		map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
     	var walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true,panel: "result-walk"}});

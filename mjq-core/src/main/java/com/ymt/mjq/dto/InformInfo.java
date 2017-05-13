@@ -15,6 +15,7 @@ import com.ymt.mjq.domain.InformStatus;
 public class InformInfo {
 	
 	private Long id;
+	private Long number;
 	/**
 	 * 
 	 */
@@ -280,6 +281,18 @@ public class InformInfo {
 	 */
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
+	}
+	/**
+	 * @return the number
+	 */
+	public Long getNumber() {
+		return number;
+	}
+	/**
+	 * @param number the number to set
+	 */
+	public void setNumber(Long number) {
+		this.number = number;
 	}
 	
 }

@@ -96,7 +96,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 	$scope.bonus = function(inform) {
 		commonService.showConfirm("您确认要办结此爆料?").result.then(function() {
 			informRestService.bonus({id:inform.id}).$promise.then(function(data){
-				commonService.showMessage("办结成功");
+				commonService.showMessage("爆料已办结");
 			});
 		});
 		

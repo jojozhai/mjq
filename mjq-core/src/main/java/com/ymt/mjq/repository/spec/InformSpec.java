@@ -21,6 +21,7 @@ public class InformSpec extends PzSimpleSpecification<Inform, InformInfo> {
 	@Override
 	protected void addCondition(QueryWraper<Inform> queryWraper) {
 		
+		addEqualsCondition(queryWraper, "id");
 		addEqualsCondition(queryWraper, "type");
 		addEqualsCondition(queryWraper, "status");
 		addEqualsCondition(queryWraper, "userId", "user.id");

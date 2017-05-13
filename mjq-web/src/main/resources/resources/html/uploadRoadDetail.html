@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <title>美丽马驹桥</title>
+        <link rel="stylesheet" href="../css/frozen.css">
+        <link rel="stylesheet" href="../css/public.css">
+        <script src="../lib/zepto.min.js"></script>
+        <script src="../js/frozen.js"></script>
+        <style type="text/css">
+        body{background-color: #f5f5f5;}
+        .demo-item{margin-top:10px; }
+        .demo-item .demo-desc{font-size: 16px;color:#000;}
+        #content{padding: 10px;font-size: 14px;}
+        </style>
+    </head>
+
+    <body ontouchstart>
+        <header class="ui-header ui-header-positive ui-border-b">
+             <i class="ui-icon-return" onclick="history.back()"></i>
+            <h1>交通事故详情</h1>
+            <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a>
+        </header>
+        <section class="ui-container">
+            <div class="demo-block">
+              <div class="ui-form-item ">
+                  <label class="">标题：</label>
+                  <input type="text" id="title" class="ui-thWd" placeholder="输入事故标题" readonly/>
+              </div>      
+            </div>
+            <div class="demo-item">
+                  <p class="demo-desc ui-border-t">事故描述</p>
+                  <div class="demo-block">
+                      <section class="ui-panel ui-panel-pure ui-border-t" id="content">
+                          特色rdsfsdfsf 
+                      </section>
+                  </div>
+              </div>
+            <div class="demo-block ui-questwrap">
+                <ul class="ui-grid-halve" style="display:none;">
+                    
+                </ul>
+            </div>
+        </section>
+        <script>
+        Zepto(function($) {
+        	 BWK.api.inform.getTrafficInfo(BWK.UrlParams.id,null,function(data){
+        		 var obj=data||[];
+        		 $('#title').val(obj.title);
+             $('#content').text(obj.content);
+             if(obj.images&&obj.images.length>0){
+                $('.ui-grid-halve').show();
+                $.each(obj.images,function(i,img){
+                    $('.ui-grid-halve').append('<li><div class="ui-grid-halve-img"><span style="background-image:url('+img+')"></span></div></li>');
+                 })
+             }
+             
+        	 });   
+        });
+        </script>
+    </body>
+</html>

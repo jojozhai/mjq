@@ -70,10 +70,14 @@
                   var str = '';
                 for (var i = 0; i < dealObj.length; i++) {
                   var obj = dealObj[i];
-                  str += '<li class="ui-border-t"><div class="ui-list-img"><span style="background-image:url('+(obj.images[0]?obj.images[0]:'http://placeholder.qiniudn.com/200x136')+')"></span>';
+                  str += '<li id="'+obj.id+'" class="ui-border-t"><div class="ui-list-img"><span style="background-image:url('+(obj.images[0]?obj.images[0]:'http://placeholder.qiniudn.com/200x136')+')"></span>';
                   str += '</div><div class="ui-list-info"><h4>'+obj.content+'</h4></div></li>';
                 };
                 $('.ui-list').append(str);
+                $('.ui-list').on('click','li',function(){
+                    location.href = 'uploadRoadDetail.html?id='+$(this).attr('id');
+                    return false;
+                });
               }
           }); 
           

@@ -93,6 +93,9 @@ BWK.api = function() {
 	api.inform.getTrafficInfos = function(params,callback){
 		return api.Get('../accident',params,callback);
 	}
+	api.inform.getTrafficInfo = function(id,params,callback){
+		return api.Get('../accident/'+id,params,callback);
+	}
 	api.inform.postTrafficInfo = function(params,callback){
 		return api.Post('../accident',params,callback);
 	}

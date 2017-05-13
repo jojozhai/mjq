@@ -43,7 +43,7 @@
         <section class="ui-container">
             <div class="demo-block">
                 <div class="ui-slider">
-                    <ul class="ui-slider-content" >
+                    <ul class="ui-slider-content" id="nav-slid">
                       <!--   <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
                         <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
                         <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li> -->
@@ -67,15 +67,13 @@
               <h2>整改结果</h2>
           </div>
           <div class="demo-block">
-            <ul class="ui-grid-halve" id="resListP">
-               <!--  
-               <li>
-                    <div class="ui-grid-halve-img">
-                        <span style="background-image:url(http://placeholder.qiniudn.com/290x160)"></span>
-                    </div>
-                </li>
-                -->
-            </ul>
+            <div class="ui-slider ui-cslid">
+                    <ul class="ui-slider-content" id="resListP">
+                      <!--   <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
+                        <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
+                        <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li> -->
+                    </ul>
+                </div>  
         </div>
         <div class="demo-block ui-questwrap"  id="deailResult">
              <ul class="ui-row ui-quest" style="display:none;">
@@ -88,10 +86,10 @@
         </section>
         <script>
         Zepto(function($) {
-        	 BWK.api.inform.getInform(BWK.UrlParams.id,null,function(data){
-        		 var datas=data||[];
-        		 slidPic(datas) 
-        	 });   
+           BWK.api.inform.getInform(BWK.UrlParams.id,null,function(data){
+             var datas=data||[];
+             slidPic(datas) 
+           });   
         })
 
 
@@ -107,36 +105,35 @@
            
           $('#location').text(data.location);
            if(len>0){
-        	   for(var i=0;i<len;i++){
+             for(var i=0;i<len;i++){
                   str+='<li><span style="background-image:url('+data.images[i]+')"></span></li>';
                }
            }else{
-        	   len = 1;
-        	   str+='<li><span style="background:#eee"></span></li>';
+             len = 1;
+             str+='<li><span style="background:#eee"></span></li>';
            }
-           $(".ui-slider-content").css({width:len*100+'%'}).append(str);
+           $("#nav-slid").css({width:len*100+'%'}).append(str);
           
            if(stat!="FINISH"){
-        	   strR+='<section class="ui-notice"><i></i><p>暂无数据</p>';
-        	   if(BWK.UrlParams.type==="oper" && stat=="WORKING"){
-        	      strR+='<div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div>';
-        	   }
-        	   strR+='</section>';
+             strR+='<section class="ui-notice"><i></i><p>暂无数据</p>';
+             if(BWK.UrlParams.type==="oper" && stat=="WORKING"){
+                strR+='<div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div>';
+             }
+             strR+='</section>';
              $('#toLine').show().attr('href','line.html?endLng='+data.longitude+'&endLat='+data.latitude);
-        	   $("#deailResult").css({'height':'250px'}).empty().append(strR);
+             $("#deailResult").css({'height':'250px'}).empty().append(strR);
            }else{
-        	   
-        	   if(rlen>0){
-            	   for(var i=0;i<rlen;i++){
-            		   strrs+='<li><div class="ui-grid-halve-img"><span style="background-image:url('+data.images2[i]+')" ></span></div></li>';
+             
+             if(rlen>0){
+                 for(var i=0;i<rlen;i++){
+                     strrs+='<li><span style="background-image:url('+data.images2[i]+')"></span></li>';
                    }
                }else{
-            	   strrs+='<li><div class="ui-grid-halve-img"><span style="background:#ccc"></span></div></li>';
-            	   //strrs+='<li><div class="ui-grid-halve-img"><span style="background:#ddd"></span></div></li>';
+                 strrs+='<li><span style="background:#ccc"></span></li>';
                }
-        	   $("#resListP").append(strrs);
-        	   //$('.bonusTime').text(BWK.Utils.dateformateLocal(new Date(data.bonusTime),"yyyy-M-d h:m:s"));
-        	   //$("#deailResult ul").show();
+             $("#resListP").css({width:len*100+'%'}).append(strrs);
+             //$('.bonusTime').text(BWK.Utils.dateformateLocal(new Date(data.bonusTime),"yyyy-M-d h:m:s"));
+             //$("#deailResult ul").show();
            }
            $("#quesTime").html(BWK.Utils.dateformateLocal(new Date(data.createdTime),"yyyy-M-d h:m:s"));
            $("#questType").html(data.type);
@@ -144,6 +141,12 @@
            
            
            slider = new fz.Scroll('.ui-slider', {
+                role: 'slider',
+                indicator: true,
+                autoplay: true,
+                interval: 3000
+            });
+           slider = new fz.Scroll('.ui-cslid', {
                 role: 'slider',
                 indicator: true,
                 autoplay: true,

@@ -14,7 +14,8 @@
         .ui-header{background-color: #4aacff;}
         .ui-banner img{width: 100%;}
         .ui-returnlg{position: absolute;top:12px;left: 15px;width: 20px;}
-        .ui-slider{padding-top: 44%;}
+        .ui-slider{padding-top:0;height:200px;}
+        .ui-slider-content{height:200px;}
         .ui-slider-indicators{width:auto;right:inherit;left: 50%;margin-left: -20px;}
         .ui-col{background: none;border:none;text-align: left;}
         .ui-questwrap{margin:10px;}
@@ -31,6 +32,7 @@
         .ui-notice{z-index:100;}
         .ui-quest{background:#fff;}
         .ui-btn-s{padding: 0 2px;}
+        
         </style>
     </head>
 
@@ -120,7 +122,9 @@
                 strR+='<div class="ui-notice-btn"><a  href="upload.html?id='+BWK.UrlParams.id+'" class="ui-btn-primary ui-btn-lg" id="upLimg">开始处理</a></div>';
              }
              strR+='</section>';
-             $('#toLine').show().attr('href','line.html?endLng='+data.longitude+'&endLat='+data.latitude);
+             if(data.longitude&&data.latitude){
+                $('#toLine').show().attr('href','line.html?endLng='+data.longitude+'&endLat='+data.latitude); 
+             }
              $("#deailResult").css({'height':'250px'}).empty().append(strR);
            }else{
              

@@ -112,9 +112,10 @@
             });
 
             BWK.api.inform.updateInform(BWK.UrlParams.id,params,function(data){
-                BWK.Utils.Tips('爆料处理成功！');                
+                BWK.Utils.Tips('爆料处理成功！');    
+                history.back();            
             });
-
+            return false;
         })
       
 

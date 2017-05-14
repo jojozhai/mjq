@@ -7,8 +7,6 @@
     <title>美丽马驹桥</title>
     <link rel="stylesheet" href="../css/frozen.css">
     <link rel="stylesheet" href="../css/public.css">
-    
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6SG69EZfR9rUD4QN4Kyb5UBXfplqOquI"></script>
     <style type="text/css">
     	body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
 		#l-map{height:300px;width:100%;}
@@ -37,15 +35,24 @@
 		    </ul>
 		</div>
     </section>
+    <div class="ui-loading-block">
+        <div class="ui-loading-cnt">
+            <i class="ui-loading-bright"></i>
+            <p>正在加载中...</p>
+        </div>
+    </div>
     <script src="../lib/zepto.min.js"></script>
     <script src="../js/frozen.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6SG69EZfR9rUD4QN4Kyb5UBXfplqOquI"></script>
     <script type="text/javascript">
-
     //var start = {longitude:BWK.UrlParams.startLng,latitude:BWK.UrlParams.startLat};
     //var end = {longitude:BWK.UrlParams.endLng,latitude:BWK.UrlParams.endLat};
     var map,start,end;
     var transit,driving,walking;
     Zepto(function(){
+    	
+    	$('.ui-loading-block').dialog('show');
     	$('.ui-tab-content').height($(window).height()-90-300);
     	var tab = new fz.Scroll('.ui-tab', {
 	        role: 'tab',
@@ -69,37 +76,53 @@
 				default:
 				  null
 			}
-
 	    });
 
 	    // 百度地图API功能
 		map = new BMap.Map("l-map");
 		map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
-	    var geolocationControl = new BMap.GeolocationControl({
-	        showAddressBar:false,
-	        enableAutoLocation:true
-	    });
-	    geolocationControl.addEventListener("locationSuccess", function(e){
-	       	if(!start){
-	       		start = new BMap.Point(e.point.lng,e.point.lat); 
-	        	busLine();
-	       	}
-	    });
-	    geolocationControl.addEventListener("locationError",function(e){
-	        // 定位失败事件
-	        alert(e.message);
-	    });
-	    map.addControl(geolocationControl); 
-	    
+	    end = new BMap.Point(BWK.UrlParams.endLng,BWK.UrlParams.endLat);
 		if(BWK.UrlParams.startLng&&BWK.UrlParams.startLat){
 			start = new BMap.Point(BWK.UrlParams.startLng,BWK.UrlParams.startLat);	
+			busLine();
+		}else{
+			BWK.Weixin(null,function(){
+	    		 wx.getLocation({
+	                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+	                success: function (res) {
+	                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+	                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+	                    var speed = res.speed; // 速度，以米/每秒计
+	                    var accuracy = res.accuracy; // 位置精度	                        
+	                    start = new BMap.Point(longitude,latitude);	
+	                    convertPoint();
+	                }
+	            });
+	        });
 		}
-		end = new BMap.Point(BWK.UrlParams.endLng,BWK.UrlParams.endLat);
-		busLine();
+
     });
+	
+
+	var translateCallback;	
+	function convertPoint(){
+		translateCallback = function (data){
+          if(data.status === 0) {
+            start = data.points[0];
+            busLine();
+          }
+        }
+        setTimeout(function(){
+            var convertor = new BMap.Convertor();
+            var pointArr = [];
+            pointArr.push(start);
+            convertor.translate(pointArr, 1, 5, translateCallback)
+        }, 1000); 
+	}	
 
     function busLine(){
     	if(!start||!end)return;
+    	$('.ui-loading-block').dialog('hide');
     	map = new BMap.Map("l-map");
 		map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
     	var transit = new BMap.TransitRoute(map, {

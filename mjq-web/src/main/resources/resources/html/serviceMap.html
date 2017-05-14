@@ -101,7 +101,7 @@
 
         // 添加定位控件
         var geolocationControl = new BMap.GeolocationControl({
-              showAddressBar:false,
+              showAddressBar:true,
               enableAutoLocation:true
           });
           geolocationControl.addEventListener("locationSuccess", function(e){
@@ -119,6 +119,7 @@
             var addObj = pointList[$(this).data('index')];
             var tmpPoint = new BMap.Point(addObj.longitude, addObj.latitude);
             //showSearchInfoWindow(desc,tmpPoint);
+            //setIcon(icon: Icon)
             showInfoWindow(desc,tmpPoint);
             return false;
         });
@@ -171,7 +172,12 @@
       marker.addEventListener("click",function(e){
             var p = e.target;
             var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-            showInfoWindow(marker.desc,point)
+            if(currentPosition && point){
+            	location.href = 'line.html?startLng='+currentPosition.lng+'&startLat='+currentPosition.lat+'&endLng='+point.lng+'&endLat='+point.lat;	
+            }else{
+            	alert('暂时无法定位，请稍后！');
+            }
+            //showInfoWindow(marker.desc,point)
             //showSearchInfoWindow(marker.desc,point);
       });
       var str = '<li data-index="'+index+'" class="ui-border-b"><p><i class="ui-icon-pin"></i><span class="add">'+desc+'</span><button class="ui-btn" style="float: right;">到这去</button></li>';

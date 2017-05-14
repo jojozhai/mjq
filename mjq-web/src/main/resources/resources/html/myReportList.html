@@ -28,41 +28,17 @@
 
     <body ontouchstart>
         <header class="ui-header ui-header-positive ui-border-b">
-            <i class="ui-icon-return" onclick="history.back()"></i>
-            <h1>整改查询</h1>
+            <img src="../img/back_lg.png" class="ui-returnlg" onclick="history.back()">
+            <h1>我的爆料</h1>
             <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a>
         </header>
         <section class="ui-container">
-            <div class="ui-panel ui-panel-simple">
-                <h2 class="ui-arrowlink">
-                    <img src="../img/react_s.png">
-                    <span>我的爆料</span>
-                    <span class="ui-panel-title-tips"><a href="myReportList.html">更多</a></span>
-                </h2>
-            </div>
-            <div class="demo-block ui-replist">
-                <ul class="ui-grid-halve" id="my_reports">
-                   <!--  <li>
-                        <div class="ui-grid-halve-img">
-                            <span style="background-image:url(../img/mj_mt.png)"></span>
-                        </div>
-                        <div class="ui-reptxt">
-                            <h5 class="ui-nowrap-multi">
-                               问题类别:<span class="c_blue">小区垃圾乱堆放</span>
-                            </h5>
-                            <h5 class="ui-nowrap">
-                                爆料时间:<span class="c_bg">2017-04-29</span>
-                            </h5>
-                        </div>
-                    </li> -->
-                </ul>
-            </div>
-            <div class="ui-panel ui-panel-simple">
+           <!--  <div class="ui-panel ui-panel-simple">
                 <h2>
                     <img src="../img/react_s.png">
                     <span>爆料广场</span>
                 </h2>
-            </div>
+            </div> -->
              <div class="demo-block ui-replist">
                 <ul class="ui-grid-halve" id="reportList"></ul>
             </div>
@@ -70,25 +46,18 @@
 
         <script>
            Zepto(function($){
-                BWK.api.inform.getInforms({status:"FINISH",'sort':'createdTime,desc'},function(data){
-                    var dealObj = data.content||[];
-                    _creatList(dealObj,$('#reportList'),"all");
-                }); 
                 //查询个人信息
                 BWK.api.user.getUser(null,function(data){
                     BWK.api.inform.getInforms({userId:data.id,'sort':'createdTime,desc'},function(data){
                         var dealObj = data.content||[];
-                        _creatList(dealObj,$('#my_reports'),"part");
+                        _creatList(dealObj,$('#reportList'));
                     });
                 });
           
            });
-           function _creatList(datas,dom,length){
+           function _creatList(datas,dom){
              var str="";
              var len=datas.length;
-            if(length=="part"){
-                len=2;
-            }
              for(var i=0;i<len;i++){
                  var report = datas[i];
                  str += '<li id="'+report.id+'"><div class="ui-grid-halve-img">';

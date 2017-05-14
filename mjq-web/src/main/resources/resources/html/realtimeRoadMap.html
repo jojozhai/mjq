@@ -64,7 +64,7 @@
           });
           map.addControl(geolocationControl);   
 
-          BWK.api.inform.getTrafficInfos(null,function(data){
+          BWK.api.inform.getTrafficInfos({'sort':'createdTime,desc'},function(data){
               var dealObj = data.content||[];
               if(dealObj.length>0){
                   var str = '';

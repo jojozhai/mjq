@@ -223,6 +223,14 @@
             params.phone = $('#phone').val();
             params.bonus=0;
 			
+            if(!params.type){
+                alert('爆料类型不能为空！');
+                return false;
+            }
+            if(!params.longitude || !params.latitude){
+                alert('爆料地址不能为空！');
+                return false;
+            }
             if(params.phone && !(/^1[3|4|5|7|8][0-9]\d{8}$/.test(params.phone))){
                 alert('手机号码不符合规范！');
                 return false;

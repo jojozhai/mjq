@@ -33,6 +33,7 @@
         </section><!-- /.ui-container-->
     <script src="../lib/zepto.min.js"></script>
     <script src="../js/frozen.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.js"></script>
     <script type="text/javascript">
@@ -51,18 +52,32 @@
             type: BMAP_NAVIGATION_CONTROL_SMALL});
           map.addControl(top_right_navigation);
 
-          var geolocationControl = new BMap.GeolocationControl({
-              showAddressBar:false,
-              enableAutoLocation:true
+          // var geolocationControl = new BMap.GeolocationControl({
+          //     showAddressBar:false,
+          //     enableAutoLocation:true
+          // });
+          // geolocationControl.addEventListener("locationSuccess", function(e){
+          //    map.centerAndZoom(new BMap.Point(e.point.lng,e.point.lat), 16); 
+          // });
+          // geolocationControl.addEventListener("locationError",function(e){
+          //   // 定位失败事件
+          //   alert(e.message);
+          // }); 
+          // map.addControl(geolocationControl);   
+
+          BWK.Weixin(null,function(){
+              wx.getLocation({
+                  type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                  success: function (res) {
+                      var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                      var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                      var speed = res.speed; // 速度，以米/每秒计
+                      var accuracy = res.accuracy; // 位置精度                          
+                      start = new BMap.Point(longitude,latitude); 
+                      convertPoint();
+                  }
+              });
           });
-          geolocationControl.addEventListener("locationSuccess", function(e){
-             map.centerAndZoom(new BMap.Point(e.point.lng,e.point.lat), 16); 
-          });
-          geolocationControl.addEventListener("locationError",function(e){
-            // 定位失败事件
-            alert(e.message);
-          });
-          map.addControl(geolocationControl);   
 
           BWK.api.inform.getTrafficInfos({'sort':'createdTime,desc'},function(data){
               var dealObj = data.content||[];
@@ -83,6 +98,21 @@
           
        });
          
+       var translateCallback; 
+        function convertPoint(){
+          translateCallback = function (data){
+                if(data.status === 0) {
+                  start = data.points[0];
+                  map.centerAndZoom(start,15);
+                }
+              }
+              setTimeout(function(){
+                  var convertor = new BMap.Convertor();
+                  var pointArr = [];
+                  pointArr.push(start);
+                  convertor.translate(pointArr, 1, 5, translateCallback)
+              }, 1000); 
+        }  
        
     </script>
  <body>

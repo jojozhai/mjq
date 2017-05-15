@@ -11,7 +11,7 @@
 
 <style type="text/css">
   ul.ui-list{
-    height: 200px;
+    height: 235px;
     overflow-y: scroll;
     margin-bottom: 0 !important;
   }
@@ -39,7 +39,8 @@
     <script type="text/javascript">
        var map;
        Zepto(function(){
-           $('#container').height($(window).height()-45-200);
+    	   BWK.Utils.loading.show();
+           $('#container').height($(window).height()-45-235);
            map = new BMap.Map("container");
            var ctrl = new BMapLib.TrafficControl({
                showPanel: false //是否显示路况提示面板
@@ -104,20 +105,22 @@
           
        });
          
-       var translateCallback; 
+       var translateCallback,marker; 
         function convertPoint(){
           translateCallback = function (data){
-                if(data.status === 0) {
-                  start = data.points[0];
-                  map.centerAndZoom(start,15);
-                }
-              }
-              setTimeout(function(){
-                  var convertor = new BMap.Convertor();
-                  var pointArr = [];
-                  pointArr.push(start);
-                  convertor.translate(pointArr, 1, 5, translateCallback)
-              }, 1000); 
+             if(data.status === 0) {
+             	 marker = new BMap.Marker(data.points[0],{raiseOnDrag:false});
+                  map.addOverlay(marker);
+                  map.setCenter(data.points[0]);
+             }
+           }
+           setTimeout(function(){
+        	   BWK.Utils.loading.hide();
+               var convertor = new BMap.Convertor();
+               var pointArr = [];
+               pointArr.push(start);
+               convertor.translate(pointArr, 1, 5, translateCallback)
+           }, 1000); 
         }  
        
     </script>

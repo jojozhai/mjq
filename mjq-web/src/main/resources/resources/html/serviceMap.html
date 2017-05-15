@@ -13,7 +13,7 @@
     .maparea{width: 100%;}
     .BMap_bubble_content{font-size:14px;}
     .ui-icon-pin{display:inline-block;line-height:30px;}
-    ul.ui-list{overflow-y:scroll;height:150px;}
+    ul.ui-list{overflow-y:scroll;height:200px;}
     ul li span.add{
     	vertical-align: top;
     	line-height: 30px;
@@ -52,7 +52,7 @@
     var currentPosition;
     var bm,myGeo,pointList;
     Zepto(function($) {
-    	$('#allmap').height($(window).height()-195);
+    	$('#allmap').height($(window).height()-245);
     	if(BWK.UrlParams.type){
     		$('header h1').text(configObj[BWK.UrlParams.type]);	
     	}

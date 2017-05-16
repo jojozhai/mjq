@@ -3,6 +3,8 @@
  */
 package com.ymt.mjq.service.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,6 +40,7 @@ public class AccidentServiceImpl implements AccidentService {
     public AccidentInfo create(AccidentInfo accidentInfo) {
         Accident accident = new Accident();
         BeanUtils.copyProperties(accidentInfo, accident);
+        accident.setCreatedTime(new Date());
         accidentInfo.setId(accidentRepository.save(accident).getId());
         return accidentInfo;
     }

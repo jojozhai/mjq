@@ -3,6 +3,7 @@
  */
 package com.ymt.mjq.dto;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,6 +13,7 @@ import java.util.List;
 public class AccidentInfo {
 	
 	private Long id;
+	private Date createdTime;
 	/**
 	 * 名称
 	 */
@@ -87,6 +89,18 @@ public class AccidentInfo {
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+	/**
+	 * @return the createdTime
+	 */
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	/**
+	 * @param createdTime the createdTime to set
+	 */
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 
 }

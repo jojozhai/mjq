@@ -21,7 +21,7 @@
     <body ontouchstart>
         <header class="ui-header ui-header-positive ui-border-b">
             <h1>办事指南</h1>
-            <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a>
+            <!-- <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a> -->
         </header>
         <section class="ui-container">
             <div class="demo-block">
@@ -38,7 +38,7 @@
               <div class="demo-item">
 		        <p class="demo-desc"></p>
 		        <div class="demo-block">
-		            <ul class="ui-list ui-list-text ui-border-tb ui-list-link ui-list-article">
+		            <ul class="ui-list  ui-border-tb  ui-list-article">
 					   
 					</ul>
 		           
@@ -64,6 +64,7 @@
         		}
         }
         Zepto(function($) {
+        	
         	if(BWK.UrlParams.type){
         		$('header h1,.demo-desc').text(objConfig[BWK.UrlParams.type]['name']);	
         		BWK.api.inform.getArticle({tagId:objConfig[BWK.UrlParams.type]['tagId']},function(data){
@@ -95,6 +96,8 @@
                     interval: 3000
                 });
             }
+            $('.ui-slider').height($(window).width()*3/4);
+        	$('.ui-slider img').height($(window).width()*3/4);
         }
         function slidPic(data){
 		  var str = "";
@@ -103,8 +106,8 @@
         		for(var i=0;i<data.length;i++){
         			var dealObj = data[i];
         			str += '<li id="'+data[i].id+'" class="ui-border-t"><div class="ui-list-img"><span style="background-image:url('+(dealObj.image?dealObj.image:'http://placeholder.qiniudn.com/200x136')+')"></span>'
-        			str += '</div><div class="ui-list-info"><h4 class="ui-nowrap">'+dealObj.title+'</h4>';
-        			str += '<p class="ui-nowrap">'+(dealObj.content?dealObj.content.substring(0,50):'')+'</p></div></li>';
+        			str += '</div><div class="ui-list-info"><h4 class="">'+dealObj.title+'</h4>';
+        			str += '<p class="ui-nowrap">'+BWK.Utils.dateformateLocal(new Date(dealObj.createdTime||null),"yyyy-M-d hh:mm:ss")+'</p><p>阅读量：'+(dealObj.readCountPlus+dealObj.readCount)+'</p></div></li>';
         		}   
            } 
            $('.ui-list-article').append(str);

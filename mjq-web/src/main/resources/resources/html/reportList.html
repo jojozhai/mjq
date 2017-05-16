@@ -29,14 +29,14 @@
     <body ontouchstart>
         <header class="ui-header ui-header-positive ui-border-b">
             <i class="ui-icon-return" onclick="history.back()"></i>
-            <h1>整改查询</h1>
-            <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a>
+            <h1>创城行动</h1>
+            <!-- <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a> -->
         </header>
         <section class="ui-container">
             <div class="ui-panel ui-panel-simple">
                 <h2 class="ui-arrowlink">
                     <img src="../img/react_s.png">
-                    <span>我的爆料</span>
+                    <span>我的随手拍</span>
                     <span class="ui-panel-title-tips"><a href="myReportList.html">更多</a></span>
                 </h2>
             </div>
@@ -60,7 +60,7 @@
             <div class="ui-panel ui-panel-simple">
                 <h2>
                     <img src="../img/react_s.png">
-                    <span>爆料广场</span>
+                    <span>创城在行动</span>
                 </h2>
             </div>
              <div class="demo-block ui-replist">
@@ -94,8 +94,7 @@
                  str += '<li id="'+report.id+'"><div class="ui-grid-halve-img">';
                  str += '<span style="background-image:url('+(report['images'][0]||'http://placehold.it/200x150')+')"></span>';
                  str += '</div><div class="ui-reptxt"><h5 class="ui-nowrap-multi">';
-                 str += '问题类别:<span class="c_blue">'+report.type+'</span></h5><h5 class="ui-nowrap">';         
-                 str += '爆料时间:<span class="c_bg">'+BWK.Utils.dateformateLocal(new Date(report.createdTime),"yyyy-M-d")+'</span></h5></div></li>';         
+                 str += '整改问题类别:<span class="c_blue">'+report.type+'</span></h5></div></li>';         
              }
              dom.empty().append(str);
              dom.on('click','li',function(){

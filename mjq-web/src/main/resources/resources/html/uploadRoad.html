@@ -49,9 +49,9 @@
                 <label class="">标题</label>
                 <input type="text" id="title" class="ui-thWd" placeholder="输入事故标题" />
             </div>
-            <div class="ui-form-item ui-form-item-textarea">
+            <!-- <div class="ui-form-item ui-form-item-textarea">
                 <textarea id="content" placeholder="请输入事故描述(10-100字)"></textarea>
-            </div>
+            </div> -->
              <div class="ui-form-upload">
                  <span class="img-upload" style="background-image:url(http://placeholder.qiniudn.com/190x284)">+</span>
              </div>
@@ -113,7 +113,7 @@
             
             var params  = {};
             //params.id=BWK.UrlParams.id;
-            params.content = $('#content').val();
+            //params.content = $('#content').val();
             params.title = $('#title').val();
             params.images = [];
             $('.ui-form-upload .img-del').each(function(i,dom){
@@ -124,10 +124,10 @@
                 alert('请输入事故标题！');
                 return false;
             }
-            if(!params.content){
+            /* if(!params.content){
                 alert('请输入事故描述！');
                 return false;
-            }
+            } */
 
             BWK.api.inform.postTrafficInfo(params,function(data){
                 BWK.Utils.Tips('事故已发布！');                

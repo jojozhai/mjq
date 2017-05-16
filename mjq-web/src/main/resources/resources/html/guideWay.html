@@ -55,7 +55,7 @@
         			tagId:1
         		},
         		"2":{
-        			name:'马桥动态',
+        			name:'马驹桥动态',
         			tagId:2
         		},
         		"3":{
@@ -107,7 +107,7 @@
         			var dealObj = data[i];
         			str += '<li id="'+data[i].id+'" class="ui-border-t"><div class="ui-list-img"><span style="background-image:url('+(dealObj.image?dealObj.image:'http://placeholder.qiniudn.com/200x136')+')"></span>'
         			str += '</div><div class="ui-list-info"><h4 class="">'+dealObj.title+'</h4>';
-        			str += '<p class="ui-nowrap">'+BWK.Utils.dateformateLocal(new Date(dealObj.createdTime||null),"yyyy-M-d hh:mm:ss")+'</p><p>阅读量：'+(dealObj.readCountPlus+dealObj.readCount)+'</p></div></li>';
+        			str += '<p class="ui-nowrap"><span>'+BWK.Utils.dateformateLocal(new Date(dealObj.createdTime||null),"yyyy-M-d hh:mm:ss")+'</span><span style="float:right;">阅读量：'+(dealObj.readCountPlus+dealObj.readCount)+'</span></p></div></li>';
         		}   
            } 
            $('.ui-list-article').append(str);

@@ -20,7 +20,7 @@
     <body ontouchstart>
         <header class="ui-header ui-header-positive ui-border-b">
             <i class="ui-icon-return" onclick="history.back()"></i>
-            <h1></h1>
+            <h1></h1> 
             <a class="ui-btn" href="../index.html" style="color:#000;">回首页</a>
         </header>
         <section class="ui-container">
@@ -29,8 +29,12 @@
 
         <script>
         Zepto(function($) {
+        	 
+        	 if(['1212','1214'].indexOf(BWK.UrlParams.id)<0){
+        		 $('header').hide();
+        		 $('section').css({'borer-top':'0'});
+        	 }
         	 BWK.api.inform.getArticleInfo(BWK.UrlParams.id,null,function(data){
-                 $('header h1').text(data.title);
                  $('.articl-content').html(data.content);
              });
         })

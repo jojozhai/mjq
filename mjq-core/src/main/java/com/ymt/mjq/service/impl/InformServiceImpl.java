@@ -48,7 +48,10 @@ public class InformServiceImpl implements InformService {
 	@Autowired
 	private ParamService paramService;
 	
-	@Value("${mjq.message.template.response:_6bvHV_RPuTy_O3Yfht2CLrq9Pl4KU0sq0hbzC9Sj60}")
+	/**
+	 * 受理通知
+	 */
+	@Value("${mjq.message.template.response:4IS4Y_FcUaSMsfSW3lDLOLysM-9JcAnfbv1zc5zMG9E}")
 	private String responseTemplateId;
 	
 	@Value("${mjq.message.template.finish:LH5l1Ty58TCNUOkyoU2x4pG3lbWPQSC4ysYoBys7ziE}")
@@ -156,20 +159,20 @@ public class InformServiceImpl implements InformService {
 		String url = "http://wx.norej.cn/mjq-weixin/html/details.html?id="+inform.getId()+"&type=oper";
 		TemplateMessage message = new TemplateMessage(toUser, responseTemplateId, url);
 		message.addValue("first", paramService.getParam("template_response_first", "有新的爆料，请点击查看详情").getValue());
-		message.addValue("keyword1", inform.getId().toString());
-		message.addValue("keyword2", new DateTime().toString("yyyy-MM-dd"));
-		message.addValue("keyword3", paramService.getParam("template_response_keyword3", "马驹桥镇政府").getValue());
+		message.addValue("keyword1", new DateTime(inform.getCreatedTime()).toString("yyyy-MM-dd"));
+		message.addValue("keyword2", inform.getContent());
+		message.addValue("keyword3", new DateTime().toString("yyyy-MM-dd"));
 		message.addValue("remark", paramService.getParam("template_response_remark", "请尽快处理").getValue());
 		weixinService.pushTemplateMessage(message);
 	}
 
 	private void sendToUser(Inform inform) throws Exception {
 		TemplateMessage message = new TemplateMessage(inform.getUser().getWeixinOpenId(), responseTemplateId);
-		message.addValue("first", paramService.getParam("template_accept_first", "您好！您举报的问题已被受理，我们会针对您举报问题展开调查，办理进展会及时反馈").getValue());
-		message.addValue("keyword1", inform.getId().toString());
-		message.addValue("keyword2", new DateTime().toString("yyyy-MM-dd"));
-		message.addValue("keyword3", paramService.getParam("template_accept_keyword3", "马驹桥镇政府").getValue());
-		message.addValue("remark", paramService.getParam("template_accept_remark", "感谢您对政府工作的支持").getValue());
+		message.addValue("first", paramService.getParam("template_accept_first", "您好，您反映的问题我们已经受理，我们将安排工作人员尽快依据职责权限进行处理。").getValue());
+		message.addValue("keyword1", new DateTime(inform.getCreatedTime()).toString("yyyy-MM-dd"));
+		message.addValue("keyword2", inform.getContent());
+		message.addValue("keyword3", new DateTime().toString("yyyy-MM-dd"));
+		message.addValue("remark", paramService.getParam("template_accept_remark", "感谢您的支持和参与，我们一起努力，共建美丽马驹桥！").getValue());
 		weixinService.pushTemplateMessage(message);
 	}
 }

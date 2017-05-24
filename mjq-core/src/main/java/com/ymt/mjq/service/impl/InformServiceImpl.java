@@ -5,6 +5,7 @@ package com.ymt.mjq.service.impl;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ymt.mirage.user.repository.UserRepository;
+import com.ymt.mirage.user.service.UserService;
 import com.ymt.mjq.domain.Inform;
 import com.ymt.mjq.domain.InformStatus;
 import com.ymt.mjq.dto.InformInfo;
@@ -48,13 +50,16 @@ public class InformServiceImpl implements InformService {
 	@Autowired
 	private ParamService paramService;
 	
+	@Autowired
+	private UserService userService;
+	
 	/**
 	 * 受理通知
 	 */
 	@Value("${mjq.message.template.response:4IS4Y_FcUaSMsfSW3lDLOLysM-9JcAnfbv1zc5zMG9E}")
 	private String responseTemplateId;
 	
-	@Value("${mjq.message.template.finish:LH5l1Ty58TCNUOkyoU2x4pG3lbWPQSC4ysYoBys7ziE}")
+	@Value("${mjq.message.template.finish:fn2eA5-lO2kIBDVFXiDIDPTu98xYe_TDX2suSmdeOlc}")
 	private String finishTemplateId;
 	
 	
@@ -117,9 +122,14 @@ public class InformServiceImpl implements InformService {
 	public void bonus(Long id) throws Exception {
 		Inform inform = informRepository.findOne(id);
 		if(inform.getStatus().equals(InformStatus.WORKED)) {
-			int amount = new Integer(paramService.getParam("mjq.inform.bonus", "3").getValue());
+			int amount = new Integer(paramService.getParam("mjq.inform.bonus", "5").getValue());
 //			weixinService.sendRedpack(inform.getId(), "127.0.0.1", inform.getUser().getWeixinOpenId(), amount);
-			inform.getUser().setPoint(inform.getUser().getPoint() + amount);
+			if(StringUtils.equals(inform.getType(), "露天烧烤") || StringUtils.equals(inform.getType(), "小广告")){
+				amount = 10;
+			}
+			
+			userService.changePoint(inform.getUser().getId(), amount, "创城随手拍");
+			
 			inform.setBonus(amount);
 			inform.setBonusTime(new Date());
 			inform.setStatus(InformStatus.FINISH);
@@ -127,11 +137,10 @@ public class InformServiceImpl implements InformService {
 			String url = "http://wx.norej.cn/mjq-weixin/html/details.html?id="+id;
 			
 			TemplateMessage message = new TemplateMessage(inform.getUser().getWeixinOpenId(), finishTemplateId, url);
-			message.addValue("first", paramService.getParam("template_finish_first", "您好！您举报的问题已处理完毕。请点击此消息查看办理结果").getValue());
+			message.addValue("first", paramService.getParam("template_finish_first", "您好，您反馈的问题已经处理完成。").getValue());
 			message.addValue("keyword1", inform.getId().toString());
-			message.addValue("keyword2", new DateTime(inform.getBonusTime()).toString("yyyy-MM-dd"));
-			message.addValue("keyword3", paramService.getParam("template_finish_keyword3", "已办结").getValue());
-			message.addValue("remark", paramService.getParam("template_finish_remark", "感谢您对政府工作的支持").getValue());
+			message.addValue("keyword2", paramService.getParam("template_finish_keyword3", "已办结").getValue());
+			message.addValue("remark", paramService.getParam("template_finish_remark", "请点击这个文本框，查看处理结果。感谢您的支持和参与，美丽城市，全民共建！").getValue());
 			weixinService.pushTemplateMessage(message);
 			
 		}else{
@@ -145,10 +154,18 @@ public class InformServiceImpl implements InformService {
 		if(inform.getStatus().equals(InformStatus.WAITING)) {
 			inform.setStatus(InformStatus.WORKING);
 			//推送模板消息
-			String defaultResponseUser = paramService.getParam("default_response", "oua4YwKiGeNNC4-VjcDjIzbs4TWk").getValue();
+			String defaultResponseUser = paramService.getParam("default_response", "oua4YwKiGeNNC4-VjcDjIzbs4TWk,oua4YwHTrfoEHi8MoKtH9Q_U9M4M").getValue();
 			String value = paramService.getParam("response_"+inform.getType(), defaultResponseUser).getValue();
 			sendToUser(inform);
-			sendToResponse(inform, value);
+			if(StringUtils.contains(value, ",")){
+				String[] users = StringUtils.splitByWholeSeparatorPreserveAllTokens(value, ",");
+				for (String user : users) {
+					sendToResponse(inform, user);
+				}
+			}else{
+				sendToResponse(inform, value);
+			}
+			
 		}else{
 			throw new PzException("受理失败,状态异常");
 		}

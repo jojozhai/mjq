@@ -17,13 +17,17 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 }).controller('informManageCtrl', function($scope, $uibModal, informRestService, commonService) {
 	
 	$scope.types = [
-	                {name:'市容环境',value:'市容环境'},
-	                {name:'宣传广告',value:'宣传广告'},
-	                {name:'园林绿化',value:'园林绿化'},
-	                {name:'环卫设施不洁',value:'环卫设施不洁'},
-	                {name:'交通设置破坏',value:'交通设置破坏'},
-	                {name:'市政设施破损',value:'市政设施破损'},
-	                {name:'其他',value:'其他'}
+	                {name:'暴露垃圾',value:'暴露垃圾'},
+	                {name:'道路不洁',value:'道路不洁'},
+	                {name:'公共厕所保障不到位',value:'公共厕所保障不到位'},
+	                {name:'垃圾箱破损',value:'垃圾箱破损、保洁不到位'},
+	                {name:'店外经营',value:'店外（占道）经营'},
+	                {name:'乱堆物料',value:'乱堆物料'},
+	                {name:'露天烧烤',value:'露天烧烤'},
+	                {name:'违规晾晒',value:'违规晾晒'},
+	                {name:'违规设置标语宣传品',value:'违规设置标语宣传品'},
+	                {name:'违规设置牌匾',value:'违规设置牌匾、标识、灯箱等'},
+	                {name:'小广告',value:'小广告'}
 	                ];
 	
 	$scope.statuses = [{name:'未受理',value:'WAITING'},{name:'已受理',value:'WORKING'},{name:'已处理',value:'WORKED'},{name:'已办结',value:'FINISH'}];

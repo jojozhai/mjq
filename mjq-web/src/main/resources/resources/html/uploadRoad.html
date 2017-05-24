@@ -130,7 +130,8 @@
             } */
 
             BWK.api.inform.postTrafficInfo(params,function(data){
-                BWK.Utils.Tips('事故已发布！');                
+                BWK.Utils.Tips('事故已发布！');      
+                location.href="realtimeRoadMap.html";
             });
             return false;
         })

@@ -54,13 +54,17 @@
                             <div class="ui-select">
                                 <select style="color: #a0a0a0;border: 1px solid #ccc;border-radius:20px;padding:5px 10px;background: none;" id="type">
                                     <option value="0" selected="selected">请选择</option>
-                                    <option value="市容环境">市容环境</option>
-                                    <option value="宣传广告">宣传广告</option>
-                                    <option value="园林绿化">园林绿化</option>
-                                    <option value="环卫设施不洁">环卫设施不洁</option>
-                                    <option value="交通设施破坏">交通设施破坏</option>
-                                    <option value="市政设施破损">市政设施破损</option>
-                                    <option value="其他">其他</option>
+                                    <option value="暴露垃圾">暴露垃圾</option>
+                                    <option value="道路不洁">道路不洁</option>
+                                    <option value="公共厕所保障不到位">公共厕所保障不到位</option>
+                                    <option value="垃圾箱破损">垃圾箱破损、保洁不到位</option>
+                                    <option value="店外经营">店外（占道）经营</option>
+                                    <option value="乱堆物料">乱堆物料</option>
+                                    <option value="露天烧烤">露天烧烤</option>
+                                    <option value="违规晾晒">违规晾晒</option>
+                                    <option value="违规设置标语宣传品">违规设置标语宣传品</option>
+                                    <option value="违规设置牌匾">违规设置牌匾、标识、灯箱</option>
+                                    <option value="小广告">小广告</option>
                                 </select>
                             </div>
                         </div>
@@ -80,18 +84,18 @@
                             <p style="text-indent: 30px;" id="location">请点击选择位置</p>
                         </div>
                         <div class="ui-desc">
-                            <p>提供详细的地址方便我们尽快的核实和处理问题</p>
+                            <p>请提供详细的地址，方便我们尽快核实和处理问题</p>
                         </div>
                         <div class="ui-form-item ">
                             <label class="">手机：</label>
                             <input type="text" id="phone" class="ui-thWd" placeholder="输入您的手机号(选填)" />
                         </div>
                         <div class="ui-desc">
-                           <p>*联系方式将会严格保密，仅用于满意度回访</p>
+                           <p>*联系方式我们将会严格保密，仅用于满意度回访和奖品领取</p>
                            <p>温馨提示:</p>
-                           <p>1、爆料案件时详细的问题描述和位置信息可以使我们更快的帮您处理问题。问xxx小学对面的公交站，存在xxx问题</p>
-                           <p>2、拍摄照片时，要能清晰的反应案件详情，最好能拍摄两张以上照片</p>
-                           <p>感谢您的监督和支持，祝您生活愉快！美丽城市，全民共建</p>
+                           <p>1、随手拍的问题描述和位置请尽量具体，可以让我们更快进行处理。</p>
+                           <p>2、拍摄照片时，请尽量清晰反映问题详情，最好能拍摄两张以上照片。</p>
+                           <p>感谢您的支持和参与，行举手之劳，共建美丽马桥！</p>
                        </div>
                     </form>
                 </div>
@@ -223,7 +227,7 @@
             params.phone = $('#phone').val();
             params.bonus=0;
 			
-            if(!params.type){
+            if(!params.type || params.type == '0'){
                 alert('爆料类型不能为空！');
                 return false;
             }

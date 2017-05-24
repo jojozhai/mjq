@@ -12,4 +12,4 @@ angular.module('adminApp', [ 'admin', 'userAdminModule', 'paramAdminModule',
 		'buttonAdminModule', 'informAdminModule', 'umeditorModule',
 		'tagAdminModule', 'locationAdminModule', 'posterAdminModule',
 		'articleAdminModule', 'feedbackAdminModule', 'commentAdminModule',
-		'accidentAdminModule' ]);
+		'accidentAdminModule', 'weixinReplyAdminModule' ]);

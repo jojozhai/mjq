@@ -32,7 +32,7 @@
         	 
         	 if(['1212','1214'].indexOf(BWK.UrlParams.id)<0){
         		 $('header').hide();
-        		 $('section').css({'borer-top':'0'});
+        		 $('section').css({'border-top':'0'});
         	 }
         	 BWK.api.inform.getArticleInfo(BWK.UrlParams.id,null,function(data){
                  $('.articl-content').html(data.content);

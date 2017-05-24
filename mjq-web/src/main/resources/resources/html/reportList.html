@@ -87,7 +87,7 @@
              var str="";
              var len=datas.length;
             if(length=="part"){
-                len=2;
+                len=Math.min(2,len);
             }
              for(var i=0;i<len;i++){
                  var report = datas[i];

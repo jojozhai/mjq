@@ -21,7 +21,7 @@
         <header class="ui-header ui-header-positive ui-border-b">
             <!-- <i class="ui-icon-return" onclick="location.href='../index.html'"></i>  -->
             <h1>实时路况</h1>
-            <a class="ui-btn" href="uploadRoad.html" style="color:#000;">发布事故</a>
+            <a class="ui-btn ui-toPublish" href="uploadRoad.html" style="color:#000;display:none;">发布事故</a>
         </header>
         <section class="ui-container">
            <div id="container" style="width:100%;"></div>
@@ -40,6 +40,13 @@
        var map;
        Zepto(function(){
     	   BWK.Utils.loading.show();
+    	   
+    	   BWK.api.user.getUser(null,function(data){
+              if([1077,1106].indexOf(data.id)>-1){
+            	$('.ui-toPublish').show();  
+              }
+           });
+    	   
            $('#container').height($(window).height()-45-235);
            map = new BMap.Map("container");
            var ctrl = new BMapLib.TrafficControl({

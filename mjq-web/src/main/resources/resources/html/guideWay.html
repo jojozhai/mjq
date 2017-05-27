@@ -80,6 +80,7 @@
 
 		function slidTop(obj){
         	$('.ui-slider-content').css({width:obj.length*100+'%'});
+        	
             $('.ui-slider-content').empty();
             var str = "";
             if(obj&&obj.length>0){
@@ -98,6 +99,8 @@
             }
             $('.ui-slider').height($(window).width()*3/4);
         	$('.ui-slider img').height($(window).width()*3/4);
+        	$('.ui-slider-content').closest('.demo-block').css({'position':'fixed','height':$(window).width()*3/4+'px','width':obj.length*100+'%','z-index':999});
+        	$('.ui-questwrap').css({'margin-top':($(window).width()*3/4+10)+'px'});
         }
         function slidPic(data){
 		  var str = "";

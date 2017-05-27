@@ -37,5 +37,7 @@ public interface InformService {
     void delete(Long id);
 
 	void bonus(Long id) throws Exception;
+
+	void deny(Long id) throws Exception;
     
 }

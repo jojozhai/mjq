@@ -12,6 +12,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 	var config = commonService.getDefaultRestSetting();
 	config.bonus = {url:"inform/:id/bonus", method:"POST"};
 	config.accept = {url:"inform/:id/accept", method:"PUT"};
+	config.accept = {url:"inform/:id/deny", method:"PUT"};
 	return $resource("inform/:id", {id:"@id"}, config);
 //控制器
 }).controller('informManageCtrl', function($scope, $uibModal, informRestService, commonService) {
@@ -111,6 +112,14 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 		commonService.showConfirm("您确认要受理此爆料?").result.then(function() {
 			informRestService.accept({id:inform.id}).$promise.then(function(data){
 				commonService.showMessage("爆料已受理");
+			});
+		});
+	}
+	
+	$scope.deny = function(inform) {
+		commonService.showConfirm("您确认要拒绝此爆料?").result.then(function() {
+			informRestService.deny({id:inform.id}).$promise.then(function(data){
+				commonService.showMessage("爆料拒绝");
 			});
 		});
 	}

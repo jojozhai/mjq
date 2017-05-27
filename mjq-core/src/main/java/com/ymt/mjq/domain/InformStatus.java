@@ -24,5 +24,9 @@ public enum InformStatus {
 	/**
 	 * 已确认处理
 	 */
-	FINISH
+	FINISH,
+	/**
+	 * 拒绝受理
+	 */
+	DENY
 }

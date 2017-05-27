@@ -192,4 +192,22 @@ public class InformServiceImpl implements InformService {
 		message.addValue("remark", paramService.getParam("template_accept_remark", "感谢您的支持和参与，我们一起努力，共建美丽马驹桥！").getValue());
 		weixinService.pushTemplateMessage(message);
 	}
+
+	@Override
+	public void deny(Long id) throws Exception {
+		Inform inform = informRepository.findOne(id);
+		if(inform.getStatus().equals(InformStatus.WAITING)) {
+			inform.setStatus(InformStatus.DENY);
+			//推送模板消息
+			TemplateMessage message = new TemplateMessage(inform.getUser().getWeixinOpenId(), "GPH-Fo1bcl55uH37h-YBCE6ThpZF49r0C_X0PemUzEQ");
+			message.addValue("first", paramService.getParam("template_deny_first", "您好，因问题描述不清、职责范围所限、问题不在马驹桥行政区域内、处理时问题早已解决等原因，您提交的信息暂未被受理。").getValue());
+			message.addValue("keyword1", inform.getId().toString());
+			message.addValue("keyword2", inform.getContent());
+			message.addValue("remark", paramService.getParam("template_deny_remark", "感谢您的理解、支持和参与，如有疑问，请于工作日拨打010-61580181咨询（上午9点至11点，下午14点至17点）。").getValue());
+			weixinService.pushTemplateMessage(message);
+			
+		}else{
+			throw new PzException("拒绝受理失败,状态异常");
+		}
+	}
 }

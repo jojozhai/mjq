@@ -51,6 +51,11 @@ public class InformAdminController {
 	public void accept(@PathVariable Long id) throws Exception {
 		informService.accept(id);
 	}
+	
+	@RequestMapping(value = "/inform/{id}/deny", method = RequestMethod.PUT)
+	public void deny(@PathVariable Long id) throws Exception {
+		informService.deny(id);
+	}
 
 	@RequestMapping(value = "/inform/{id}", method = RequestMethod.PUT)
 	public InformInfo update(@RequestBody InformInfo informInfo) {

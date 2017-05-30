@@ -44,7 +44,7 @@
         </header>
         <section class="ui-container">
             <div class="demo-block">
-                <div class="ui-slider">
+                <div class="ui-slider ui-slider1">
                     <ul class="ui-slider-content" id="nav-slid">
                       <!--   <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
                         <li><span style="background-image:url(http://placeholder.qiniudn.com/640x200)"></span></li>
@@ -135,7 +135,7 @@
                }else{
                  strrs+='<li><span style="background:#ccc"></span></li>';
                }
-             $("#resListP").css({width:len*100+'%'}).append(strrs);
+             $("#resListP").css({width:rlen*100+'%'}).append(strrs);
              //$('.bonusTime').text(BWK.Utils.dateformateLocal(new Date(data.bonusTime),"yyyy-M-d h:m:s"));
              //$("#deailResult ul").show();
            }
@@ -144,13 +144,13 @@
            $("#questCont").html(data.content);
            
            
-           slider = new fz.Scroll('.ui-slider', {
+           slider = new fz.Scroll('.ui-slider1', {
                 role: 'slider',
                 indicator: true,
                 autoplay: true,
                 interval: 3000
             });
-           slider = new fz.Scroll('.ui-cslid', {
+           slider2 = new fz.Scroll('.ui-cslid', {
                 role: 'slider',
                 indicator: true,
                 autoplay: true,

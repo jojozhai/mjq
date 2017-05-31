@@ -36,6 +36,8 @@
         	 }
         	 BWK.api.inform.getArticleInfo(BWK.UrlParams.id,null,function(data){
                  $('.articl-content').html(data.content);
+                 var paramsObj = {'lessonName':data.title,'desc':'','shareUrl':location.href,'imgUrl':data.image}; 
+             	 BWK.WeixinShare(paramsObj);
              });
         })
         </script>

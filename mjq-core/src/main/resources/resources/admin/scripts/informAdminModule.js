@@ -12,7 +12,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 	var config = commonService.getDefaultRestSetting();
 	config.bonus = {url:"inform/:id/bonus", method:"POST"};
 	config.accept = {url:"inform/:id/accept", method:"PUT"};
-	config.accept = {url:"inform/:id/deny", method:"PUT"};
+	config.deny = {url:"inform/:id/deny", method:"PUT"};
 	return $resource("inform/:id", {id:"@id"}, config);
 //控制器
 }).controller('informManageCtrl', function($scope, $uibModal, informRestService, commonService) {

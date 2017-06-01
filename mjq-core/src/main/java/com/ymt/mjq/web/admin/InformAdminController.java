@@ -61,6 +61,11 @@ public class InformAdminController {
 	public InformInfo update(@RequestBody InformInfo informInfo) {
 		return informService.update(informInfo);
 	}
+	
+	@RequestMapping(value = "/inform/{id}/modify", method = RequestMethod.PUT)
+	public InformInfo modify(@RequestBody InformInfo informInfo) {
+		return informService.modify(informInfo);
+	}
 
 	@RequestMapping(value = "/inform/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable Long id) {

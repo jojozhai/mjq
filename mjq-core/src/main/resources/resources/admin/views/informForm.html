@@ -7,53 +7,100 @@
 			<div class="form-group">
 				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;类型:</label>
 				<div class="col-lg-6">
-					<input name="type" ng-model="inform.type" type="text" class="form-control input-sm" placeholder="类型">
+					{{inform.type}}
+					<!-- <input name="type" ng-model="inform.type" type="text" class="form-control input-sm" placeholder="类型"> -->
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;内容:</label>
 				<div class="col-lg-6">
-					<textarea class="form-control input-sm" rows="5" cols="30">{{inform.content}}</textarea>
+					<textarea class="form-control input-sm" rows="5" cols="30" readonly="readonly">{{inform.content}}</textarea>
 				</div>
 			</div>
 			
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;爆料图片:</label>
 				<div class="col-lg-9">
 					<span ng-repeat="image in inform.images track by $index">
 						<img src="{{image}}" width="400px" height="300" style="padding: 10px;"/>
 					</span>
 				</div>
+			</div> -->
+			
+			<div class="form-group">
+				<label class="control-label col-lg-3">爆料图片:</label>
+				<div class="col-lg-9">
+					<div style="border: 1px solid #abcdef; float:left; position: relative; width: 192px; height: 108px; margin-top: 10px; margin-right: 10px;" ng-repeat="image in inform.images track by $index">
+						<div style="position: absolute; ; right: 3px; bottom: 3px;"><button class="btn btn-danger btn-sm" ng-click="removeImg1(image)"><i class="fa fa-times"></i></button></div>
+						<img ng-src="{{image}}" width="192px;"  height="106px;">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-3"></label>
+				<div class="col-lg-9">
+					<div class="fileinput-button">
+						<button class="btn btn-info btn-sm"><i class="fa fa-plus m-right-xs"></i>上传图片</button>
+						<input type="file" id="file2" name="file2" pz-uploader action="doUpload1(files)">
+					</div>
+				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;位置:</label>
 				<div class="col-lg-6">
-					<input name="location" ng-model="inform.location" type="text" class="form-control input-sm" placeholder="位置">
+					{{inform.location}}
+					<!-- <input name="location" ng-model="inform.location" type="text" class="form-control input-sm" placeholder="位置"> -->
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;联系电话:</label>
 				<div class="col-lg-6">
-					<input name="phone" ng-model="inform.phone" type="text" class="form-control input-sm" placeholder="联系电话">
+					{{inform.phone}}
+					<!-- <input name="phone" ng-model="inform.phone" type="text" class="form-control input-sm" placeholder="联系电话"> -->
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;处理状态:</label>
 				<div class="col-lg-6">
-					<input name="status" ng-model="inform.status" type="text" class="form-control input-sm" placeholder="处理状态">
+					{{inform.status | informStatus}}
+					<!-- <input name="status" ng-model="inform.status" type="text" class="form-control input-sm" placeholder="处理状态"> -->
 				</div>
 			</div>
 			
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="control-label col-lg-3"><span class="text_red">*</span>&nbsp;处理后图片:</label>
 				<div class="col-lg-9">
 					<span ng-repeat = "image in inform.images2 track by $index">
 						<img src="{{image}}" width="400px" height="300"/>
 					</span>
 				</div>
+			</div> -->
+			
+			<div class="form-group">
+				<label class="control-label col-lg-3">处理后图片:</label>
+				<div class="col-lg-9">
+					<div style="border: 1px solid #abcdef; float:left; position: relative; width: 192px; height: 108px; margin-top: 10px; margin-right: 10px;" ng-repeat="image in inform.images2 track by $index">
+						<div style="position: absolute; ; right: 3px; bottom: 3px;"><button class="btn btn-danger btn-sm" ng-click="removeImg2(image)"><i class="fa fa-times"></i></button></div>
+						<img ng-src="{{image}}" width="192px;"  height="106px;">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-3"></label>
+				<div class="col-lg-9">
+					<div class="fileinput-button">
+						<button class="btn btn-info btn-sm"><i class="fa fa-plus m-right-xs"></i>上传图片</button>
+						<input type="file" id="file2" name="file2" pz-uploader action="doUpload2(files)">
+					</div>
+				</div>
+			</div>
+			
+			<div class="text-right m-top-md">
+				<button ng-click="save(inform)" class="btn btn-success btn-sm" ng-disabled="activityForm.$invalid"><i class="fa fa-save m-right-xs"></i>保存</button>
+				<!-- <button ng-click="" class="btn btn-danger btn-sm" ng-disabled="activityForm.$invalid"><i class="fa fa-save m-right-xs"></i>放入仓库</button> -->
 			</div>
 			
 		</form>

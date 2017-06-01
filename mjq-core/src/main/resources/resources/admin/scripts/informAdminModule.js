@@ -13,6 +13,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 	config.bonus = {url:"inform/:id/bonus", method:"POST"};
 	config.accept = {url:"inform/:id/accept", method:"PUT"};
 	config.deny = {url:"inform/:id/deny", method:"PUT"};
+	config.modify = {url:"inform/:id/modify", method:"PUT"};
 	return $resource("inform/:id", {id:"@id"}, config);
 //控制器
 }).controller('informManageCtrl', function($scope, $uibModal, informRestService, commonService) {
@@ -61,7 +62,7 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 			}
 		}).result.then(function(form){
 			if(form.id){
-				new informRestService(form).$save().then(function(){
+				informRestService.modify(form).$promise.then(function(){
 					commonService.showMessage("修改爆料信息成功");
 				},function(response){
 					for (var i = 0; i < $scope.informs.length; i++) {
@@ -137,6 +138,26 @@ angular.module('informAdminModule',[]).config(function($stateProvider) {
 	$scope.save = function(inform) {
 		$uibModalInstance.close(inform);
 	};
+	
+	$scope.removeImg1 = function(image) {
+		$scope.inform.images.splice($scope.inform.images.indexOf(image), 1);
+	}
+	
+	$scope.removeImg2 = function(image) {
+		$scope.inform.images2.splice($scope.inform.images2.indexOf(image), 1);
+	}
+	
+	$scope.doUpload1 = function(files){
+		commonService.uploadImage(files, $scope, function(result){
+			$scope.inform.images.push(result);
+		});
+	}
+	
+	$scope.doUpload2 = function(files){
+		commonService.uploadImage(files, $scope, function(result){
+			$scope.inform.images2.push(result);
+		});
+	}
 	
 }).filter("informStatus", function(){
 	return function (text) {

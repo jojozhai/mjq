@@ -39,5 +39,7 @@ public interface InformService {
 	void bonus(Long id) throws Exception;
 
 	void deny(Long id) throws Exception;
+
+	InformInfo modify(InformInfo informInfo);
     
 }

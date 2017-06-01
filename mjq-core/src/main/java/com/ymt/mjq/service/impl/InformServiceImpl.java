@@ -113,9 +113,18 @@ public class InformServiceImpl implements InformService {
         
     }
 
+	@Override
+	public InformInfo modify(InformInfo informInfo) {
+		Inform inform = informRepository.findOne(informInfo.getId());
+		inform.setImages(informInfo.getImages());
+		inform.setImages2(informInfo.getImages2());
+		informRepository.save(inform);
+		return informInfo;
+	}
+
     @Override
     public void delete(Long id) {
-        informRepository.delete(id);       
+        informRepository.delete(id);
     }
 
 	@Override
